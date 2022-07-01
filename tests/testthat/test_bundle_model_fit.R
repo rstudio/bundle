@@ -1,4 +1,4 @@
-test_that("bundleping + unbundleping parsnip model_fits", {
+test_that("bundling + unbundling parsnip model_fits", {
   skip_if_not_installed("parsnip")
   library(parsnip)
 

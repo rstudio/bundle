@@ -1,4 +1,4 @@
-test_that("bundleping + unbundleping xgboost fits", {
+test_that("bundling + unbundling xgboost fits", {
   skip_if_not_installed("xgboost")
   library(xgboost)
 
