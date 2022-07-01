@@ -7,9 +7,16 @@ bundle.xgb.Booster <- function(x, ...) {
     object = object,
     desc_class = class(x)[1],
     situate = function(unserialized) {
-      unserialized$params$objective <- x$params$objective
+      # see xgboost:::predict.xgb.Booster.handle and xgboost:::xgb.handleToBooster
+      res <- list(handle = unserialized, raw = NULL)
+      class(res) <- "xgb.Booster"
 
-      unserialized
+      res$params <- list(
+        objective = x$params$objective,
+        num_class = x$params$num_class
+      )
+
+      res
     }
   )
 }
@@ -17,7 +24,10 @@ bundle.xgb.Booster <- function(x, ...) {
 #' @method unbundle bundled_xgb.Booster
 #' @export
 unbundle.bundled_xgb.Booster <- function(x, ...) {
-  res <- xgboost::xgb.unserialize(get_object(x))
+  res <-
+    get_object(x) %>%
+    xgboost::xgb.unserialize() %>%
+    set_object(x)
 
   unbundle_constr(res)
 }

@@ -12,10 +12,7 @@ bundle_constr <- function(object, desc_class, situate) {
 
 #' @export
 unbundle_constr <- function(x) {
-  structure(
-    x$situate(get_object(x)),
-    class = class(get_object(x))
-  )
+  x$situate(get_object(x))
 }
 
 # getters and setters ----------------------------------------------------------
@@ -23,11 +20,17 @@ get_object <- function(x) {
   x$object
 }
 
+set_object <- function(new_object, x) {
+  x$object <- new_object
+
+  x
+}
+
 
 # printing ---------------------------------------------------------------------
 #' @export
 print.bundle <- function(x) {
-  cat(glue::glue("bundled {gsub('bundled_', '', class(x)[1])} object:\n\n"))
+  cat(glue::glue("bundled {gsub('bundled_', '', class(x)[1])} object.\n\n"))
 }
 
 # checks -----------------------------------------------------------------------
