@@ -1,29 +1,33 @@
 # constructors -----------------------------------------------------------------
 
 #' @export
-wrap_constr <- function(raw, orig) {
+wrap_constr <- function(object, desc_class, situate) {
+  res <- list(object = object, situate = situate)
+
   structure(
-    raw,
-    class = c("gift", paste0("wrapped_", class(orig)[1]), class(raw))
+    res,
+    class = c(paste0("wrapped_", desc_class), "gift")
   )
 }
 
 #' @export
 unwrap_constr <- function(x) {
   structure(
-    x,
-    class = class(x)[3:length(class(x))]
+    x$situate(get_object(x)),
+    class = class(get_object(x))
   )
 }
+
+# getters and setters ----------------------------------------------------------
+get_object <- function(x) {
+  x$object
+}
+
 
 # printing ---------------------------------------------------------------------
 #' @export
 print.gift <- function(x) {
-  unwrapped <- unwrap(x)
-
-  cat(glue::glue("wrapped {gsub('wrapped_', '', class(x)[2])} object:\n\n"))
-
-  print(unwrapped)
+  cat(glue::glue("wrapped {gsub('wrapped_', '', class(x)[1])} object:\n\n"))
 }
 
 # checks -----------------------------------------------------------------------
