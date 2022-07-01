@@ -1,6 +1,6 @@
 Package: bundle
 Title: Serialize Objects With A Consistent Interface
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
     person(given = "Simon",
            family = "Couch",
@@ -17,7 +17,11 @@ Authors@R: c(
     person("RStudio", 
            role = c("cph", "fnd"))
     )
-Description: What the package does (one paragraph).
+Description: 
+    R holds most objects in memory. However, some models store their data in 
+    locations that are not included when one uses `save()` or `saveRDS()`. 
+    bundle provides a common API to capture this information, situate it within 
+    a portable object, and restore it for use in new settings.
 License: MIT + file LICENSE
 Imports: 
     magrittr,

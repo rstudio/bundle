@@ -3,6 +3,8 @@
 
 # bundle
 
+_NOTE: This package is very early on in its development and is not yet minimally functional._
+
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -11,9 +13,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org/package=bundle)
 <!-- badges: end -->
 
-The goal of the bundle package is to provide a consistent interface for
-[serializing](https://en.wikipedia.org/wiki/Serialization) R objects
-that may reference data outside of R-allocated memory.
+R holds most objects in memory. However, some models store their data in
+locations that are not included when one uses `save()` or `saveRDS()`.
+bundle provides a common API to capture this information, situate it
+within a portable object, and restore it for use in new settings.
 
 ## Installation
 
@@ -46,5 +49,8 @@ bundled_mod <-
 unbundled_mod <- 
   unbundle(bundled_mod)
 
-predict(unbundled_mod, new_data = mtcars[21:32,])
+preds <-
+  predict(unbundled_mod, new_data = mtcars[21:32,])
+
+preds
 ```
