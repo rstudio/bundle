@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(gift)
+library(bundle)
 
-test_check("gift")
+test_check("bundle")

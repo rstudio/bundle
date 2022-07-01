@@ -1,26 +1,26 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# gift
+# bundle
 
 <!-- badges: start -->
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/gift)](https://CRAN.R-project.org/package=gift)
+status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org/package=bundle)
 <!-- badges: end -->
 
-The goal of the gift package is to provide a consistent interface for
+The goal of the bundle package is to provide a consistent interface for
 [serializing](https://en.wikipedia.org/wiki/Serialization) R objects
 that may reference data outside of R-allocated memory.
 
 ## Installation
 
-You can install the development version of gift like so:
+You can install the development version of bundle like so:
 
 ``` r
-pak::pak("simonpcouch/gift")
+pak::pak("simonpcouch/bundle")
 ```
 
 ## Example
@@ -31,7 +31,7 @@ tree model, serialize it, and then later load it into another R session
 to generate predictions on new data:
 
 ``` r
-library(gift)
+library(bundle)
 library(parsnip)
 
 mod <-
@@ -40,11 +40,11 @@ mod <-
     set_engine("xgboost") %>%
     fit(mpg ~ ., data = mtcars[1:20,])
 
-wrapped_mod <-
-  wrap(mod)
+bundled_mod <-
+  bundle(mod)
 
-unwrapped_mod <- 
-  unwrap(wrapped_mod)
+unbundled_mod <- 
+  unbundle(bundled_mod)
 
-predict(unwrapped_mod, new_data = mtcars[21:32,])
+predict(unbundled_mod, new_data = mtcars[21:32,])
 ```

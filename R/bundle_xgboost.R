@@ -1,9 +1,9 @@
-#' @method wrap xgb.Booster
+#' @method bundle xgb.Booster
 #' @export
-wrap.xgb.Booster <- function(x, ...) {
+bundle.xgb.Booster <- function(x, ...) {
   object <- xgboost::xgb.serialize(x)
 
-  wrap_constr(
+  bundle_constr(
     object = object,
     desc_class = class(x)[1],
     situate = function(unserialized) {
@@ -14,10 +14,10 @@ wrap.xgb.Booster <- function(x, ...) {
   )
 }
 
-#' @method unwrap wrapped_xgb.Booster
+#' @method unbundle bundled_xgb.Booster
 #' @export
-unwrap.wrapped_xgb.Booster <- function(x, ...) {
+unbundle.bundled_xgb.Booster <- function(x, ...) {
   res <- xgboost::xgb.unserialize(get_object(x))
 
-  unwrap_constr(res)
+  unbundle_constr(res)
 }
