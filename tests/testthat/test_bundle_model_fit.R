@@ -17,8 +17,6 @@ test_that("bundling + unbundling parsnip model_fits", {
   expect_snapshot(mod_unbundled)
 
   mod_preds <- predict(mod, mtcars)
-  # currently errors: parsnip subsets the fit object at xgb_predict,
-  #   which isn't fair game for a serialized object
   mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)
 
   expect_equal(mod_preds, mod_unbundled_preds)
