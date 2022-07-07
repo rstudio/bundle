@@ -58,20 +58,22 @@ test_that("bundling + unbundling h2o fits", {
 
   # only want bundled models and original preds to persist.
   # test again in new R session:
-  callr::r(
+  res <- callr::r(
     function(reg_bundle_,   reg_data_,
              bin_bundle_,   bin_data_,
              multi_bundle_, multi_data_) {
       library(bundle)
       library(h2o)
 
+      h2o.init()
+
       reg_unbundled <- unbundle(reg_bundle_)
       bin_unbundled <- unbundle(bin_bundle_)
       multi_unbundled <- unbundle(multi_bundle_)
 
-      reg_unbundled_preds <- predict(reg_unbundled, reg_data)
-      bin_unbundled_preds <- predict(bin_unbundled, bin_data)
-      multi_unbundled_preds <- predict(multi_unbundled, multi_data)
+      reg_unbundled_preds <- predict(reg_unbundled, reg_data_)
+      bin_unbundled_preds <- predict(bin_unbundled, bin_data_)
+      multi_unbundled_preds <- predict(multi_unbundled, multi_data_)
 
       list(
         reg_unbundled_preds_new = reg_unbundled_preds$data,
@@ -89,7 +91,7 @@ test_that("bundling + unbundling h2o fits", {
     )
   )
 
-  expect_equal(reg_preds_$data, reg_unbundled_preds_new)
-  expect_equal(bin_preds_$data, bin_unbundled_preds_new)
-  expect_equal(multi_preds_$data, multi_unbundled_preds_new)
+  expect_equal(reg_preds$data, res$reg_unbundled_preds_new)
+  expect_equal(bin_preds$data, res$bin_unbundled_preds_new)
+  expect_equal(multi_preds$data, res$multi_unbundled_preds_new)
 })
