@@ -56,12 +56,12 @@ test_that("bundling + unbundling h2o fits", {
   expect_equal(bin_preds$data, bin_unbundled_preds$data)
   expect_equal(multi_preds$data, multi_unbundled_preds$data)
 
-  # only want bundled models, prediction data, and original preds to persist.
+  # only want bundled models and original preds to persist.
   # test again in new R session:
   callr::r(
-    function(reg_bundle_,   reg_preds_,   reg_data_,
-             bin_bundle_,   bin_preds_,   bin_data_,
-             multi_bundle_, multi_preds_, multi_data_) {
+    function(reg_bundle_,   reg_data_,
+             bin_bundle_,   bin_data_,
+             multi_bundle_, multi_data_) {
       library(bundle)
       library(h2o)
 
@@ -73,20 +73,23 @@ test_that("bundling + unbundling h2o fits", {
       bin_unbundled_preds <- predict(bin_unbundled, bin_data)
       multi_unbundled_preds <- predict(multi_unbundled, multi_data)
 
-      testthat::expect_equal(reg_preds_$data, reg_unbundled_preds$data)
-      testthat::expect_equal(bin_preds_$data, bin_unbundled_preds$data)
-      testthat::expect_equal(multi_preds_$data, multi_unbundled_preds$data)
+      list(
+        reg_unbundled_preds_new = reg_unbundled_preds$data,
+        bin_unbundled_preds_new = bin_unbundled_preds$data,
+        multi_unbundled_preds_new = multi_unbundled_preds$data
+      )
     },
     args = list(
       reg_bundle_ = reg_bundle,
-      reg_preds_ = reg_preds,
       reg_data_ = reg_data,
       bin_bundle_ = bin_bundle,
-      bin_preds_ = bin_preds,
       bin_data_ = bin_data,
       multi_bundle_ = multi_bundle,
-      multi_preds_ = multi_preds,
       multi_data_ = multi_data
     )
   )
+
+  expect_equal(reg_preds_$data, reg_unbundled_preds_new)
+  expect_equal(bin_preds_$data, bin_unbundled_preds_new)
+  expect_equal(multi_preds_$data, multi_unbundled_preds_new)
 })

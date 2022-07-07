@@ -23,19 +23,19 @@ test_that("bundling + unbundling parsnip model_fits", {
 
   # only want bundled model, prediction data, and original preds to persist.
   # test again in new R session:
-  callr::r(
-    function(mod_bundle_, mod_preds_) {
+  mod_unbundled_preds_new <- callr::r(
+    function(mod_bundle_) {
       library(bundle)
       library(parsnip)
       library(xgboost)
 
       mod_unbundled_ <- unbundle(mod_bundle_)
-      mod_unbundled_preds <- predict(mod_unbundled_, mtcars)
-      testthat::expect_equal(mod_preds_, mod_unbundled_preds)
+      predict(mod_unbundled_, mtcars)
     },
     args = list(
-      mod_bundle_ = mod_bundle,
-      mod_preds_ = mod_preds
+      mod_bundle_ = mod_bundle
     )
   )
+
+  expect_equal(mod_preds_, mod_unbundled_preds_new)
 })
