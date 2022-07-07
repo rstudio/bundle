@@ -14,25 +14,24 @@ test_that("bundling + unbundling xgboost fits", {
   xgb_bundle <- bundle(xgb)
   xgb_unbundled <- unbundle(xgb_bundle)
 
-  expect_snapshot(xgb_bundle)
-
   xgb_preds <- predict(xgb, agaricus.test$data)
   xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
 
   expect_equal(xgb_preds, xgb_unbundled_preds)
 
-  # only want xgb_unbundled and xgb_preds to persist, test again in new env
-  pred_env <-
-    rlang::new_environment(
-      data = list(
-        xgb_unbundled_ = xgb_unbundled,
-        xgb_preds_ = xgb_preds,
-        agaricus.test_ = agaricus.test
-      )
-    )
+  # only want unbundled model, prediction data, and original preds to persist.
+  # test again in new R session:
+  callr::r(
+    function(xgb_unbundled_, xgb_preds_, agaricus.test_) {
+      library(xgboost)
 
-  withr::with_environment(pred_env, {
-    xgb_unbundled_preds <- predict(xgb_unbundled_, agaricus.test_$data)
-    expect_equal(xgb_preds_, xgb_unbundled_preds)
-  })
+      xgb_unbundled_preds <- predict(xgb_unbundled_, agaricus.test_$data)
+      expect_equal(xgb_preds_, xgb_unbundled_preds)
+    },
+    args = list(
+      xgb_unbundled_ = xgb_unbundled,
+      xgb_preds_ = xgb_preds,
+      agaricus.test_ = agaricus.test
+    )
+  )
 })

@@ -26,7 +26,7 @@ License: MIT + file LICENSE
 Imports: 
     magrittr,
     glue,
-    withr,
+    callr,
     rlang
 Suggests: 
     testthat (>= 3.0.0),
