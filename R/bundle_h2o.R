@@ -1,19 +1,19 @@
 #' @export
-bundle.H2OMultinomialModel <- function(x, ...) {
-  bundle_h2o(x, ...)
+bundle.H2OMultinomialModel <- function(x) {
+  bundle_h2o(x)
 }
 
 #' @export
-bundle.H2OBinomialModel <- function(x, ...) {
-  bundle_h2o(x, ...)
+bundle.H2OBinomialModel <- function(x) {
+  bundle_h2o(x)
 }
 
 #' @export
-bundle.H2ORegressionModel <- function(x, ...) {
-  bundle_h2o(x, ...)
+bundle.H2ORegressionModel <- function(x) {
+  bundle_h2o(x)
 }
 
-bundle_h2o <- function(x, ...) {
+bundle_h2o <- function(x) {
     file_loc <- tempfile()
 
     if (x@have_mojo) {
@@ -42,8 +42,8 @@ bundle_h2o <- function(x, ...) {
 }
 
 #' @export
-unbundle.bundled_h2o <- function(x, ...) {
-  unbundle_h2o(x, ...)
+unbundle.bundled_h2o <- function(x) {
+  unbundle_constr(x)
 }
 
 with_no_progress <- function(expr) {
