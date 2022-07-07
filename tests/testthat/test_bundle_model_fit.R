@@ -21,7 +21,7 @@ test_that("bundling + unbundling parsnip model_fits", {
 
   expect_equal(mod_preds, mod_unbundled_preds)
 
-  # only want bundled model, prediction data, and original preds to persist.
+  # only want bundled model and original preds to persist.
   # test again in new R session:
   mod_unbundled_preds_new <- callr::r(
     function(mod_bundle_) {
@@ -37,5 +37,5 @@ test_that("bundling + unbundling parsnip model_fits", {
     )
   )
 
-  expect_equal(mod_preds_, mod_unbundled_preds_new)
+  expect_equal(mod_preds, mod_unbundled_preds_new)
 })
