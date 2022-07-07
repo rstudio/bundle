@@ -1,5 +1,12 @@
 # constructors -----------------------------------------------------------------
 
+#' Internal Functions
+#'
+#' These functions are not user-facing and are only exported for developer
+#' extensions.
+#'
+#' @rdname internal_functions
+#' @keywords internal
 #' @export
 bundle_constr <- function(object, desc_class, situate) {
   res <- list(object = object, situate = situate)
@@ -10,6 +17,8 @@ bundle_constr <- function(object, desc_class, situate) {
   )
 }
 
+#' @rdname internal_functions
+#' @keywords internal
 #' @export
 unbundle_constr <- function(x) {
   x$situate(get_object(x))
@@ -29,7 +38,7 @@ set_object <- function(new_object, x) {
 
 # printing ---------------------------------------------------------------------
 #' @export
-print.bundle <- function(x) {
+print.bundle <- function(x, ...) {
   cat(glue::glue("bundled {gsub('bundled_', '', class(x)[1])} object.\n\n"))
 }
 
@@ -38,7 +47,10 @@ print.bundle <- function(x) {
 
 
 
-
+# global variables -------------------------------------------------------------
+utils::globalVariables(c(
+  "extract_fit_engine", "map"
+))
 
 
 

@@ -1,5 +1,5 @@
 #' @export
-bundle.model_fit <- function(x, ...) {
+bundle.model_fit <- function(x) {
   res <- x
 
   fit <- extract_fit_engine(x)
@@ -17,7 +17,7 @@ bundle.model_fit <- function(x, ...) {
 }
 
 #' @export
-unbundle.bundled_model_fit <- function(x, ...) {
+unbundle.bundled_model_fit <- function(x) {
   fit_parsnip <- get_object(x)
   fit_engine_bundled <- extract_fit_engine(fit_parsnip)
   fit_engine_unbundled <- unbundle(fit_engine_bundled)

@@ -1,6 +1,6 @@
 #' @method bundle xgb.Booster
 #' @export
-bundle.xgb.Booster <- function(x, ...) {
+bundle.xgb.Booster <- function(x) {
   object <- xgboost::xgb.serialize(x)
 
   bundle_constr(
@@ -23,7 +23,7 @@ bundle.xgb.Booster <- function(x, ...) {
 
 #' @method unbundle bundled_xgb.Booster
 #' @export
-unbundle.bundled_xgb.Booster <- function(x, ...) {
+unbundle.bundled_xgb.Booster <- function(x) {
   res <-
     get_object(x) %>%
     xgboost::xgb.unserialize() %>%

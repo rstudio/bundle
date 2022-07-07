@@ -1,19 +1,31 @@
 # bundle() machinery -------------------------------------------------------------
 
+#' Bundling
+#'
+#' `bundle()` methods provide a consistent interface to serialization
+#' methods. The outputted bundle can be `unbundle()`d in a new R session
+#' and used as desired.
+#'
+#' To read more about bundling and serialization, see
+#' `?vignette("bundle", package = "bundle")`!
+#'
+#' @param x An R object to bundle.
+#' @rdname bundle
 #' @export
-bundle <- function(x, ...) {
+bundle <- function(x) {
   UseMethod("bundle")
 }
 
 #' @export
-bundle.default <- function(x, ...) x
+bundle.default <- function(x) x
 
 # unbundle() machinery -----------------------------------------------------------
 
+#' @rdname bundle
 #' @export
-unbundle <- function(x, ...) {
+unbundle <- function(x) {
   UseMethod("unbundle")
 }
 
 #' @export
-unbundle.default <- function(x, ...) x
+unbundle.default <- function(x) x
