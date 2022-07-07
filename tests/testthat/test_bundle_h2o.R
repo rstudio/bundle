@@ -73,9 +73,9 @@ test_that("bundling + unbundling h2o fits", {
       bin_unbundled_preds <- predict(bin_unbundled, bin_data)
       multi_unbundled_preds <- predict(multi_unbundled, multi_data)
 
-      expect_equal(reg_preds_$data, reg_unbundled_preds$data)
-      expect_equal(bin_preds_$data, bin_unbundled_preds$data)
-      expect_equal(multi_preds_$data, multi_unbundled_preds$data)
+      testthat::expect_equal(reg_preds_$data, reg_unbundled_preds$data)
+      testthat::expect_equal(bin_preds_$data, bin_unbundled_preds$data)
+      testthat::expect_equal(multi_preds_$data, multi_unbundled_preds$data)
     },
     args = list(
       reg_bundle_ = reg_bundle,

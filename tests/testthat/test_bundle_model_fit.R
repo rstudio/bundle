@@ -31,7 +31,7 @@ test_that("bundling + unbundling parsnip model_fits", {
 
       mod_unbundled_ <- unbundle(mod_bundle_)
       mod_unbundled_preds <- predict(mod_unbundled_, mtcars)
-      expect_equal(mod_preds_, mod_unbundled_preds)
+      testthat::expect_equal(mod_preds_, mod_unbundled_preds)
     },
     args = list(
       mod_bundle_ = mod_bundle,

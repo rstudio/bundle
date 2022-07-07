@@ -28,7 +28,7 @@ test_that("bundling + unbundling xgboost fits", {
 
       xgb_unbundled <- unbundle(xgb_bundle_)
       xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test_$data)
-      expect_equal(xgb_preds_, xgb_unbundled_preds)
+      testthat::expect_equal(xgb_preds_, xgb_unbundled_preds)
     },
     args = list(
       xgb_bundled_ = xgb_bundle,
