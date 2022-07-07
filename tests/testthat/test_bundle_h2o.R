@@ -52,9 +52,9 @@ test_that("bundling + unbundling h2o fits", {
   bin_unbundled_preds <- predict(bin_unbundled, bin_data)
   multi_unbundled_preds <- predict(multi_unbundled, multi_data)
 
-  expect_equal(reg_preds, reg_unbundled_preds)
-  expect_equal(bin_preds, bin_unbundled_preds)
-  expect_equal(multi_preds, multi_unbundled_preds)
+  expect_equal(reg_preds$data, reg_unbundled_preds$data)
+  expect_equal(bin_preds$data, bin_unbundled_preds$data)
+  expect_equal(multi_preds$data, multi_unbundled_preds$data)
 
   # only want unbundled objects and original preds to persist, test again in new env
   pred_env <-
