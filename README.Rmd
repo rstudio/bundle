@@ -5,14 +5,18 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+should_eval <- 
+  rlang::is_installed("xgboost") && 
+  rlang::is_installed("parsnip") &&
+  rlang::is_installed("callr")
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  eval = should_eval
 )
-
-should_eval <- rlang::is_installed("xgboost") && rlang::is_installed("parsnip")
 ```
 
 # bundle
@@ -38,7 +42,7 @@ pak::pak("simonpcouch/bundle")
 
 A common use case for serialization in R is the storing of model objects for later use in prediction tasks. For instance, we can train a boosted tree model, serialize it, and then later load it into another R session to generate predictions on new data:
 
-```{r example, eval = should_eval}
+```{r example}
 library(bundle)
 library(parsnip)
 library(callr)

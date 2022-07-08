@@ -3,7 +3,8 @@
 
 # bundle
 
-_NOTE: This package is very early on in its development and is not yet minimally functional._
+*NOTE: This package is very early on in its development and is not yet
+minimally functional.*
 
 <!-- badges: start -->
 
@@ -36,21 +37,42 @@ to generate predictions on new data:
 ``` r
 library(bundle)
 library(parsnip)
+library(callr)
 
+# fit an boosted tree with xgboost via parsnip
 mod <-
     boost_tree(trees = 5, mtry = 3) %>%
     set_mode("regression") %>%
     set_engine("xgboost") %>%
-    fit(mpg ~ ., data = mtcars[1:20,])
+    fit(mpg ~ ., data = mtcars[1:25,])
 
+# bundle the model
 bundled_mod <-
   bundle(mod)
 
-unbundled_mod <- 
-  unbundle(bundled_mod)
+# load the model in a fresh R session and predict on new data
+r(
+  func = function(bundled_mod) {
+    library(bundle)
+    library(parsnip)
+    
+    unbundled_mod <- 
+      unbundle(bundled_mod)
 
-preds <-
-  predict(unbundled_mod, new_data = mtcars[21:32,])
-
-preds
+    predict(unbundled_mod, new_data = mtcars[26:32,])
+  },
+  args = list(
+    bundled_mod = bundled_mod
+  )
+)
+#> # A tibble: 7 × 1
+#>   .pred
+#>   <dbl>
+#> 1  22.3
+#> 2  18.9
+#> 3  17.1
+#> 4  11.8
+#> 5  14.2
+#> 6  11.8
+#> 7  17.1
 ```
