@@ -104,7 +104,7 @@ First, saving our model object to file:
 ```{r}
 temp_file <- tempfile()
 
-save(lgb_fit, file = temp_file)
+saveRDS(lgb_fit, file = temp_file)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
@@ -114,11 +114,11 @@ r(
   function(temp_file) {
     library(lightgbm)
     
-    load(file = temp_file)
+    model_object <- readRDS(file = temp_file)
     
     new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
     
-    predict(lgb_fit, new_data)
+    predict(model_object, new_data)
   },
   args = list(
     temp_file = temp_file
@@ -141,9 +141,126 @@ Let's make use of native serialization, then!
 
 ## Where native serialization falls short
 
+lightgbm's error was really informative in telling us what we ought to do from here---if we save the model with their native serialization rather than `saveRDS`, we'll be good to go.
+
+Saving our model object with their methods:
+
+```{r}
+saveRDS.lgb.Booster(lgb_fit, file = temp_file)
+```
+
+Now, starting up a fresh R session and predicting on new data:
+
+```{r}
+r(
+  function(temp_file) {
+    library(lightgbm)
+    
+    model_object <- readRDS.lgb.Booster(file = temp_file)
+    
+    new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
+    
+    predict(model_object, new_data)
+  },
+  args = list(
+    temp_file = temp_file
+  )
+)
+```
+
+Awesome! Making use of their methods, we were able to effectively save our model, load it in a new R session, and predict on new data.
+
+Now, a new scenario---I've heard that xgboost models are super performant, and want to try to productionize those, too. How would we do that?
+
+Based on our workflow just now, we could try to just save it with `saveRDS` and see if we get an informative error somewhere along the way to predicting in a new R session. Or, maybe a better approach would be to read through their documentation and see if we can find anything related to serialization. 
+
+We've done the work of figuring that out, and it turns out the interface is a little bit different. You'll need to make sure the parameters object persists across sessions, but `saveRDS` will work by itself if... ah, nevermind.
+
+What if we could just use the same function for any R object, and it would _just work_?
+
+```{r diagram-03, echo = FALSE, fig.alt = "A diagram showing the same set of rectangles, representing a prediction problem, as before. This version of the diagram adds two boxes, labeled R Session numbe r one, and R session number two. In R session number two, we have a new rectangle labeled standalone model object. In focus is the arrow from the model object, in R Session number one, to the standalone model object in R session number two."}
+knitr::include_graphics("man/figures/diagram_03.png")
+```
 
 ## Using bundle
 
+bundle provides a consistent interface to save and load R objects. The package provides two functions---`bundle()` and `unbundle()`---that take care of all of the minutae of saving and loading R objects effectively.
+
+```{r diagram-04, echo = FALSE, fig.alt = "A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a buncle."}
+knitr::include_graphics("man/figures/diagram_04.png")
+```
 
 
+Bundles are just lists with two elements:
 
+* `object`: The `object` element of a bundle is the serialized version of the inputted object. In the simplest situations in modeling, this object is just the output of a native serialization function like `saveRDS.lgb.Booster` that we used earlier.
+* `situate()`: The `situate()` element of a bundle is a function that _situates_ the `object` element in its new environment. It takes in the `object` element as input, but also "freezes" reference that existed when the original object was created.
+
+When `unbundle()` is called on a bundle object, the `situate()` element of the bundle will re-load the `object` element and restore needed references in the new environment. Thus, the output of `unbundle()` is ready to go for whatever tasks it'd be used for in the original environment.
+
+To be a bit more concrete, lets return to the lightgbm example.
+
+```{r}
+lgb_bundle <- bundle(lgb_fit)
+```
+
+Now, starting up a fresh R session and predicting on new data:
+
+```{r}
+r(
+  function(model_bundle) {
+    library(bundle)
+    
+    model_object <- unbundle(model_bundle)
+    
+    new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
+    
+    predict(model_object, new_data)
+  },
+  args = list(
+    model_bundle = lgb_bundle
+  )
+)
+```
+
+Huzzah!
+
+The best part is, if you wanted to do the same thing for an xgboost object, you could use the same code!
+
+First, fitting a quick xgboost model:
+
+```{r}
+xgb_fit <- 
+  xgboost(
+    data = as.matrix(mtcars[1:25, 2:ncol(mtcars)]), 
+    label =  mtcars[1:25, 1],
+    nrounds = 5
+  )
+```
+
+Now, bundling it: 
+
+```{r}
+xgb_bundle <- bundle(xgb_fit)
+```
+
+Now, starting up a fresh R session and predicting on new data:
+
+```{r}
+r(
+  function(model_bundle) {
+    library(bundle)
+    
+    model_object <- unbundle(model_bundle)
+    
+    new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
+    
+    predict(model_object, new_data)
+  },
+  args = list(
+    model_bundle = xgb_bundle
+  )
+)
+```
+
+Voilà! We hope bundles make your modeling and deployment workflows a good bit smoother in the future.
