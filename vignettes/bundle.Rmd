@@ -8,12 +8,142 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+should_eval <- rlang::is_installed("lightgbm") && rlang::is_installed("callr")
+
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = should_eval
 )
 ```
+
+R holds most objects in memory. However, some models store their data in locations that are not included when one uses `save()` or `saveRDS()`. bundle provides a common API to capture this information, situate it within a portable object, and restore it for use in new settings.
+
+This vignette will walk through a common use case for bundling---storing a statistical model to deploy in production---to showcase the benefits of the package.
 
 ```{r setup}
 library(bundle)
 ```
+
+In addition to the package itself, we'll load the lightgbm package to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.
+
+```{r setup-exts}
+library(lightgbm)
+library(callr)
+```
+
+## Where `save()` and `load()` fall short
+
+As an example, let's fit a simple model with the lightgbm package, modeling miles per gallon using the rest of the variables in the built-in `mtcars` dataset.
+
+```{r mtcars-fit}
+cars_train <- 
+  lgb.Dataset(
+    data = as.matrix(mtcars[1:25, 2:ncol(mtcars)]), 
+    label = mtcars[1:25, 1],
+    params = list(feature_pre_filter = "false")
+  )
+
+cars_test <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
+
+lgb_fit <-
+  lgb.train(
+    params = list(
+      max_depth = 3, 
+      min_data_in_leaf = 5, 
+      objective = "regression"
+    ), 
+    data = cars_train, 
+    nrounds = 5,
+    verbose = -1
+  )
+```
+
+Easy peasy! Now, given that this model is trained, we assume that it's ready to go to predict on new data. Our mental map might look something like this:
+
+```{r diagram-01, echo = FALSE, fig.alt = "A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label predict."}
+knitr::include_graphics("man/figures/diagram_01.png")
+```
+
+We pass a model object to the `predict()` function, along with some new data to predict on, and get predictions back. Straightforward enough--- let's try it out:
+
+```{r}
+predict(lgb_fit, cars_test)
+```
+
+Perfect.
+
+If we're satisfied with this model and think it provides some valuable insights, we might want to deploy it somewhere---maybe on a Shiny app---so that others can make use of it.
+
+The callr package will be helpful for emulating this kind of situation. The package allows us to start up a fresh R session and pass a few objects in. 
+
+We'll just make use of two of the arguments to the function `r()`: `func`, which we'll supply the code we want to run in, and `args`, which we'll pass our model objects to. 
+
+As an example:
+
+```{r}
+r(
+  function(x) {
+    x * 2
+  },
+  args = list(
+    x = 1
+  )
+)
+```
+
+So, our approach might be:
+
+* save our model object
+* start up a new R session
+* load the model object into the new session
+* predict on new data with the loaded model object
+
+First, saving our model object to file:
+
+```{r}
+temp_file <- tempfile()
+
+save(lgb_fit, file = temp_file)
+```
+
+Now, starting up a fresh R session and predicting on new data:
+
+```{r}
+r(
+  function(temp_file) {
+    library(lightgbm)
+    
+    load(file = temp_file)
+    
+    new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
+    
+    predict(lgb_fit, new_data)
+  },
+  args = list(
+    temp_file = temp_file
+  )
+)
+```
+
+Oof. This error is a bit much. It _does_ seem to point us to something helpful, though: the lightgbm package provides its own functions to save lightgbm objects. 
+
+Given this new understanding, we can update our mental map a bit. Some objects require extra information when they're loaded into new environments in order to do their thing. In this case, this lightgbm model object needs access to a Booster instance in order to predict on new data. This "extra information."
+
+```{r diagram-02, echo = FALSE, fig.alt = "A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow."}
+knitr::include_graphics("man/figures/diagram_02.png")
+```
+In computer science, these bits of "extra information" are called _references_. Those references need to persist---or be restored---in new environments in order for the objects that reference them to work well.
+
+These kinds of custom methods to save objects, like the ones that lightgbm provide, are often referred to as _native serialization_. Methods for native serialization know which references need to be brought along in order for an object to effectively do it's thing in a new environment.
+
+Let's make use of native serialization, then!
+
+## Where native serialization falls short
+
+
+## Using bundle
+
+
+
+
