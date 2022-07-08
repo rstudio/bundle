@@ -69,10 +69,17 @@ r(
 #>   .pred
 #>   <dbl>
 #> 1  22.3
-#> 2  18.9
-#> 3  17.1
-#> 4  11.8
-#> 5  14.2
-#> 6  11.8
-#> 7  17.1
+#> 2  21.0
+#> 3  17.5
+#> 4  16.6
+#> 5  16.5
+#> 6  12.2
+#> 7  19.5
 ```
+
+## Code of Conduct
+
+Please note that the bundle project is released with a [Contributor Code
+of
+Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
