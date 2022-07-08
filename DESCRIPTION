@@ -29,6 +29,7 @@ Imports:
     magrittr,
     rlang
 Suggests: 
+    bonsai,
     h2o,
     keras,
     knitr,
