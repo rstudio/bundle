@@ -37,20 +37,22 @@ knitr::opts_chunk$set(
 
 R holds most objects in memory. However, some models store their data in locations that are not included when one uses `save()` or `saveRDS()`. bundle provides a common API to capture this information, situate it within a portable object, and restore it for use in new settings.
 
-This vignette will walk through a common use case for bundling---storing a statistical model to deploy in production---to showcase the benefits of the package.
+This vignette will walk through a common use case for bundling---storing a statistical model to deploy in production---to demonstrate the benefits of using bundle.
 
 ```{r setup}
 library(bundle)
 ```
 
-In addition to the package itself, we'll load the lightgbm package to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.
+In addition to the package itself, we'll load the lightgbm and xgboost package to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.
 
 ```{r setup-exts}
 library(lightgbm)
+library(xgboost)
+
 library(callr)
 ```
 
-## Why saving things is hard
+## Saving things is hard
 
 As an example, let's fit a simple model with the lightgbm package, modeling miles per gallon using the rest of the variables in the built-in `mtcars` dataset.
 
@@ -147,7 +149,7 @@ r(
 )
 ```
 
-Oof. This error is a bit much. It _does_ seem to point us to something helpful, though: it tells at that the lightgbm package provides its own functions to save lightgbm objects. 
+Oof. It _does_ seem to point us to something helpful, though: it tells at that the lightgbm package provides its own functions to save lightgbm objects. 
 
 Given this new understanding, we can update our mental map a bit. Some objects require extra information when they're loaded into new environments in order to do their thing. In this case, this lightgbm model object needs access to a Booster instance in order to predict on new data.
 
@@ -252,8 +254,6 @@ The best part is, if you wanted to do the same thing for an xgboost object, you 
 First, fitting a quick xgboost model:
 
 ```{r xgboost-fit}
-library(xgboost)
-
 xgb_fit <- 
   xgboost(
     data = as.matrix(mtcars[1:25, 2:ncol(mtcars)]), 
@@ -287,4 +287,4 @@ r(
 )
 ```
 
-Voilà! We hope bundles make your modeling and deployment workflows a good bit smoother in the future.
+Voilà! We hope bundles are helpful in making your modeling and deployment workflows a good bit smoother in the future.
