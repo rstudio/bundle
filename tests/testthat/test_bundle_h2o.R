@@ -44,6 +44,14 @@ test_that("bundling + unbundling h2o fits", {
   bin_unbundled <- unbundle(bin_bundle)
   multi_unbundled <- unbundle(multi_bundle)
 
+  expect_s3_class(reg_bundle, "bundled_h2o")
+  expect_s3_class(bin_bundle, "bundled_h2o")
+  expect_s3_class(multi_bundle, "bundled_h2o")
+
+  expect_s4_class(reg_unbundled, "H2ORegressionModel")
+  expect_s4_class(bin_unbundled, "H2OBinomialModel")
+  expect_s4_class(multi_unbundled, "H2OMultinomialModel")
+
   reg_preds <- predict(reg_fit, reg_data)
   bin_preds <- predict(bin_fit, bin_data)
   multi_preds <- predict(multi_fit, multi_data)

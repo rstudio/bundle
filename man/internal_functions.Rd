@@ -2,12 +2,9 @@
 % Please edit documentation in R/utils.R
 \name{bundle_constr}
 \alias{bundle_constr}
-\alias{unbundle_constr}
 \title{Internal Functions}
 \usage{
 bundle_constr(object, desc_class, situate)
-
-unbundle_constr(x)
 }
 \description{
 These functions are not user-facing and are only exported for developer

@@ -17,13 +17,6 @@ bundle_constr <- function(object, desc_class, situate) {
   )
 }
 
-#' @rdname internal_functions
-#' @keywords internal
-#' @export
-unbundle_constr <- function(x) {
-  x$situate(get_object(x))
-}
-
 # getters and setters ----------------------------------------------------------
 get_object <- function(x) {
   x$object

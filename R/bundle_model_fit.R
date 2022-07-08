@@ -10,19 +10,13 @@ bundle.model_fit <- function(x) {
   bundle_constr(
     res,
     "model_fit",
-    situate = function(model_fit) {
-      structure(model_fit, class = class(x))
+    situate = function(object) {
+      fit_engine_bundled <- extract_fit_engine(object)
+      fit_engine_unbundled <- unbundle(fit_engine_bundled)
+
+      object$fit <- fit_engine_unbundled
+
+      structure(object, class = class(x))
     }
   )
-}
-
-#' @export
-unbundle.bundled_model_fit <- function(x) {
-  fit_parsnip <- get_object(x)
-  fit_engine_bundled <- extract_fit_engine(fit_parsnip)
-  fit_engine_unbundled <- unbundle(fit_engine_bundled)
-
-  x$object$fit <- fit_engine_unbundled
-
-  unbundle_constr(x)
 }

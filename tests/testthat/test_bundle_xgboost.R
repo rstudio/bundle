@@ -14,6 +14,9 @@ test_that("bundling + unbundling xgboost fits", {
   xgb_bundle <- bundle(xgb)
   xgb_unbundled <- unbundle(xgb_bundle)
 
+  expect_s3_class(xgb_bundle, "bundled_xgb.Booster")
+  expect_s3_class(xgb_unbundled, "xgb.Booster")
+
   xgb_preds <- predict(xgb, agaricus.test$data)
   xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
 

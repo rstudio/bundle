@@ -16,6 +16,10 @@ test_that("bundling + unbundling parsnip model_fits", {
   mod_bundle <- bundle(mod)
   mod_unbundled <- unbundle(mod_bundle)
 
+  expect_s3_class(mod_bundle, "bundled_model_fit")
+  expect_s3_class(mod_unbundled, "_xgb.Booster")
+  expect_s3_class(mod_unbundled, "model_fit")
+
   mod_preds <- predict(mod, mtcars)
   mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)
 

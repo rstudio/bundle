@@ -29,3 +29,8 @@ unbundle <- function(x) {
 
 #' @export
 unbundle.default <- function(x) x
+
+#' @export
+unbundle.bundle <- function(x) {
+  x$situate(get_object(x))
+}
