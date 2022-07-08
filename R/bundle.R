@@ -7,7 +7,10 @@
 #' and used as desired.
 #'
 #' To read more about bundling and serialization, see
-#' `?vignette("bundle", package = "bundle")`!
+#' `vignette("bundle")`.
+#'
+#' To see a list of currently available bundlers, see
+#' `methods(bundle)`.
 #'
 #' @param x An R object to bundle.
 #' @rdname bundle

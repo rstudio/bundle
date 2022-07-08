@@ -19,5 +19,8 @@ and used as desired.
 }
 \details{
 To read more about bundling and serialization, see
-\code{?vignette("bundle", package = "bundle")}!
+\code{vignette("bundle")}.
+
+To see a list of currently available bundlers, see
+\code{methods(bundle)}.
 }
