@@ -12,6 +12,9 @@ minimally functional.*
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org/package=bundle)
+[![Codecov test
+coverage](https://codecov.io/gh/simonpcouch/bundle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/simonpcouch/bundle?branch=main)
+[![R-CMD-check](https://github.com/simonpcouch/bundle/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/simonpcouch/bundle/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 R holds most objects in memory. However, some models store their data in
@@ -68,13 +71,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.3
-#> 2  21.0
-#> 3  17.5
-#> 4  16.6
-#> 5  16.5
-#> 6  12.2
-#> 7  19.5
+#> 1  22.1
+#> 2  20.3
+#> 3  18.3
+#> 4  16.1
+#> 5  18.3
+#> 6  11.6
+#> 7  20.7
 ```
 
 ## Code of Conduct
