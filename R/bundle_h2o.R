@@ -41,11 +41,6 @@ bundle_h2o <- function(x) {
     )
 }
 
-#' @export
-unbundle.bundled_h2o <- function(x) {
-  unbundle_constr(x)
-}
-
 with_no_progress <- function(expr) {
   rlang::eval_tidy(h2o:::with_no_h2o_progress(expr))
 }
