@@ -13,6 +13,11 @@ bundle.H2ORegressionModel <- function(x) {
   bundle_h2o(x)
 }
 
+#' @export
+bundle.H2OAutoML <- function(x) {
+  bundle(x@leader)
+}
+
 bundle_h2o <- function(x) {
     file_loc <- tempfile()
 
