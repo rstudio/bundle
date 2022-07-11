@@ -15,12 +15,12 @@
 #' @param x An R object to bundle.
 #' @rdname bundle
 #' @export
-bundle <- function(x) {
+bundle <- function(x, ...) {
   UseMethod("bundle")
 }
 
 #' @export
-bundle.default <- function(x) x
+bundle.default <- function(x, ...) x
 
 # unbundle() machinery -----------------------------------------------------------
 

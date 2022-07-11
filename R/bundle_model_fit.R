@@ -1,9 +1,9 @@
 #' @export
-bundle.model_fit <- function(x) {
+bundle.model_fit <- function(x, ...) {
   res <- x
 
-  fit <- extract_fit_engine(x)
-  bundled_fit <- bundle(fit)
+  fit <- x$fit
+  bundled_fit <- bundle(fit, ...)
 
   res$fit <- bundled_fit
 

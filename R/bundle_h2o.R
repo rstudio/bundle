@@ -1,24 +1,24 @@
 #' @export
-bundle.H2OMultinomialModel <- function(x) {
+bundle.H2OMultinomialModel <- function(x, ...) {
   bundle_h2o(x)
 }
 
 #' @export
-bundle.H2OBinomialModel <- function(x) {
-  bundle_h2o(x)
+bundle.H2OBinomialModel <- function(x, ...) {
+  bundle_h2o(x, ...)
 }
 
 #' @export
-bundle.H2ORegressionModel <- function(x) {
-  bundle_h2o(x)
+bundle.H2ORegressionModel <- function(x, ...) {
+  bundle_h2o(x, ...)
 }
 
 #' @export
-bundle.H2OAutoML <- function(x) {
-  bundle(x@leader)
+bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
+  bundle(select_from_automl(x, id = id, n = n))
 }
 
-bundle_h2o <- function(x) {
+bundle_h2o <- function(x, ...) {
     file_loc <- tempfile()
 
     if (x@have_mojo) {
@@ -44,6 +44,19 @@ bundle_h2o <- function(x) {
         res
       }
     )
+}
+
+select_from_automl <- function(x, id = NULL, n = NULL) {
+  if (!is.null(id)) {
+    x <- h2o::h2o.getModel(id)
+  } else if (!is.null(n)) {
+    lb <- as.data.frame(x@leaderboard)
+    id <- lb[n, "model_id"]
+    x <- h2o::h2o.getModel(id)
+  } else {
+    x <- x@leader
+  }
+  x
 }
 
 with_no_progress <- function(expr) {
