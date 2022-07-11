@@ -6,14 +6,14 @@ bundle.lgb.Booster <- function(x) {
   bundle_constr(
     object = model_string,
     desc_class = class(x)[1],
-    situate = function(object) {
-      res <- lightgbm::lgb.load(model_str = model_string)
+    situate = carrier::crate(function(object) {
+      res <- lightgbm::lgb.load(model_str = object)
 
-      res$best_iter <- x$best_iter
-      res$record_evals <- x$record_evals
-      res$params <- x$params
+      res$best_iter <- !!x$best_iter
+      res$record_evals <- !!x$record_evals
+      res$params <- !!x$params
 
-      structure(res, class = class(x))
-    }
+      structure(res, class = !!class(x))
+    })
   )
 }

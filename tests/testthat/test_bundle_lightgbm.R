@@ -31,6 +31,8 @@ test_that("bundling + unbundling lightgbm fits", {
   expect_s3_class(lgb_bundle, "bundled_lgb.Booster")
   expect_s3_class(lgb_unbundled, "lgb.Booster")
 
+  expect_true(lobstr::obj_size(lgb_bundle) < lobstr::obj_size(lgb_fit))
+
   lgb_preds <- predict(lgb_fit, cars_test)
   lgb_unbundled_preds <- predict(lgb_unbundled, cars_test)
 

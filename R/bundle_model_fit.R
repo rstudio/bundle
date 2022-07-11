@@ -2,7 +2,7 @@
 bundle.model_fit <- function(x) {
   res <- x
 
-  fit <- extract_fit_engine(x)
+  fit <- x$fit
   bundled_fit <- bundle(fit)
 
   res$fit <- bundled_fit
@@ -10,13 +10,13 @@ bundle.model_fit <- function(x) {
   bundle_constr(
     res,
     "model_fit",
-    situate = function(object) {
-      fit_engine_bundled <- extract_fit_engine(object)
-      fit_engine_unbundled <- unbundle(fit_engine_bundled)
+    situate = carrier::crate(function(object) {
+      fit_engine_bundled <- object$fit
+      fit_engine_unbundled <- bundle::unbundle(fit_engine_bundled)
 
       object$fit <- fit_engine_unbundled
 
-      structure(object, class = class(x))
-    }
+      structure(object, class = !!class(x))
+    })
   )
 }

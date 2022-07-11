@@ -25,6 +25,7 @@ Description:
 License: MIT + file LICENSE
 Imports: 
     callr,
+    carrier,
     glue,
     magrittr,
     rlang
