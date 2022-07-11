@@ -43,7 +43,7 @@ This vignette will walk through a common use case for bundling---storing a stati
 library(bundle)
 ```
 
-In addition to the package itself, we'll load the lightgbm and xgboost package to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.
+In addition to the package itself, we'll load the lightgbm and xgboost packages to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.
 
 ```{r setup-exts}
 library(lightgbm)
@@ -149,7 +149,7 @@ r(
 )
 ```
 
-Oof. It _does_ seem to point us to something helpful, though: it tells at that the lightgbm package provides its own functions to save lightgbm objects. 
+Oof. This error _does_ seem to point us to something helpful, though: it tells at that the lightgbm package provides its own functions to save lightgbm objects. 
 
 Given this new understanding, we can update our mental map a bit. Some objects require extra information when they're loaded into new environments in order to do their thing. In this case, this lightgbm model object needs access to a Booster instance in order to predict on new data.
 
