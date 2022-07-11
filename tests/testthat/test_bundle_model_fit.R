@@ -1,6 +1,7 @@
 test_that("bundling + unbundling parsnip model_fits (xgboost)", {
   skip_if_not_installed("parsnip")
   skip_if_not_installed("xgboost")
+  skip_if_not_installed("lobstr")
 
   library(parsnip)
   library(xgboost)
@@ -19,6 +20,8 @@ test_that("bundling + unbundling parsnip model_fits (xgboost)", {
   expect_s3_class(mod_bundle, "bundled_model_fit")
   expect_s3_class(mod_unbundled, "_xgb.Booster")
   expect_s3_class(mod_unbundled, "model_fit")
+
+  expect_true(lobstr::obj_size(mod_bundle) < lobstr::obj_size(mod))
 
   mod_preds <- predict(mod, mtcars)
   mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)
@@ -67,6 +70,8 @@ test_that("bundling + unbundling parsnip model_fits (lightgbm)", {
   expect_s3_class(mod_bundle, "bundled_model_fit")
   expect_s3_class(mod_unbundled, "_lgb.Booster")
   expect_s3_class(mod_unbundled, "model_fit")
+
+  expect_true(lobstr::obj_size(mod_bundle) < lobstr::obj_size(mod))
 
   mod_preds <- predict(mod, mtcars)
   mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)

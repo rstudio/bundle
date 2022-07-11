@@ -25,9 +25,11 @@ Description:
 License: MIT + file LICENSE
 Imports: 
     callr,
+    carrier,
     glue,
     magrittr,
-    rlang
+    rlang,
+    utils
 Suggests: 
     bonsai,
     covr,
@@ -35,6 +37,7 @@ Suggests:
     keras,
     knitr,
     lightgbm,
+    lobstr,
     MASS,
     modeldata,
     parsnip,

@@ -31,18 +31,20 @@ bundle_h2o <- function(x, ...) {
 
     bundle_constr(
       object = raw,
-      desc_class = "h2o",
-      situate = function(unserialized) {
+
+      situate = carrier::crate(function(unserialized) {
         unserialized <- structure(unserialized, class = class(raw))
 
-        if (x@have_mojo) {
-          res <- with_no_progress(h2o::h2o.import_mojo(unserialize(unserialized)))
+        if (!!x@have_mojo) {
+          res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(unserialize(unserialized)))
         } else {
-          res <- with_no_progress(h2o::h2o.loadModel(unserialize(unserialized)))
+          res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(unserialize(unserialized)))
         }
 
         res
-      }
+      }),
+      desc_class = "h2o",
+      pkg_versions = c("h2o" = utils::packageVersion("h2o"))
     )
 }
 
