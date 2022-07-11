@@ -5,12 +5,14 @@
 \alias{unbundle}
 \title{Bundling}
 \usage{
-bundle(x)
+bundle(x, ...)
 
 unbundle(x)
 }
 \arguments{
 \item{x}{An R object to bundle.}
+
+\item{...}{Additional arguments to bundle methods.}
 }
 \description{
 \code{bundle()} methods provide a consistent interface to serialization

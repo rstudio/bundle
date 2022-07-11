@@ -1,6 +1,6 @@
 #' @method bundle keras.engine.training.Model
 #' @export
-bundle.keras.engine.training.Model <- function(x) {
+bundle.keras.engine.training.Model <- function(x, ...) {
   rlang::check_installed("keras")
 
   serialized <- keras::serialize_model(x)

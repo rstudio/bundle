@@ -13,14 +13,15 @@
 #' `methods(bundle)`.
 #'
 #' @param x An R object to bundle.
+#' @param ... Additional arguments to bundle methods.
 #' @rdname bundle
 #' @export
-bundle <- function(x) {
+bundle <- function(x, ...) {
   UseMethod("bundle")
 }
 
 #' @export
-bundle.default <- function(x) x
+bundle.default <- function(x, ...) x
 
 # unbundle() machinery -----------------------------------------------------------
 

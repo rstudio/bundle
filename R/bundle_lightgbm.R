@@ -1,6 +1,6 @@
 #' @method bundle lgb.Booster
 #' @export
-bundle.lgb.Booster <- function(x) {
+bundle.lgb.Booster <- function(x, ...) {
   model_string <- x$save_model_to_string(NULL)
 
   bundle_constr(

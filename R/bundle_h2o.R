@@ -1,19 +1,24 @@
 #' @export
-bundle.H2OMultinomialModel <- function(x) {
+bundle.H2OMultinomialModel <- function(x, ...) {
   bundle_h2o(x)
 }
 
 #' @export
-bundle.H2OBinomialModel <- function(x) {
-  bundle_h2o(x)
+bundle.H2OBinomialModel <- function(x, ...) {
+  bundle_h2o(x, ...)
 }
 
 #' @export
-bundle.H2ORegressionModel <- function(x) {
-  bundle_h2o(x)
+bundle.H2ORegressionModel <- function(x, ...) {
+  bundle_h2o(x, ...)
 }
 
-bundle_h2o <- function(x) {
+#' @export
+bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
+  bundle(select_from_automl(x, id = id, n = n))
+}
+
+bundle_h2o <- function(x, ...) {
     file_loc <- tempfile()
 
     if (x@have_mojo) {
@@ -26,19 +31,34 @@ bundle_h2o <- function(x) {
 
     bundle_constr(
       object = raw,
-      desc_class = "h2o",
-      situate = function(unserialized) {
+
+      situate = carrier::crate(function(unserialized) {
         unserialized <- structure(unserialized, class = class(raw))
 
-        if (x@have_mojo) {
-          res <- with_no_progress(h2o::h2o.import_mojo(unserialize(unserialized)))
+        if (!!x@have_mojo) {
+          res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(unserialize(unserialized)))
         } else {
-          res <- with_no_progress(h2o::h2o.loadModel(unserialize(unserialized)))
+          res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(unserialize(unserialized)))
         }
 
         res
-      }
+      }),
+      desc_class = "h2o",
+      pkg_versions = c("h2o" = utils::packageVersion("h2o"))
     )
+}
+
+select_from_automl <- function(x, id = NULL, n = NULL) {
+  if (!is.null(id)) {
+    x <- h2o::h2o.getModel(id)
+  } else if (!is.null(n)) {
+    lb <- as.data.frame(x@leaderboard)
+    id <- lb[n, "model_id"]
+    x <- h2o::h2o.getModel(id)
+  } else {
+    x <- x@leader
+  }
+  x
 }
 
 with_no_progress <- function(expr) {

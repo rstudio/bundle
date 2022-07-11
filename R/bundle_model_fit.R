@@ -1,9 +1,10 @@
 #' @export
-bundle.model_fit <- function(x) {
+bundle.model_fit <- function(x, ...) {
   res <- x
 
   fit <- x$fit
-  bundled_fit <- bundle(fit)
+
+  bundled_fit <- bundle(fit, ...)
 
   res$fit <- bundled_fit
 
