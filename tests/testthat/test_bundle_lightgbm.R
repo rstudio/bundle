@@ -1,5 +1,6 @@
 test_that("bundling + unbundling lightgbm fits", {
   skip_if_not_installed("lightgbm")
+  skip_if_not_installed("lobstr")
   library(lightgbm)
 
   set.seed(1)

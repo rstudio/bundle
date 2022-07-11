@@ -1,6 +1,7 @@
 test_that("bundling + unbundling parsnip model_fits (xgboost)", {
   skip_if_not_installed("parsnip")
   skip_if_not_installed("xgboost")
+  skip_if_not_installed("lobstr")
 
   library(parsnip)
   library(xgboost)

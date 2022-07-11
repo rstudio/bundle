@@ -5,7 +5,6 @@ bundle.xgb.Booster <- function(x) {
 
   bundle_constr(
     object = object,
-    desc_class = class(x)[1],
     situate = carrier::crate(function(object) {
       unserialized <- xgboost::xgb.unserialize(object)
 
@@ -19,6 +18,8 @@ bundle.xgb.Booster <- function(x) {
       )
 
       res
-    })
+    }),
+    desc_class = class(x)[1],
+    pkg_versions = c("xgboost" = utils::packageVersion("xgboost"))
   )
 }

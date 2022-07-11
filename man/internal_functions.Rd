@@ -4,7 +4,7 @@
 \alias{bundle_constr}
 \title{Internal Functions}
 \usage{
-bundle_constr(object, desc_class, situate)
+bundle_constr(object, situate, desc_class, pkg_versions)
 }
 \description{
 These functions are not user-facing and are only exported for developer

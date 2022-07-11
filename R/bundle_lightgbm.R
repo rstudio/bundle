@@ -5,7 +5,6 @@ bundle.lgb.Booster <- function(x) {
 
   bundle_constr(
     object = model_string,
-    desc_class = class(x)[1],
     situate = carrier::crate(function(object) {
       res <- lightgbm::lgb.load(model_str = object)
 
@@ -14,6 +13,8 @@ bundle.lgb.Booster <- function(x) {
       res$params <- !!x$params
 
       structure(res, class = !!class(x))
-    })
+    }),
+    desc_class = class(x)[1],
+    pkg_versions = c("lightgbm" = utils::packageVersion("lightgbm"))
   )
 }

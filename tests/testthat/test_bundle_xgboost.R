@@ -1,5 +1,6 @@
 test_that("bundling + unbundling xgboost fits", {
   skip_if_not_installed("xgboost")
+  skip_if_not_installed("lobstr")
   library(xgboost)
 
   set.seed(1)
