@@ -1,6 +1,6 @@
 #' @export
 bundle.H2OMultinomialModel <- function(x, ...) {
-  bundle_h2o(x)
+  bundle_h2o(x, ...)
 }
 
 #' @export
@@ -15,37 +15,41 @@ bundle.H2ORegressionModel <- function(x, ...) {
 
 #' @export
 bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
+  rlang::check_dots_empty()
+
   bundle(select_from_automl(x, id = id, n = n))
 }
 
 bundle_h2o <- function(x, ...) {
-    file_loc <- tempfile()
+  rlang::check_dots_empty()
 
-    if (x@have_mojo) {
-        file_loc <- with_no_progress(h2o::h2o.save_mojo(x, path = file_loc))
-    } else {
-        file_loc <- with_no_progress(h2o::h2o.saveModel(x, path = file_loc))
-    }
+  file_loc <- tempfile()
 
-    raw <- serialize(file_loc, connection = NULL)
+  if (x@have_mojo) {
+    file_loc <- with_no_progress(h2o::h2o.save_mojo(x, path = file_loc))
+  } else {
+    file_loc <- with_no_progress(h2o::h2o.saveModel(x, path = file_loc))
+  }
 
-    bundle_constr(
-      object = raw,
+  raw <- serialize(file_loc, connection = NULL)
 
-      situate = carrier::crate(function(unserialized) {
-        unserialized <- structure(unserialized, class = class(raw))
+  bundle_constr(
+    object = raw,
 
-        if (!!x@have_mojo) {
-          res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(unserialize(unserialized)))
-        } else {
-          res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(unserialize(unserialized)))
-        }
+    situate = carrier::crate(function(unserialized) {
+      unserialized <- structure(unserialized, class = class(raw))
 
-        res
-      }),
-      desc_class = "h2o",
-      pkg_versions = c("h2o" = utils::packageVersion("h2o"))
-    )
+      if (!!x@have_mojo) {
+        res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(unserialize(unserialized)))
+      } else {
+        res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(unserialize(unserialized)))
+      }
+
+      res
+    }),
+    desc_class = "h2o",
+    pkg_versions = c("h2o" = utils::packageVersion("h2o"))
+  )
 }
 
 select_from_automl <- function(x, id = NULL, n = NULL) {

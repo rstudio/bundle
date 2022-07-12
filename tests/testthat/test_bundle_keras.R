@@ -48,6 +48,8 @@ test_that("bundling + unbundling keras fits", {
   expect_s3_class(mod_bundle, "bundled_keras")
   expect_s3_class(mod_unbundled, "keras.engine.training.Model")
 
+  expect_error(bundle(mod, boop = "bop"), class = "rlib_error_dots")
+
   mod_preds <- predict(mod, x_test)
   mod_unbundled_preds <- predict(mod_unbundled, x_test)
 

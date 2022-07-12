@@ -76,6 +76,12 @@ test_that("bundling + unbundling h2o fits", {
   expect_s4_class(auto_reg_unbundled, "H2ORegressionModel")
   expect_s4_class(auto_bin_unbundled, "H2OBinomialModel")
 
+  expect_error(bundle(reg_unbundled, boop = "bop"), class = "rlib_error_dots")
+  expect_error(bundle(bin_unbundled, boop = "bop"), class = "rlib_error_dots")
+  expect_error(bundle(multi_unbundled, boop = "bop"), class = "rlib_error_dots")
+  expect_error(bundle(auto_reg_unbundled, boop = "bop"), class = "rlib_error_dots")
+  expect_error(bundle(auto_bin_unbundled, boop = "bop"), class = "rlib_error_dots")
+
   reg_preds <- predict(reg_fit, reg_data)
   bin_preds <- predict(bin_fit, bin_data)
   multi_preds <- predict(multi_fit, multi_data)

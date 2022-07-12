@@ -2,6 +2,7 @@
 #' @export
 bundle.keras.engine.training.Model <- function(x, ...) {
   rlang::check_installed("keras")
+  rlang::check_dots_empty()
 
   serialized <- keras::serialize_model(x)
 

@@ -34,6 +34,8 @@ test_that("bundling + unbundling lightgbm fits", {
 
   expect_true(lobstr::obj_size(lgb_bundle) < lobstr::obj_size(lgb_fit))
 
+  expect_error(bundle(lgb_fit, boop = "bop"), class = "rlib_error_dots")
+
   lgb_preds <- predict(lgb_fit, cars_test)
   lgb_unbundled_preds <- predict(lgb_unbundled, cars_test)
 

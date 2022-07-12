@@ -20,6 +20,8 @@ test_that("bundling + unbundling xgboost fits", {
 
   expect_true(lobstr::obj_size(xgb_bundle) < lobstr::obj_size(xgb))
 
+  expect_error(bundle(xgb, boop = "bop"), class = "rlib_error_dots")
+
   xgb_preds <- predict(xgb, agaricus.test$data)
   xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
 

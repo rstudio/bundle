@@ -1,6 +1,8 @@
 #' @method bundle xgb.Booster
 #' @export
 bundle.xgb.Booster <- function(x, ...) {
+  rlang::check_dots_empty()
+
   object <- xgboost::xgb.serialize(x)
 
   bundle_constr(
