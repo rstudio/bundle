@@ -36,7 +36,7 @@ bundle_h2o <- function(x, ...) {
   bundle_constr(
     object = raw,
 
-    situate = carrier::crate(function(unserialized) {
+    situate = situate_constr(function(unserialized) {
       unserialized <- structure(unserialized, class = class(raw))
 
       if (!!x@have_mojo) {

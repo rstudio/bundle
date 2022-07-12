@@ -7,7 +7,7 @@ bundle.xgb.Booster <- function(x, ...) {
 
   bundle_constr(
     object = object,
-    situate = carrier::crate(function(object) {
+    situate = situate_constr(function(object) {
       unserialized <- xgboost::xgb.unserialize(object)
 
       # see xgboost:::predict.xgb.Booster.handle and xgboost:::xgb.handleToBooster

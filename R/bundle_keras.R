@@ -8,7 +8,7 @@ bundle.keras.engine.training.Model <- function(x, ...) {
 
   bundle_constr(
     object = serialized,
-    situate = carrier::crate(function(object) {
+    situate = situate_constr(function(object) {
       res <- keras::unserialize_model(object)
 
       res

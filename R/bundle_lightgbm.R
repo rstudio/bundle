@@ -7,7 +7,7 @@ bundle.lgb.Booster <- function(x, ...) {
 
   bundle_constr(
     object = model_string,
-    situate = carrier::crate(function(object) {
+    situate = situate_constr(function(object) {
       res <- lightgbm::lgb.load(model_str = object)
 
       res$best_iter <- !!x$best_iter

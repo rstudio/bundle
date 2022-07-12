@@ -18,6 +18,18 @@ bundle_constr <- function(object, situate, desc_class, pkg_versions) {
   )
 }
 
+# adapted from carrier::crate -- control what data is packaged with the .fn
+#' @rdname internal_functions
+#' @keywords internal
+#' @export
+situate_constr <- function (fn) {
+  env <- rlang::child_env(rlang::caller_env())
+  fn <- rlang::eval_bare(rlang::enexpr(fn), env)
+  rlang::env_poke_parent(env, rlang::base_env())
+
+  structure(fn, class = c("situater", "function"))
+}
+
 # getters and setters ----------------------------------------------------------
 get_object <- function(x) {
   x$object
@@ -80,10 +92,3 @@ check_for_pkgs <- function(x) {
 utils::globalVariables(c(
   "extract_fit_engine", "getS3method", "map"
 ))
-
-
-
-
-
-
-

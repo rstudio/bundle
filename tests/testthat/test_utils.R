@@ -49,3 +49,31 @@ test_that("has_bundler works", {
   class(x) <- c("keras.engine.training.Model")
   expect_true(has_bundler(x))
 })
+
+test_that("situate constructor works", {
+  a <- list(b = rnorm(1e7), c = 1L)
+
+  a_1 <- function() {
+    a_ <- a
+
+    function() {
+      a$c
+    }
+  }
+
+  a_2 <- function() {
+    a_ <- a
+
+    situate_constr(function() {
+      !!a$c
+    })
+  }
+
+  a_1_env <- environment(a_1())
+  a_2_env <- environment(a_2())
+
+  expect_true( "a_" %in% names(a_1_env))
+  expect_false("a_" %in% names(a_2_env))
+})
+
+

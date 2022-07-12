@@ -2,9 +2,12 @@
 % Please edit documentation in R/utils.R
 \name{bundle_constr}
 \alias{bundle_constr}
+\alias{situate_constr}
 \title{Internal Functions}
 \usage{
 bundle_constr(object, situate, desc_class, pkg_versions)
+
+situate_constr(fn)
 }
 \description{
 These functions are not user-facing and are only exported for developer
