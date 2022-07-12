@@ -28,6 +28,7 @@ Imports:
     carrier,
     glue,
     magrittr,
+    purrr,
     rlang,
     utils
 Suggests: 

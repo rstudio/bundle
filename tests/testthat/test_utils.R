@@ -30,3 +30,22 @@ test_that("error without needed packages / insufficient versions", {
 
   expect_error(unbundle(xgb_bundle), class = "rlib_error_package_not_found")
 })
+
+test_that("has_bundler works", {
+  x <- 1L
+
+  class(x) <- "boop"
+  expect_false(has_bundler(x))
+
+  class(x) <- c("boop", "bop")
+  expect_false(has_bundler(x))
+
+  class(x) <- c("boop", "keras.engine.training.Model")
+  expect_true(has_bundler(x))
+
+  class(x) <- c("keras.engine.training.Model", "boop")
+  expect_true(has_bundler(x))
+
+  class(x) <- c("keras.engine.training.Model")
+  expect_true(has_bundler(x))
+})
