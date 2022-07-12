@@ -1,6 +1,5 @@
 test_that("bundling + unbundling lightgbm fits", {
   skip_if_not_installed("lightgbm")
-  skip_if_not_installed("lobstr")
   library(lightgbm)
 
   set.seed(1)
@@ -32,7 +31,8 @@ test_that("bundling + unbundling lightgbm fits", {
   expect_s3_class(lgb_bundle, "bundled_lgb.Booster")
   expect_s3_class(lgb_unbundled, "lgb.Booster")
 
-  expect_true(lobstr::obj_size(lgb_bundle) < lobstr::obj_size(lgb_fit))
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(lgb_bundle$situate)))
 
   expect_error(bundle(lgb_fit, boop = "bop"), class = "rlib_error_dots")
 

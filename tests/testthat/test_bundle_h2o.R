@@ -76,6 +76,13 @@ test_that("bundling + unbundling h2o fits", {
   expect_s4_class(auto_reg_unbundled, "H2ORegressionModel")
   expect_s4_class(auto_bin_unbundled, "H2OBinomialModel")
 
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(reg_bundle$situate)))
+  expect_false("x" %in% names(environment(bin_bundle$situate)))
+  expect_false("x" %in% names(environment(multi_bundle$situate)))
+  expect_false("x" %in% names(environment(auto_reg_bundle$situate)))
+  expect_false("x" %in% names(environment(auto_bin_bundle$situate)))
+
   expect_error(bundle(reg_unbundled, boop = "bop"), class = "rlib_error_dots")
   expect_error(bundle(bin_unbundled, boop = "bop"), class = "rlib_error_dots")
   expect_error(bundle(multi_unbundled, boop = "bop"), class = "rlib_error_dots")

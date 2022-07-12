@@ -1,6 +1,5 @@
 test_that("bundling + unbundling xgboost fits", {
   skip_if_not_installed("xgboost")
-  skip_if_not_installed("lobstr")
   library(xgboost)
 
   set.seed(1)
@@ -18,7 +17,8 @@ test_that("bundling + unbundling xgboost fits", {
   expect_s3_class(xgb_bundle, "bundled_xgb.Booster")
   expect_s3_class(xgb_unbundled, "xgb.Booster")
 
-  expect_true(lobstr::obj_size(xgb_bundle) < lobstr::obj_size(xgb))
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(xgb_bundle$situate)))
 
   expect_error(bundle(xgb, boop = "bop"), class = "rlib_error_dots")
 

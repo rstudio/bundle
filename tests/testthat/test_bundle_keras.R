@@ -48,6 +48,9 @@ test_that("bundling + unbundling keras fits", {
   expect_s3_class(mod_bundle, "bundled_keras")
   expect_s3_class(mod_unbundled, "keras.engine.training.Model")
 
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
   expect_error(bundle(mod, boop = "bop"), class = "rlib_error_dots")
 
   mod_preds <- predict(mod, x_test)
