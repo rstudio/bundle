@@ -14,7 +14,7 @@ A logical.
 }
 \description{
 Given a model object, this function will return whether the object
-will dispatch to a method other than \link{bundle.default} (the identity
+will dispatch to a method other than \code{bundle.default()} (the identity
 function).
 }
 \details{

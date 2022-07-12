@@ -40,7 +40,7 @@ print.bundle <- function(x, ...) {
 #' Check whether an object has a bundling method
 #'
 #' Given a model object, this function will return whether the object
-#' will dispatch to a method other than [bundle.default] (the identity
+#' will dispatch to a method other than `bundle.default()` (the identity
 #' function).
 #'
 #' Note that a return value of `FALSE` does not necessarily mean that
@@ -78,7 +78,7 @@ check_for_pkgs <- function(x) {
 
 # global variables -------------------------------------------------------------
 utils::globalVariables(c(
-  "extract_fit_engine", "map"
+  "extract_fit_engine", "getS3method", "map"
 ))
 
 
