@@ -35,9 +35,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-R holds most objects in memory. However, some models store their data in locations that are not included when one uses `save()` or `saveRDS()`. bundle provides a common API to capture this information, situate it within a portable object, and restore it for use in new settings.
+R holds most objects in memory. However, some model objects store their data in locations that are not included when one uses `save()` or `saveRDS()`. bundle provides a common API to capture this information, situate it within a portable object, and restore it for use in new settings.
 
-This vignette will walk through a common use case for bundling---storing a statistical model to deploy in production---to demonstrate the benefits of using bundle.
+This vignette will walk through preparing a statistical model to be saved to demonstrate the benefits of using bundle.
 
 ```{r setup}
 library(bundle)
@@ -208,7 +208,7 @@ knitr::include_graphics("figures/diagram_03.png")
 
 ## Using bundle
 
-bundle provides a consistent interface to save and load R objects. The package provides two functions---`bundle()` and `unbundle()`---that take care of all of the minutae of saving and loading R objects effectively.
+bundle provides a consistent interface to prepare R model objects to be saved and re-loaded. The package provides two functions---`bundle()` and `unbundle()`---that take care of all of the minutae of preparing to save and load R objects effectively.
 
 ```{r diagram-04, echo = FALSE, fig.alt = "A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a buncle.", out.width = '100%'}
 knitr::include_graphics("figures/diagram_04.png")
@@ -217,10 +217,10 @@ knitr::include_graphics("figures/diagram_04.png")
 
 Bundles are just lists with two elements:
 
-* `object`: The `object` element of a bundle is the serialized version of the inputted object. In the simplest situations in modeling, this object is just the output of a native serialization function like `saveRDS.lgb.Booster` that we used earlier.
+* `object`: The `object` element of a bundle is the serialized version of the inputted model object. In the simplest situations in modeling, this object is just the output of a native serialization function like `saveRDS.lgb.Booster` that we used earlier.
 * `situate()`: The `situate()` element of a bundle is a function that _situates_ the `object` element in its new environment. It takes in the `object` element as input, but also "freezes" reference that existed when the original object was created.
 
-When `unbundle()` is called on a bundle object, the `situate()` element of the bundle will re-load the `object` element and restore needed references in the new environment. Thus, the output of `unbundle()` is ready to go for whatever tasks it'd be used for in the original environment.
+When `unbundle()` is called on a bundle object, the `situate()` element of the bundle will re-load the `object` element and restore needed references in the new environment. Thus, the output of `unbundle()` is ready to go for prediction wherever it is called.
 
 To be a bit more concrete, lets return to the lightgbm example. Bundling the model fit:
 

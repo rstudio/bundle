@@ -3,8 +3,9 @@
 #' Bundling
 #'
 #' `bundle()` methods provide a consistent interface to serialization
-#' methods. The outputted bundle can be `unbundle()`d in a new R session
-#' and used as desired.
+#' methods for statistical model objects. The outputted bundle can be saved,
+#' re-loaded into a new R session, and `unbundle()`d in a new R session for
+#' use in prediction.
 #'
 #' To read more about bundling and serialization, see
 #' `vignette("bundle")`.
@@ -12,7 +13,7 @@
 #' To see a list of currently available bundlers, see
 #' `methods(bundle)`.
 #'
-#' @param x An R object to bundle.
+#' @param x A model object to bundle.
 #' @param ... Additional arguments to bundle methods.
 #' @rdname bundle
 #' @export

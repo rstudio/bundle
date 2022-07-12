@@ -7,7 +7,7 @@
 has_bundler(x)
 }
 \arguments{
-\item{x}{An R object to bundle.}
+\item{x}{A model object to bundle.}
 }
 \value{
 A logical.

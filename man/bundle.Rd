@@ -10,14 +10,15 @@ bundle(x, ...)
 unbundle(x)
 }
 \arguments{
-\item{x}{An R object to bundle.}
+\item{x}{A model object to bundle.}
 
 \item{...}{Additional arguments to bundle methods.}
 }
 \description{
 \code{bundle()} methods provide a consistent interface to serialization
-methods. The outputted bundle can be \code{unbundle()}d in a new R session
-and used as desired.
+methods for statistical model objects. The outputted bundle can be saved,
+re-loaded into a new R session, and \code{unbundle()}d in a new R session for
+use in prediction.
 }
 \details{
 To read more about bundling and serialization, see

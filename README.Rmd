@@ -42,13 +42,19 @@ pak::pak("simonpcouch/bundle")
 
 ## Example
 
-A common use case for serialization in R is the storing of model objects for later use in prediction tasks. For instance, we can train a boosted tree model, serialize it, and then later load it into another R session to generate predictions on new data:
+bundle prepares model objects so that they can be effectively saved and re-loaded for use in new R sessions. To demonstrate using bundle, we will train a boosted tree model, bundle it, and then pass the bundle into another R session to generate predictions on new data.
 
-```{r example}
+First, loading needed packages:
+
+```{r example, message = FALSE, warning = FALSE}
 library(bundle)
 library(parsnip)
 library(callr)
+```
 
+Fitting the boosted tree model:
+
+```{r}
 # fit an boosted tree with xgboost via parsnip
 mod <-
     boost_tree(trees = 5, mtry = 3) %>%
@@ -56,10 +62,23 @@ mod <-
     set_engine("xgboost") %>%
     fit(mpg ~ ., data = mtcars[1:25,])
 
+mod
+```
+
+Now that the model is fitted, we'll prepare it to be passed to another R session by bundling it:
+
+```{r}
 # bundle the model
 bundled_mod <-
   bundle(mod)
 
+bundled_mod
+
+```
+
+Passing the model to another R session and generating predictions on new data:
+
+```{r}
 # load the model in a fresh R session and predict on new data
 r(
   func = function(bundled_mod) {
@@ -75,6 +94,12 @@ r(
     bundled_mod = bundled_mod
   )
 )
+```
+
+For a more in-depth demonstration of the package, see the main vignette with:
+
+```{r}
+vignette("bundle")
 ```
 
 ## Code of Conduct
