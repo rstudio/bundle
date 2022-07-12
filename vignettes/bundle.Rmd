@@ -210,7 +210,7 @@ knitr::include_graphics("figures/diagram_03.png")
 
 bundle provides a consistent interface to prepare R model objects to be saved and re-loaded. The package provides two functions---`bundle()` and `unbundle()`---that take care of all of the minutae of preparing to save and load R objects effectively.
 
-```{r diagram-04, echo = FALSE, fig.alt = "A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a buncle.", out.width = '100%'}
+```{r diagram-04, echo = FALSE, fig.alt = "A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle.", out.width = '100%'}
 knitr::include_graphics("figures/diagram_04.png")
 ```
 

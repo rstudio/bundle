@@ -30,6 +30,39 @@ You can install the development version of bundle like so:
 pak::pak("simonpcouch/bundle")
 ```
 
+## Overview
+
+We often imagine a trained model as a somewhat “standalone” R
+object—given some new data, the object can generate predictions on its
+own:
+
+<img src="man/figures/diagram_01.png" title="A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label predict." alt="A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label predict." width="100%" />
+
+In reality, model objects also make use of *references* to generate
+predictions. A reference is a piece of data that a model object refers
+to that isn’t part of the object itself—this could be anything from a
+connection with a server to an internal function in the package used to
+train the model. Under the hood, when we call `predict()`, model objects
+know where to look to retrieve that data:
+
+<img src="man/figures/diagram_02.png" title="A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow." alt="A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow." width="100%" />
+
+Saving model objects can sometimes disrupt those references. Thus, if we
+want to train a model, save it, re-load it in a production setting, and
+generate predictions with it, we may run into issues:
+
+<img src="man/figures/diagram_03.png" title="A diagram showing the same set of rectangles, representing a prediction problem, as before. This version of the diagram adds two boxes, labeled R Session numbe r one, and R session number two. In R session number two, we have a new rectangle labeled standalone model object. In focus is the arrow from the model object, in R Session number one, to the standalone model object in R session number two." alt="A diagram showing the same set of rectangles, representing a prediction problem, as before. This version of the diagram adds two boxes, labeled R Session numbe r one, and R session number two. In R session number two, we have a new rectangle labeled standalone model object. In focus is the arrow from the model object, in R Session number one, to the standalone model object in R session number two." width="100%" />
+
+We thus need some way to preserve access to those references. This
+package provides a consistent interface for *bundling* model objects
+with their references so that they can be safely saved and re-loaded in
+production:
+
+<img src="man/figures/diagram_04.png" title="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." alt="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." width="100%" />
+
+So, when you’re ready to save your model, `bundle()` it first, and once
+you’ve loaded it in a new setting, `unbundle()` it. It’s that simple!
+
 ## Example
 
 bundle prepares model objects so that they can be effectively saved and
@@ -59,7 +92,7 @@ mod
 #> parsnip model object
 #> 
 #> ##### xgb.Booster
-#> raw: 7.9 Kb 
+#> raw: 8.1 Kb 
 #> call:
 #>   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, 
 #>     colsample_bytree = 1, colsample_bynode = 0.3, min_child_weight = 1, 
@@ -76,11 +109,11 @@ mod
 #> nfeatures : 10 
 #> evaluation_log:
 #>  iter training_rmse
-#>     1     14.631798
-#>     2     10.866714
-#>     3      8.150259
-#>     4      6.164353
-#>     5      4.704108
+#>     1     14.640496
+#>     2     10.918576
+#>     3      8.181425
+#>     4      6.180951
+#>     5      4.689767
 ```
 
 Now that the model is fitted, we’ll prepare it to be passed to another R
@@ -117,13 +150,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.1
-#> 2  20.7
-#> 3  18.6
-#> 4  16.3
-#> 5  18.6
-#> 6  11.8
-#> 7  20.7
+#> 1  22.4
+#> 2  20.4
+#> 3  20.4
+#> 4  13.2
+#> 5  16.3
+#> 6  11.4
+#> 7  18.9
 ```
 
 For a more in-depth demonstration of the package, see the main vignette
@@ -131,7 +164,6 @@ with:
 
 ``` r
 vignette("bundle")
-#> Warning: vignette 'bundle' not found
 ```
 
 ## Code of Conduct
