@@ -11,11 +11,11 @@ bundle.step_umap <- function(x, ...) {
 
   bundle_constr(
     object = res,
-    situate = situate_constr(function(object) {
-      unserialized <- uwot::load_uwot(unserialize(object$object))
+    situate = situate_constr(function(step) {
+      unserialized <- uwot::load_uwot(unserialize(step$object))
       unserialized$mod_dir <- NULL
-      object$object <- unserialized
-      object
+      step$object <- unserialized
+      step
     }),
     desc_class = class(x)[1],
     pkg_versions = c("uwot" = utils::packageVersion("uwot"))
