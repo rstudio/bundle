@@ -1,6 +1,7 @@
 #' @method bundle lgb.Booster
 #' @export
 bundle.lgb.Booster <- function(x, ...) {
+  rlang::check_installed("lightgbm")
   rlang::check_dots_empty()
 
   model_string <- x$save_model_to_string(NULL)

@@ -1,6 +1,7 @@
 #' @method bundle xgb.Booster
 #' @export
 bundle.xgb.Booster <- function(x, ...) {
+  rlang::check_installed("xgboost")
   rlang::check_dots_empty()
 
   object <- xgboost::xgb.serialize(x)

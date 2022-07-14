@@ -1,5 +1,7 @@
 #' @export
 bundle.model_fit <- function(x, ...) {
+  rlang::check_installed("parsnip")
+
   res <- x
 
   fit <- x$fit

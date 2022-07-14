@@ -22,6 +22,7 @@ bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
 
 bundle_h2o <- function(x, ...) {
   rlang::check_dots_empty()
+  rlang::check_installed("h2o")
 
   file_loc <- tempfile()
 
