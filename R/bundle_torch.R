@@ -12,6 +12,8 @@
 #' @export
 bundle.luz_module_fitted <- function(x, ...) {
   rlang::check_dots_empty()
+  rlang::check_installed("luz")
+  rlang::check_installed("torch")
 
   res <- x
 
