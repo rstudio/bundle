@@ -6,3 +6,4 @@
 ^\.github$
 ^CODE_OF_CONDUCT\.md$
 ^codecov\.yml$
+^man-roxygen$

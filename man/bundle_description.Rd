@@ -4,7 +4,7 @@
 \name{bundle_description}
 \alias{bundle_description}
 \alias{_PACKAGE}
-\alias{bundle_package}
+\alias{bundle-package}
 \title{bundle: Serialize Objects With A Consistent Interface}
 \description{
 R holds most objects in memory. However, some models store their data in locations that are not included when one uses `save()` or `saveRDS()`. bundle provides a common API to capture this information, situate it within a portable object, and restore it for use in new settings.
