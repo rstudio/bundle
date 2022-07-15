@@ -27,8 +27,10 @@ a \link[base:raw]{raw} object.}
 \code{\link[=bundle]{bundle()}} is called, though is a loose analogue of an \code{\link[=unbundle]{unbundle()}} S3
 method for that object. Since the function is defined on \code{\link[=bundle]{bundle()}}, it
 has access to references and dependency information that can
-be saved alongside the \code{object} component. This allows for more
-resilient serialization.}
+be saved alongside the \code{object} component. Calling \code{\link[=unbundle]{unbundle()}} on a
+bundled object \code{x} calls \code{x$situate(x$object)}, returning the
+unserialized version of \code{object}. \code{situate()} will also restore needed
+references, such as server instances and environmental variables.}
 
 Bundles are R objects that represent a "standalone" version of their
 analogous model object. Thus, bundles are ready for saving to file---saving

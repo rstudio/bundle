@@ -10,8 +10,10 @@
 #'     [bundle()] is called, though is a loose analogue of an [unbundle()] S3
 #'     method for that object. Since the function is defined on [bundle()], it
 #'     has access to references and dependency information that can
-#'     be saved alongside the `object` component. This allows for more
-#'     resilient serialization.}
+#'     be saved alongside the `object` component. Calling [unbundle()] on a
+#'     bundled object `x` calls `x$situate(x$object)`, returning the
+#'     unserialized version of `object`. `situate()` will also restore needed
+#'     references, such as server instances and environmental variables.}
 #'
 #' Bundles are R objects that represent a "standalone" version of their
 #' analogous model object. Thus, bundles are ready for saving to file---saving
