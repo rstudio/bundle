@@ -2,7 +2,7 @@
 #' @template title_desc
 #'
 #' @templateVar outclass `bundled_h2o`
-#' @templateVar default \dontshow{.}
+#' @templateVar default .
 #' @template return_bundle
 #'
 #' @param x An object returned from modeling functions in the [h2o][h2o::h2o]

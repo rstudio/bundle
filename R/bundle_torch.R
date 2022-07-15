@@ -2,7 +2,7 @@
 #' @template title_desc
 #'
 #' @templateVar outclass `bundled_luz_module_fitted`
-#' @templateVar default \dontshow{.}
+#' @templateVar default .
 #' @template return_bundle
 #' @family bundlers
 #'

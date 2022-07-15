@@ -9,7 +9,7 @@
 #' use in prediction.
 #'
 #' @templateVar outclass referencing the modeling function
-#' @templateVar default If a bundle method is not defined for the supplied object, `bundle.default` is the identity function.
+#' @templateVar default . If a bundle method is not defined for the supplied object, `bundle.default` is the identity function.
 #' @template return_bundle
 #' @family bundlers
 #'

@@ -16,7 +16,7 @@ the generic only. Additional arguments passed to this method will return
 an error.}
 }
 \value{
-A bundle object with subclass \code{bundled_workflow}. \dontshow{.}
+A bundle object with subclass \code{bundled_workflow}.
 
 Bundles are a list subclass with two components:
 
