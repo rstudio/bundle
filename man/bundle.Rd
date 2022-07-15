@@ -58,6 +58,7 @@ Other bundlers:
 \code{\link{bundle.lgb.Booster}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
+\code{\link{bundle.workflow}()},
 \code{\link{bundle.xgb.Booster}()}
 }
 \concept{bundlers}
