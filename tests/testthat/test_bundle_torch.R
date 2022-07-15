@@ -8,7 +8,7 @@ test_that("bundling + unbundling torch fits", {
   library(torchvision)
   library(luz)
 
-  if (!torch_is_installed()) {
+  if (Sys.getenv("TORCH_HOME") == "") {
     skip("pytorch or lantern not installed")
   }
 

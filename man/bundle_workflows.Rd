@@ -55,9 +55,10 @@ more information on bundles and their usage.
 This bundler wraps \code{\link[=bundle.model_fit]{bundle.model_fit()}} and \code{\link[=bundle.recipe]{bundle.recipe()}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("workflows", "parsnip", "xgboost"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(workflows)
+library(recipes)
 library(parsnip)
 library(xgboost)
 

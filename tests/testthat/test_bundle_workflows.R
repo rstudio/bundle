@@ -1,10 +1,12 @@
 test_that("bundling + unbundling tidymodels workflows (xgboost)", {
   skip_if_not_installed("workflows")
   skip_if_not_installed("parsnip")
+  skip_if_not_installed("recipes")
   skip_if_not_installed("xgboost")
 
   library(workflows)
   library(parsnip)
+  library(recipes)
   library(xgboost)
 
   set.seed(1)

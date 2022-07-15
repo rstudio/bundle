@@ -12,9 +12,10 @@
 #'
 #' @details This bundler wraps [bundle.model_fit()] and [bundle.recipe()].
 #'
-#' @examplesIf rlang::is_installed(c("workflows", "parsnip", "xgboost"))
+#' @examplesIf rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))
 #' # fit model and bundle ------------------------------------------------
 #' library(workflows)
+#' library(recipes)
 #' library(parsnip)
 #' library(xgboost)
 #'
@@ -47,28 +48,16 @@ bundle.workflow <- function(x, ...) {
   rlang::check_installed("workflows")
   rlang::check_installed("parsnip")
 
-  res <- x
-
-  parsnip_fit <- x$fit$fit
-  parsnip_bundle <- bundle(parsnip_fit)
-  res$fit$fit <- parsnip_bundle
-
-  recipe <- x$pre$actions$recipe$recipe
-  recipes_bundle <- bundle(recipe)
-  res$pre$actions$recipe$recipe <- recipes_bundle
+  res <- swap_element(x, "fit", "fit")
+  res <- swap_element(res, "pre", "actions", "recipe", "recipe")
 
   bundle_constr(
     object = res,
     situate = situate_constr(function(object) {
-      fit_parsnip_bundled <- object$fit$fit
-      fit_parsnip_unbundled <- bundle::unbundle(fit_parsnip_bundled)
-      object$fit$fit <- fit_parsnip_unbundled
+      res <- bundle::swap_element(object, "fit", "fit")
+      res <- bundle::swap_element(res, "pre", "actions", "recipe", "recipe")
 
-      recipe_bundled <- object$fit$pre$actions$recipe$recipe
-      recipe_unbundled <- bundle::unbundle(recipe_bundled)
-      object$fit$pre$actions$recipe$recipe <- recipe_unbundled
-
-      structure(object, class = !!class(x))
+      structure(res, class = !!class(x))
     }),
     desc_class = "workflow",
     pkg_versions = c("workflows" = utils::packageVersion("workflows"))
