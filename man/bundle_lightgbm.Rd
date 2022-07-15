@@ -47,3 +47,7 @@ Bundling a model prepares it to be saved to file and later
 restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
+\seealso{
+This method makes use of the \code{save_model_to_string()} R6 methods
+of \code{lgb.Booster} objects as well as \code{\link[lightgbm:lgb.load]{lightgbm::lgb.load()}}.
+}

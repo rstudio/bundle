@@ -57,3 +57,7 @@ These bundlers rely on serialization methods from luz and torch,
 which are \link[torch:torch_save]{described by the package authors}
 as "experimental" and not for "use for long term storage."
 }
+\seealso{
+This method adapts \code{\link[luz:luz_save]{luz::luz_save()}} and the internal luz function
+\code{model_to_raw()}, as well as \code{\link[torch:torch_save]{torch::torch_save()}}.
+}

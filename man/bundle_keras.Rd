@@ -48,3 +48,7 @@ Bundling a model prepares it to be saved to file and later
 restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
+\seealso{
+This method wraps \code{\link[keras:serialize_model]{keras::serialize_model()}} and
+\code{\link[keras:serialize_model]{keras::unserialize_model()}}.
+}

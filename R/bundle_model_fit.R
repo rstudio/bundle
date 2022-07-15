@@ -7,6 +7,10 @@
 #' @param x A [model_fit][parsnip::model_fit] object returned
 #'   from [parsnip][parsnip::parsnip] or other tidymodels packages.
 #' @template param_unused_dots
+#' @details Primarily, these tidiers call [bundle()] on the output of
+#'   [parsnip::extract_fit_engine()]. See the class of the output of that
+#'   function for more details on the bundling method for that object.
+#'
 #' @rdname bundle_model_fit
 #' @aliases bundle.model_fit
 #' @export

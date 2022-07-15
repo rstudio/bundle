@@ -19,6 +19,8 @@
 #'
 #' @method bundle luz_module_fitted
 #' @rdname bundle_torch
+#' @seealso This method adapts [luz::luz_save()] and the internal luz function
+#'   `model_to_raw()`, as well as [torch::torch_save()].
 #' @aliases bundle.luz_module_fitted
 #' @export
 bundle.luz_module_fitted <- function(x, ...) {

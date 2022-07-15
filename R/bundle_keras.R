@@ -8,6 +8,8 @@
 #'   [keras][keras::keras-package] package.
 #' @template param_unused_dots
 #' @rdname bundle_keras
+#' @seealso This method wraps [keras::serialize_model()] and
+#'   [keras::unserialize_model()].
 #' @aliases bundle.keras.engine.training.Model
 #' @method bundle keras.engine.training.Model
 #' @export

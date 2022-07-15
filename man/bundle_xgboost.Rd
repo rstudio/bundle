@@ -48,3 +48,8 @@ Bundling a model prepares it to be saved to file and later
 restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
+\seealso{
+This method adapts the xgboost internal functions
+\code{predict.xgb.Booster.handle()} and \code{xgb.handleToBooster()}, as well
+as  \code{\link[xgboost:xgb.serialize]{xgboost::xgb.serialize()}}.
+}

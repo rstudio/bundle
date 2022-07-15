@@ -7,6 +7,8 @@
 #' @param x An `lgb.Booster` object returned from [lightgbm::lgb.train()].
 #' @template param_unused_dots
 #' @rdname bundle_lightgbm
+#' @seealso This method makes use of the `save_model_to_string()` R6 methods
+#'   of `lgb.Booster` objects as well as [lightgbm::lgb.load()].
 #' @aliases bundle.lgb.Booster
 #' @method bundle lgb.Booster
 #' @export

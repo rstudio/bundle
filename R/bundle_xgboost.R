@@ -8,6 +8,9 @@
 #'   [xgboost::xgb.train()].
 #' @template param_unused_dots
 #' @rdname bundle_xgboost
+#' @seealso This method adapts the xgboost internal functions
+#'   `predict.xgb.Booster.handle()` and `xgb.handleToBooster()`, as well
+#'   as  [xgboost::xgb.serialize()].
 #' @aliases bundle.xgb.Booster
 #' @method bundle xgb.Booster
 #' @export

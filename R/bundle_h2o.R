@@ -14,6 +14,8 @@
 #'   supplied.
 #' @template param_unused_dots
 #' @rdname bundle_h2o
+#' @seealso This method wraps [h2o::h2o.save_mojo()] and
+#'   [h2o::h2o.saveModel()].
 #' @aliases bundle.H2OMultinomialModel
 #' @export
 bundle.H2OMultinomialModel <- function(x, ...) {
