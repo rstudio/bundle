@@ -32,7 +32,7 @@ to bundle. Applies to AutoML output only. Will be ignored if \code{id} is
 supplied.}
 }
 \value{
-A bundle object with subclass \code{bundled_h2o}.
+A bundle object with subclass \code{bundled_h2o}. \dontshow{.}
 
 Bundles are a list subclass with two components:
 

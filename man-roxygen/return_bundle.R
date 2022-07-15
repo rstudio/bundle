@@ -1,4 +1,4 @@
-#' @return A bundle object with subclass <%= outclass %>.
+#' @return A bundle object with subclass <%= outclass %>. <%= default %>
 #'
 #' Bundles are a list subclass with two components:
 #'

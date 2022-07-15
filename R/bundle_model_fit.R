@@ -2,6 +2,7 @@
 #' @template title_desc
 #'
 #' @templateVar outclass `bundled_model_fit`
+#' @templateVar default \dontshow{.}
 #' @template return_bundle
 #'
 #' @param x A [model_fit][parsnip::model_fit] object returned

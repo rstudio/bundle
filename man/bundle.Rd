@@ -14,16 +14,46 @@ unbundle(x)
 
 \item{...}{Additional arguments to bundle methods.}
 }
+\value{
+A bundle object with subclass referencing the modeling function. If a bundle method is not defined for the supplied object, \code{bundle.default} is the identity function.
+
+Bundles are a list subclass with two components:
+
+\item{object}{An R object. Gives the output of native serialization
+methods from the model-supplying package, sometimes with additional
+classes or attributes that aid portability. This is often
+a \link[base:raw]{raw} object.}
+\item{situate}{A function. The \code{situate()} function is defined when
+\code{\link[=bundle]{bundle()}} is called, though is a loose analogue of an \code{\link[=unbundle]{unbundle()}} S3
+method for that object. Since the function is defined on \code{\link[=bundle]{bundle()}}, it
+has access to references and dependency information that can
+be saved alongside the \code{object} component. This allows for more
+resilient serialization.}
+
+Bundles are R objects that represent a "standalone" version of their
+analogous model object. Thus, bundles are ready for saving to file---saving
+with \code{\link[base:readRDS]{base::saveRDS()}} is our recommended serialization strategy for bundles,
+unless documented otherwise for a specific method.
+
+To restore the inputted model object \code{x} in a new environment, load its
+bundle with \code{\link[base:readRDS]{base::readRDS()}} and run \code{\link[=unbundle]{unbundle()}} on it. The output
+of \code{\link[=unbundle]{unbundle()}} is a model object that is ready to \code{\link[=predict]{predict()}} on new data,
+and other restored functionality (like plotting or summarizing) is supported
+as a side effect only.
+
+See \code{vignette("bundle")} for more information on bundling and its motivation.
+}
 \description{
 \code{bundle()} methods provide a consistent interface to serialization
 methods for statistical model objects. The outputted bundle can be saved,
 re-loaded into a new R session, and \code{unbundle()}d in a new R session for
 use in prediction.
-}
-\details{
+
 To read more about bundling and serialization, see
 \code{vignette("bundle")}.
 
 To see a list of currently available bundlers, see
 \code{methods(bundle)}.
+
+Click \link[=bundle-package]{here} for package-level documentation.
 }

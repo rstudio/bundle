@@ -2,6 +2,7 @@
 #' @template title_desc
 #'
 #' @templateVar outclass `bundled_xgb.Booster`
+#' @templateVar default \dontshow{.}
 #' @template return_bundle
 #'
 #' @param x An `xgb.Booster` object returned from [xgboost::xgboost()] or

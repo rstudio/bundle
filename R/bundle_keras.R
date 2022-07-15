@@ -2,6 +2,7 @@
 #' @template title_desc
 #'
 #' @templateVar outclass `bundled_keras`
+#' @templateVar default \dontshow{.}
 #' @template return_bundle
 #'
 #' @param x An object returned from modeling functions in the

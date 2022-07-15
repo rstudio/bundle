@@ -15,7 +15,7 @@ the generic only. Additional arguments passed to this method will return
 an error.}
 }
 \value{
-A bundle object with subclass \code{bundled_keras}.
+A bundle object with subclass \code{bundled_keras}. \dontshow{.}
 
 Bundles are a list subclass with two components:
 

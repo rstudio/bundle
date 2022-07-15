@@ -2,6 +2,7 @@
 #' @template title_desc
 #'
 #' @templateVar outclass `bundled_luz_module_fitted`
+#' @templateVar default \dontshow{.}
 #' @template return_bundle
 #'
 #' @param x A `luz_module_fitted` object returned from
