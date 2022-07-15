@@ -4,6 +4,7 @@
 #' @templateVar outclass `bundled_luz_module_fitted`
 #' @templateVar default \dontshow{.}
 #' @template return_bundle
+#' @family bundlers
 #'
 #' @param x A `luz_module_fitted` object returned from
 #'   [luz::fit.luz_module_generator()].

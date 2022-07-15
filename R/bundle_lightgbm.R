@@ -4,6 +4,7 @@
 #' @templateVar outclass `bundled_lgb.Booster`
 #' @templateVar default \dontshow{.}
 #' @template return_bundle
+#' @family bundlers
 #'
 #' @param x An `lgb.Booster` object returned from [lightgbm::lgb.train()].
 #' @template param_unused_dots

@@ -14,10 +14,8 @@
 #'   to bundle. Applies to AutoML output only. Will be ignored if `id` is
 #'   supplied.
 #' @template param_unused_dots
-#' @rdname bundle_h2o
-#' @seealso This method wraps [h2o::h2o.save_mojo()] and
+#' @seealso These methods wrap [h2o::h2o.save_mojo()] and
 #'   [h2o::h2o.saveModel()].
-#' @aliases bundle.H2OMultinomialModel
 #' @examplesIf rlang::is_installed("h2o") && rlang::is_installed("MASS")
 #' # fit model and bundle ------------------------------------------------
 #' library(h2o)
@@ -44,6 +42,18 @@
 #'
 #' h2o.shutdown()
 #'
+#' @family bundlers
+#' @rdname bundle_h2o
+#' @aliases bundle.H2OAutoML
+#' @export
+bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
+  rlang::check_dots_empty()
+
+  bundle(select_from_automl(x, id = id, n = n))
+}
+
+#' @aliases bundle.H2OMultinomialModel
+#' @rdname bundle_h2o
 #' @export
 bundle.H2OMultinomialModel <- function(x, ...) {
   bundle_h2o(x, ...)
@@ -61,15 +71,6 @@ bundle.H2OBinomialModel <- function(x, ...) {
 #' @export
 bundle.H2ORegressionModel <- function(x, ...) {
   bundle_h2o(x, ...)
-}
-
-#' @rdname bundle_h2o
-#' @aliases bundle.H2OAutoML
-#' @export
-bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
-  rlang::check_dots_empty()
-
-  bundle(select_from_automl(x, id = id, n = n))
 }
 
 bundle_h2o <- function(x, ...) {

@@ -8,17 +8,10 @@
 #' re-loaded into a new R session, and `unbundle()`d in a new R session for
 #' use in prediction.
 #'
-#' To read more about bundling and serialization, see
-#' `vignette("bundle")`.
-#'
-#' To see a list of currently available bundlers, see
-#' `methods(bundle)`.
-#'
-#' Click [here][bundle-package] for package-level documentation.
-#'
 #' @templateVar outclass referencing the modeling function
 #' @templateVar default If a bundle method is not defined for the supplied object, `bundle.default` is the identity function.
 #' @template return_bundle
+#' @family bundlers
 #'
 #' @param x A model object to bundle.
 #' @param ... Additional arguments to bundle methods.

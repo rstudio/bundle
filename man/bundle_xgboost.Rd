@@ -74,4 +74,13 @@ xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
 This method adapts the xgboost internal functions
 \code{predict.xgb.Booster.handle()} and \code{xgb.handleToBooster()}, as well
 as  \code{\link[xgboost:xgb.serialize]{xgboost::xgb.serialize()}}.
+
+Other bundlers: 
+\code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.keras.engine.training.Model}()},
+\code{\link{bundle.lgb.Booster}()},
+\code{\link{bundle.luz_module_fitted}()},
+\code{\link{bundle.model_fit}()},
+\code{\link{bundle}()}
 }
+\concept{bundlers}

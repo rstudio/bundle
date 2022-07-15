@@ -4,6 +4,7 @@
 #' @templateVar outclass `bundled_xgb.Booster`
 #' @templateVar default \dontshow{.}
 #' @template return_bundle
+#' @family bundlers
 #'
 #' @param x An `xgb.Booster` object returned from [xgboost::xgboost()] or
 #'   [xgboost::xgb.train()].

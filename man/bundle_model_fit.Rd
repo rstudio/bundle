@@ -75,3 +75,13 @@ mod_unbundled <- unbundle(mod_bundle)
 mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)
 \dontshow{\}) # examplesIf}
 }
+\seealso{
+Other bundlers: 
+\code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.keras.engine.training.Model}()},
+\code{\link{bundle.lgb.Booster}()},
+\code{\link{bundle.luz_module_fitted}()},
+\code{\link{bundle.xgb.Booster}()},
+\code{\link{bundle}()}
+}
+\concept{bundlers}

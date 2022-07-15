@@ -4,6 +4,7 @@
 #' @templateVar outclass `bundled_model_fit`
 #' @templateVar default \dontshow{.}
 #' @template return_bundle
+#' @family bundlers
 #'
 #' @param x A [model_fit][parsnip::model_fit] object returned
 #'   from [parsnip][parsnip::parsnip] or other tidymodels packages.

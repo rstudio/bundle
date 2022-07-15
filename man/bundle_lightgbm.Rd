@@ -86,4 +86,13 @@ lgb_unbundled_preds <- predict(lgb_unbundled, cars_test)
 \seealso{
 This method makes use of the \code{save_model_to_string()} R6 methods
 of \code{lgb.Booster} objects as well as \code{\link[lightgbm:lgb.load]{lightgbm::lgb.load()}}.
+
+Other bundlers: 
+\code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.keras.engine.training.Model}()},
+\code{\link{bundle.luz_module_fitted}()},
+\code{\link{bundle.model_fit}()},
+\code{\link{bundle.xgb.Booster}()},
+\code{\link{bundle}()}
 }
+\concept{bundlers}

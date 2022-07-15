@@ -4,6 +4,7 @@
 #' @templateVar outclass `bundled_keras`
 #' @templateVar default \dontshow{.}
 #' @template return_bundle
+#' @family bundlers
 #'
 #' @param x An object returned from modeling functions in the
 #'   [keras][keras::keras-package] package.

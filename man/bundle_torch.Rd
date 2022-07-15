@@ -139,4 +139,13 @@ mod_unbundled_preds <- predict(mod_unbundled, test_dl)
 \seealso{
 This method adapts \code{\link[luz:luz_save]{luz::luz_save()}} and the internal luz function
 \code{model_to_raw()}, as well as \code{\link[torch:torch_save]{torch::torch_save()}}.
+
+Other bundlers: 
+\code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.keras.engine.training.Model}()},
+\code{\link{bundle.lgb.Booster}()},
+\code{\link{bundle.model_fit}()},
+\code{\link{bundle.xgb.Booster}()},
+\code{\link{bundle}()}
 }
+\concept{bundlers}

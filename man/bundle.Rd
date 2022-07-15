@@ -48,12 +48,14 @@ See \code{vignette("bundle")} for more information on bundling and its motivatio
 methods for statistical model objects. The outputted bundle can be saved,
 re-loaded into a new R session, and \code{unbundle()}d in a new R session for
 use in prediction.
-
-To read more about bundling and serialization, see
-\code{vignette("bundle")}.
-
-To see a list of currently available bundlers, see
-\code{methods(bundle)}.
-
-Click \link[=bundle-package]{here} for package-level documentation.
 }
+\seealso{
+Other bundlers: 
+\code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.keras.engine.training.Model}()},
+\code{\link{bundle.lgb.Booster}()},
+\code{\link{bundle.luz_module_fitted}()},
+\code{\link{bundle.model_fit}()},
+\code{\link{bundle.xgb.Booster}()}
+}
+\concept{bundlers}
