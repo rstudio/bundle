@@ -1,3 +1,13 @@
+#' @templateVar class an `lgb.Booster`
+#' @template title_desc
+#'
+#' @templateVar outclass `bundled_lgb.Booster`
+#' @template return_bundle
+#'
+#' @param x An `lgb.Booster` object returned from [lightgbm::lgb.train()].
+#' @template param_unused_dots
+#' @rdname bundle_lightgbm
+#' @aliases bundle.lgb.Booster
 #' @method bundle lgb.Booster
 #' @export
 bundle.lgb.Booster <- function(x, ...) {

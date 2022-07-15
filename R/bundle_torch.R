@@ -1,14 +1,25 @@
-#' Torch bundlers
+#' @templateVar class a `luz_module_fitted`
+#' @template title_desc
 #'
+#' @templateVar outclass `bundled_luz_module_fitted`
+#' @template return_bundle
+#'
+#' @param x A `luz_module_fitted` object returned from
+#'   [luz::fit.luz_module_generator()].
+#' @template param_unused_dots
+#'
+#' @details
 #' For now, bundling methods for torch are only available
 #' via the luz package, "a higher level API for torch providing
 #' abstractions to allow for much less verbose training loops."
 #'
 #' These bundlers rely on serialization methods from luz and torch,
-#' which are described by the package authors as "experimental"
-#' and not for "use for long term storage."
+#' which are [described by the package authors][torch::torch_save]
+#' as "experimental" and not for "use for long term storage."
 #'
 #' @method bundle luz_module_fitted
+#' @rdname bundle_torch
+#' @aliases bundle.luz_module_fitted
 #' @export
 bundle.luz_module_fitted <- function(x, ...) {
   rlang::check_installed("luz")

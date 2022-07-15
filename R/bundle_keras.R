@@ -1,3 +1,14 @@
+#' @templateVar class an `h2o`
+#' @template title_desc
+#'
+#' @templateVar outclass `bundled_h2o`
+#' @template return_bundle
+#'
+#' @param x An object returned from modeling functions in the
+#'   [keras][keras::keras-package] package.
+#' @template param_unused_dots
+#' @rdname bundle_keras
+#' @aliases bundle.keras.engine.training.Model
 #' @method bundle keras.engine.training.Model
 #' @export
 bundle.keras.engine.training.Model <- function(x, ...) {

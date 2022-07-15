@@ -1,3 +1,14 @@
+#' @templateVar class an `xgb.Booster`
+#' @template title_desc
+#'
+#' @templateVar outclass `bundled_xgb.Booster`
+#' @template return_bundle
+#'
+#' @param x An `xgb.Booster` object returned from [xgboost::xgboost()] or
+#'   [xgboost::xgb.train()].
+#' @template param_unused_dots
+#' @rdname bundle_xgboost
+#' @aliases bundle.xgb.Booster
 #' @method bundle xgb.Booster
 #' @export
 bundle.xgb.Booster <- function(x, ...) {

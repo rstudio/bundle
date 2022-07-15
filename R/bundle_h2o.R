@@ -1,18 +1,41 @@
+#' @templateVar class an `h2o`
+#' @template title_desc
+#'
+#' @templateVar outclass `bundled_h2o`
+#' @template return_bundle
+#'
+#' @param x An object returned from modeling functions in the [h2o][h2o::h2o]
+#'   package.
+#' @param id A single character. The `model_id` entry in the leaderboard.
+#'   Applies to AutoML output only. Supply only one of this argument or
+#'   `n`.
+#' @param n An integer giving the position in the leaderboard of the model
+#'   to bundle. Applies to AutoML output only. Will be ignored if `id` is
+#'   supplied.
+#' @template param_unused_dots
+#' @rdname bundle_h2o
+#' @aliases bundle.H2OMultinomialModel
 #' @export
 bundle.H2OMultinomialModel <- function(x, ...) {
   bundle_h2o(x, ...)
 }
 
+#' @rdname bundle_h2o
+#' @aliases bundle.H2OBinomialModel
 #' @export
 bundle.H2OBinomialModel <- function(x, ...) {
   bundle_h2o(x, ...)
 }
 
+#' @rdname bundle_h2o
+#' @aliases bundle.H2ORegressionModel
 #' @export
 bundle.H2ORegressionModel <- function(x, ...) {
   bundle_h2o(x, ...)
 }
 
+#' @rdname bundle_h2o
+#' @aliases bundle.H2OAutoML
 #' @export
 bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
   rlang::check_dots_empty()
