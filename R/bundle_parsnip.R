@@ -31,8 +31,8 @@
 #' mod_unbundled <- unbundle(mod_bundle)
 #'
 #' mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)
-#' @rdname bundle_model_fit
-#' @aliases bundle.model_fit
+#' @rdname bundle_parsnip
+#' @aliases bundle.model_fit bundle_model_fit
 #' @export
 bundle.model_fit <- function(x, ...) {
   rlang::check_installed("parsnip")
