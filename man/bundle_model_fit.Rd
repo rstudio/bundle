@@ -49,7 +49,7 @@ restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
 \details{
-Primarily, these tidiers call \code{\link[=bundle]{bundle()}} on the output of
+Primarily, these methods call \code{\link[=bundle]{bundle()}} on the output of
 \code{\link[parsnip:reexports]{parsnip::extract_fit_engine()}}. See the class of the output of that
 function for more details on the bundling method for that object.
 }

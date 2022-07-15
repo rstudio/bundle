@@ -50,7 +50,7 @@ more information on bundles and their usage.
 }
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-fit model and bundle ------------------------------------------------
+# fit model and bundle ------------------------------------------------
 library(keras)
 
 set.seed(1)

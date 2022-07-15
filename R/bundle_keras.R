@@ -11,7 +11,7 @@
 #' @seealso This method wraps [keras::serialize_model()] and
 #'   [keras::unserialize_model()].
 #' @examplesIf FALSE
-#' fit model and bundle ------------------------------------------------
+#' # fit model and bundle ------------------------------------------------
 #' library(keras)
 #'
 #' set.seed(1)

@@ -24,7 +24,6 @@ Description:
     a portable object, and restore it for use in new settings.
 License: MIT + file LICENSE
 Imports: 
-    callr,
     glue,
     magrittr,
     purrr,
@@ -32,6 +31,7 @@ Imports:
     utils
 Suggests: 
     bonsai,
+    callr,
     covr,
     h2o,
     keras,
