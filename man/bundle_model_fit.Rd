@@ -53,3 +53,25 @@ Primarily, these tidiers call \code{\link[=bundle]{bundle()}} on the output of
 \code{\link[parsnip:reexports]{parsnip::extract_fit_engine()}}. See the class of the output of that
 function for more details on the bundling method for that object.
 }
+\examples{
+\dontshow{if (rlang::is_installed("parsnip") && rlang::is_installed("xgboost")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# fit model and bundle ------------------------------------------------
+library(parsnip)
+library(xgboost)
+
+set.seed(1)
+
+mod <-
+  boost_tree(trees = 5, mtry = 3) \%>\%
+  set_mode("regression") \%>\%
+  set_engine("xgboost") \%>\%
+  fit(mpg ~ ., data = mtcars)
+
+mod_bundle <- bundle(mod)
+
+# then, after saveRDS + readRDS or passing to a new session ----------
+mod_unbundled <- unbundle(mod_bundle)
+
+mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)
+\dontshow{\}) # examplesIf}
+}

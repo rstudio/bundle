@@ -17,6 +17,32 @@
 #' @seealso This method wraps [h2o::h2o.save_mojo()] and
 #'   [h2o::h2o.saveModel()].
 #' @aliases bundle.H2OMultinomialModel
+#' @examplesIf rlang::is_installed("h2o") && rlang::is_installed("MASS")
+#' # fit model and bundle ------------------------------------------------
+#' library(h2o)
+#'
+#' set.seed(1)
+#'
+#' h2o.init()
+#'
+#' cars_h2o <- as.h2o(mtcars)
+#'
+#' cars_fit <-
+#'   h2o.glm(
+#'     x = colnames(cars_h2o)[2:11],
+#'     y = colnames(cars_h2o)[1],
+#'     training_frame = cars_h2o
+#'   )
+#'
+#' cars_bundle <- bundle(cars_fit)
+#'
+#' # then, after saveRDS + readRDS or passing to a new session ----------
+#' cars_unbundled <- unbundle(cars_fit)
+#'
+#' predict(cars_unbundled, cars_h2o[, 2:11])
+#'
+#' h2o.shutdown()
+#'
 #' @export
 bundle.H2OMultinomialModel <- function(x, ...) {
   bundle_h2o(x, ...)

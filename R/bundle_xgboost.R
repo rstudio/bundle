@@ -11,6 +11,25 @@
 #' @seealso This method adapts the xgboost internal functions
 #'   `predict.xgb.Booster.handle()` and `xgb.handleToBooster()`, as well
 #'   as  [xgboost::xgb.serialize()].
+#' @examplesIf rlang::is_installed("xgboost")
+#' # fit model and bundle ------------------------------------------------
+#' library(xgboost)
+#'
+#' set.seed(1)
+#'
+#' data(agaricus.train)
+#' data(agaricus.test)
+#'
+#' xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
+#'                max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
+#'                objective = "binary:logistic")
+#'
+#' xgb_bundle <- bundle(xgb)
+#'
+#' # then, after saveRDS + readRDS or passing to a new session ----------
+#' xgb_unbundled <- unbundle(xgb_bundle)
+#'
+#' xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
 #' @aliases bundle.xgb.Booster
 #' @method bundle xgb.Booster
 #' @export

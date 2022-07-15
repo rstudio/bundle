@@ -48,6 +48,28 @@ Bundling a model prepares it to be saved to file and later
 restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
+\examples{
+\dontshow{if (rlang::is_installed("xgboost")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# fit model and bundle ------------------------------------------------
+library(xgboost)
+
+set.seed(1)
+
+data(agaricus.train)
+data(agaricus.test)
+
+xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
+               max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
+               objective = "binary:logistic")
+
+xgb_bundle <- bundle(xgb)
+
+# then, after saveRDS + readRDS or passing to a new session ----------
+xgb_unbundled <- unbundle(xgb_bundle)
+
+xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
+\dontshow{\}) # examplesIf}
+}
 \seealso{
 This method adapts the xgboost internal functions
 \code{predict.xgb.Booster.handle()} and \code{xgb.handleToBooster()}, as well
