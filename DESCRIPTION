@@ -1,6 +1,6 @@
 Package: bundle
 Title: Serialize Objects With A Consistent Interface
-Version: 0.0.0.9100
+Version: 0.0.0.9200
 Authors@R: c(
     person(given = "Simon",
            family = "Couch",
