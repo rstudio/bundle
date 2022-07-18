@@ -1,7 +1,6 @@
 #' @export
-bundle.step_umap <- function(x, ...) {
+bundle.step_umap <- function(x) {
   rlang::check_installed("uwot")
-  rlang::check_dots_empty(...)
 
   res <- x
   file_loc <- tempfile()
