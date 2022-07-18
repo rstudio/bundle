@@ -2,5 +2,5 @@
 #'
 #' @docType package
 #' @name bundle_description
-#' @aliases bundle_package
+#' @aliases bundle-package
 "_PACKAGE"

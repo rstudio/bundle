@@ -1,18 +1,50 @@
-#' @export
-bundle.H2OMultinomialModel <- function(x, ...) {
-  bundle_h2o(x, ...)
-}
-
-#' @export
-bundle.H2OBinomialModel <- function(x, ...) {
-  bundle_h2o(x, ...)
-}
-
-#' @export
-bundle.H2ORegressionModel <- function(x, ...) {
-  bundle_h2o(x, ...)
-}
-
+#' @templateVar class an `h2o`
+#' @template title_desc
+#'
+#' @templateVar outclass `bundled_h2o`
+#' @templateVar default .
+#' @template return_bundle
+#'
+#' @param x An object returned from modeling functions in the [h2o][h2o::h2o]
+#'   package.
+#' @param id A single character. The `model_id` entry in the leaderboard.
+#'   Applies to AutoML output only. Supply only one of this argument or
+#'   `n`.
+#' @param n An integer giving the position in the leaderboard of the model
+#'   to bundle. Applies to AutoML output only. Will be ignored if `id` is
+#'   supplied.
+#' @template param_unused_dots
+#' @seealso These methods wrap [h2o::h2o.save_mojo()] and
+#'   [h2o::h2o.saveModel()].
+#' @examplesIf rlang::is_installed("h2o") && rlang::is_installed("MASS")
+#' # fit model and bundle ------------------------------------------------
+#' library(h2o)
+#'
+#' set.seed(1)
+#'
+#' h2o.init()
+#'
+#' cars_h2o <- as.h2o(mtcars)
+#'
+#' cars_fit <-
+#'   h2o.glm(
+#'     x = colnames(cars_h2o)[2:11],
+#'     y = colnames(cars_h2o)[1],
+#'     training_frame = cars_h2o
+#'   )
+#'
+#' cars_bundle <- bundle(cars_fit)
+#'
+#' # then, after saveRDS + readRDS or passing to a new session ----------
+#' cars_unbundled <- unbundle(cars_fit)
+#'
+#' predict(cars_unbundled, cars_h2o[, 2:11])
+#'
+#' h2o.shutdown()
+#'
+#' @family bundlers
+#' @rdname bundle_h2o
+#' @aliases bundle.H2OAutoML
 #' @export
 bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
   rlang::check_dots_empty()
@@ -20,8 +52,30 @@ bundle.H2OAutoML <- function(x, id = NULL, n = NULL, ...) {
   bundle(select_from_automl(x, id = id, n = n))
 }
 
+#' @aliases bundle.H2OMultinomialModel
+#' @rdname bundle_h2o
+#' @export
+bundle.H2OMultinomialModel <- function(x, ...) {
+  bundle_h2o(x, ...)
+}
+
+#' @rdname bundle_h2o
+#' @aliases bundle.H2OBinomialModel
+#' @export
+bundle.H2OBinomialModel <- function(x, ...) {
+  bundle_h2o(x, ...)
+}
+
+#' @rdname bundle_h2o
+#' @aliases bundle.H2ORegressionModel
+#' @export
+bundle.H2ORegressionModel <- function(x, ...) {
+  bundle_h2o(x, ...)
+}
+
 bundle_h2o <- function(x, ...) {
   rlang::check_dots_empty()
+  rlang::check_installed("h2o")
 
   file_loc <- tempfile()
 

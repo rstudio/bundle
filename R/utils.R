@@ -70,6 +70,26 @@ has_bundler <- function(x) {
   !all(purrr::map_lgl(bundlers, is.null))
 }
 
+# "swap" an element of an object with its (un)bundled friend
+#' @rdname internal_functions
+#' @keywords internal
+#' @export
+swap_element <- function(x, ...) {
+  component <- purrr::pluck(x, ...)
+
+  if (inherits(component, "bundle")) {
+    replacement <- unbundle(component)
+  } else {
+    replacement <- bundle(component)
+  }
+
+  if (!is.null(replacement)) {
+    purrr::pluck(x, ...) <- replacement
+  }
+
+  x
+}
+
 # checks -----------------------------------------------------------------------
 
 # ensure that packages needed for prediction are available. `x` is a
@@ -92,3 +112,9 @@ check_for_pkgs <- function(x) {
 utils::globalVariables(c(
   "extract_fit_engine", "getS3method", "map"
 ))
+
+# imports ----------------------------------------------------------------------
+#' @keywords internal
+#' @importFrom purrr %>%
+#' @export
+NULL

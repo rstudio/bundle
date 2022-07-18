@@ -3,11 +3,14 @@
 \name{bundle_constr}
 \alias{bundle_constr}
 \alias{situate_constr}
+\alias{swap_element}
 \title{Internal Functions}
 \usage{
 bundle_constr(object, situate, desc_class, pkg_versions)
 
 situate_constr(fn)
+
+swap_element(x, ...)
 }
 \description{
 These functions are not user-facing and are only exported for developer
