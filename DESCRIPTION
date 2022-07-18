@@ -6,32 +6,33 @@ Authors@R: c(
            family = "Couch",
            role = c("aut", "cre"),
            email = "simonpatrickcouch@gmail.com"),
-    person(given = "Qiushi", 
-           family = "Yan", 
-           email = "qiushi.yann@gmail.com", 
+    person(given = "Qiushi",
+           family = "Yan",
+           email = "qiushi.yann@gmail.com",
            role = "aut"),
-    person(given = "Max", 
-           family = "Kuhn", 
-           email = "max@rstudio.com", 
+    person(given = "Max",
+           family = "Kuhn",
+           email = "max@rstudio.com",
            role = "aut"),
-    person("RStudio", 
+    person("RStudio",
            role = c("cph", "fnd"))
     )
-Description: 
-    R holds most objects in memory. However, some models store their data in 
-    locations that are not included when one uses `save()` or `saveRDS()`. 
-    bundle provides a common API to capture this information, situate it within 
+Description:
+    R holds most objects in memory. However, some models store their data in
+    locations that are not included when one uses `save()` or `saveRDS()`.
+    bundle provides a common API to capture this information, situate it within
     a portable object, and restore it for use in new settings.
 License: MIT + file LICENSE
-Imports: 
+Imports:
     glue,
     purrr,
     rlang,
     utils
-Suggests: 
+Suggests:
     bonsai,
     callr,
     covr,
+    embed,
     h2o,
     keras,
     knitr,
@@ -43,6 +44,7 @@ Suggests:
     recipes,
     rmarkdown,
     testthat (>= 3.0.0),
+    uwot,
     torch,
     torchvision,
     workflows,

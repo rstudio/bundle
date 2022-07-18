@@ -84,19 +84,15 @@ bundle_h2o <- function(x, ...) {
   } else {
     file_loc <- with_no_progress(h2o::h2o.saveModel(x, path = file_loc))
   }
-
   raw <- serialize(file_loc, connection = NULL)
 
   bundle_constr(
     object = raw,
-
-    situate = situate_constr(function(unserialized) {
-      unserialized <- structure(unserialized, class = class(raw))
-
+    situate = situate_constr(function(object) {
       if (!!x@have_mojo) {
-        res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(unserialize(unserialized)))
+        res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(unserialize(object)))
       } else {
-        res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(unserialize(unserialized)))
+        res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(unserialize(object)))
       }
 
       res
