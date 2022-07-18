@@ -33,6 +33,7 @@ Imports:
 Suggests: 
     bonsai,
     covr,
+    embed,
     h2o,
     keras,
     knitr,
@@ -42,6 +43,7 @@ Suggests:
     parsnip,
     rmarkdown,
     testthat (>= 3.0.0),
+    uwot,
     xgboost
 Config/testthat/edition: 3
 Encoding: UTF-8
