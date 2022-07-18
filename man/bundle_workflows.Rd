@@ -92,6 +92,8 @@ Other bundlers:
 \code{\link{bundle.lgb.Booster}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
+\code{\link{bundle.recipe}()},
+\code{\link{bundle.step_umap}()},
 \code{\link{bundle.xgb.Booster}()},
 \code{\link{bundle}()}
 }
