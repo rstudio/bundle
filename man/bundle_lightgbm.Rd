@@ -94,12 +94,9 @@ Other bundlers:
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
-<<<<<<< HEAD
-\code{\link{bundle.train}()},
-=======
 \code{\link{bundle.recipe}()},
 \code{\link{bundle.step_umap}()},
->>>>>>> 2842b1a854b891e197b3bf7c6c8f018be1735498
+\code{\link{bundle.train}()},
 \code{\link{bundle.workflow}()},
 \code{\link{bundle.xgb.Booster}()},
 \code{\link{bundle}()}
