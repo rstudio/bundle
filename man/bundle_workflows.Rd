@@ -88,6 +88,7 @@ mod_unbundled <- unbundle(mod_bundle)
 \seealso{
 Other bundlers: 
 \code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.Learner}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.lgb.Booster}()},
 \code{\link{bundle.luz_module_fitted}()},

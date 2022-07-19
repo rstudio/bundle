@@ -144,6 +144,7 @@ This method adapts \code{\link[luz:luz_save]{luz::luz_save()}} and the internal 
 
 Other bundlers: 
 \code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.Learner}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.lgb.Booster}()},
 \code{\link{bundle.model_fit}()},
