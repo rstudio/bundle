@@ -108,7 +108,6 @@ This method wraps \code{\link[keras:serialize_model]{keras::serialize_model()}} 
 
 Other bundlers: 
 \code{\link{bundle.H2OAutoML}()},
-\code{\link{bundle.lgb.Booster}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
 \code{\link{bundle.recipe}()},
