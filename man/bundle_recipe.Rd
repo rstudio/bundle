@@ -5,11 +5,15 @@
 \alias{bundle_recipe}
 \title{Bundle a \code{recipe} object}
 \usage{
-\method{bundle}{recipe}(x)
+\method{bundle}{recipe}(x, ...)
 }
 \arguments{
 \item{x}{A \link[recipes:recipe]{recipe} object returned
 from \link[recipes:recipe]{recipes}.}
+
+\item{...}{Not used in this bundler and included for compatibility with
+the generic only. Additional arguments passed to this method will return
+an error.}
 }
 \value{
 A bundle object with subclass \code{bundled_recipe}.

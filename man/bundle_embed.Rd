@@ -5,11 +5,15 @@
 \alias{bundle_step_umap}
 \title{Bundle a \code{step_umap} object}
 \usage{
-\method{bundle}{step_umap}(x)
+\method{bundle}{step_umap}(x, ...)
 }
 \arguments{
 \item{x}{A \link[embed:step_umap]{step_umap} object returned
 from \link[embed:step_umap]{embed}.}
+
+\item{...}{Not used in this bundler and included for compatibility with
+the generic only. Additional arguments passed to this method will return
+an error.}
 }
 \value{
 A bundle object with subclass \code{bundled_step_umap}.
