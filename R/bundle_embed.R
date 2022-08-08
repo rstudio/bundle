@@ -8,6 +8,7 @@
 #'
 #' @param x A [step_umap][embed::step_umap] object returned
 #'   from [embed][embed::step_umap].
+#' @template param_unused_dots
 #' @seealso This method wraps [uwot::save_uwot()] and [uwot::load_uwot()].
 #' @examplesIf rlang::is_installed("recipes") && rlang::is_installed("embed")
 #' # fit model and bundle ------------------------------------------------
@@ -30,7 +31,8 @@
 #' @rdname bundle_embed
 #' @aliases bundle.step_umap bundle_step_umap
 #' @export
-bundle.step_umap <- function(x) {
+bundle.step_umap <- function(x, ...) {
+  rlang::check_dots_empty()
   rlang::check_installed("uwot")
 
   res <- x

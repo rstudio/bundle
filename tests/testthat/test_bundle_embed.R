@@ -37,5 +37,5 @@ test_that("bundling + unbundling step_umap", {
     )
   )
 
-  expect_equal(baked_data, tibble::as_tibble(baked_data_new))
+  expect_equal(as.data.frame(baked_data), as.data.frame(baked_data_new))
 })

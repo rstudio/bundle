@@ -8,13 +8,16 @@
 #'
 #' @param x A [recipe][recipes::recipe] object returned
 #'   from [recipes][recipes::recipe].
+#' @template param_unused_dots
 #' @details The method call [bundle()] on every step in the
 #'   [recipe][recipes::recipe] object. See the classes of individual steps
 #'   for more details on the bundling method for that object.
 #' @rdname bundle_recipe
 #' @aliases bundle.recipe bundle_recipe
 #' @export
-bundle.recipe <- function(x) {
+bundle.recipe <- function(x, ...) {
+  rlang::check_dots_empty()
+
   res <- x
   steps_bundled <- purrr::map(res$steps, bundle::bundle)
   res$steps <- steps_bundled
