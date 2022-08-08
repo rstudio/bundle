@@ -44,6 +44,7 @@ Suggests:
     parsnip,
     recipes,
     rmarkdown,
+    stacks,
     testthat (>= 3.0.0),
     uwot,
     torch,
