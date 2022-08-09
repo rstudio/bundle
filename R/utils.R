@@ -41,7 +41,6 @@ set_object <- function(new_object, x) {
   x
 }
 
-
 # printing ---------------------------------------------------------------------
 #' @export
 print.bundle <- function(x, ...) {
