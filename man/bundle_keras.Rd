@@ -50,6 +50,11 @@ Bundling a model prepares it to be saved to file and later
 restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
+\details{
+This bundler does not currently support custom keras extensions,
+such as use of a \code{\link[keras:new-classes]{keras::new_layer_class()}} or custom metric function.
+In such situations, consider using \code{\link[keras:with_custom_object_scope]{keras::with_custom_object_scope()}}.
+}
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
@@ -103,8 +108,8 @@ predict(mod_unbundled, x_test)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-This method wraps \code{\link[keras:serialize_model]{keras::serialize_model()}} and
-\code{\link[keras:serialize_model]{keras::unserialize_model()}}.
+This method wraps \code{\link[keras:save_model_tf]{keras::save_model_tf()}} and
+\code{\link[keras:save_model_tf]{keras::load_model_tf()}}.
 
 Other bundlers: 
 \code{\link{bundle.H2OAutoML}()},

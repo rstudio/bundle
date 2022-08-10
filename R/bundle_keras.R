@@ -10,8 +10,11 @@
 #'   [keras][keras::keras-package] package.
 #' @template param_unused_dots
 #' @rdname bundle_keras
-#' @seealso This method wraps [keras::serialize_model()] and
-#'   [keras::unserialize_model()].
+#' @seealso This method wraps [keras::save_model_tf()] and
+#'   [keras::load_model_tf()].
+#' @details This bundler does not currently support custom keras extensions,
+#'   such as use of a [keras::new_layer_class()] or custom metric function.
+#'   In such situations, consider using [keras::with_custom_object_scope()].
 #' @examplesIf FALSE
 #' # fit model and bundle ------------------------------------------------
 #' library(keras)
