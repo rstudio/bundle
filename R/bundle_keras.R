@@ -69,12 +69,14 @@ bundle.keras.engine.training.Model <- function(x, ...) {
   rlang::check_installed("keras")
   rlang::check_dots_empty()
 
-  serialized <- keras::serialize_model(x)
+  file_loc <- tempfile()
+  keras::save_model_tf(x, file_loc)
+  serialized <- serialize(file_loc, connection = NULL)
 
   bundle_constr(
     object = serialized,
     situate = situate_constr(function(object) {
-      res <- keras::unserialize_model(object)
+      res <- keras::load_model_tf(unserialize(object))
 
       res
     }),
