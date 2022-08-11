@@ -24,6 +24,7 @@ Description:
     a portable object, and restore it for use in new settings.
 License: MIT + file LICENSE
 Imports:
+    cli,
     glue,
     purrr,
     rlang,
