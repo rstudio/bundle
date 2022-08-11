@@ -31,7 +31,7 @@ test_that("error without needed packages / insufficient versions", {
   expect_error(unbundle(xgb_bundle), class = "rlib_error_package_not_found")
 })
 
-test_that("has_bundler works", {
+test_that("has_bundler works (default)", {
   x <- 1L
 
   class(x) <- "boop"
@@ -48,6 +48,148 @@ test_that("has_bundler works", {
 
   class(x) <- c("keras.engine.training.Model")
   expect_true(has_bundler(x))
+})
+
+test_that("has_bundler.workflow works", {
+  skip_if_not_installed("workflows")
+  skip_if_not_installed("recipes")
+  skip_if_not_installed("parsnip")
+  skip_if_not_installed("xgboost")
+  skip_if_not_installed("embed")
+
+  library(workflows)
+  library(recipes)
+  library(parsnip)
+  library(xgboost)
+  library(embed)
+
+  skip_if_not(is_tf_available())
+
+  set.seed(1)
+
+  spec_with_bundler <-
+    boost_tree(trees = 5, mtry = 3) %>%
+    set_mode("regression") %>%
+    set_engine("xgboost")
+
+  spec_no_bundler <-
+    linear_reg() %>%
+    set_mode("regression") %>%
+    set_engine("lm")
+
+  rec_with_bundler <-
+    recipe(mpg ~ ., data = mtcars) %>%
+    step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2)
+
+  rec_no_bundler <-
+    recipe(mpg ~ ., data = mtcars) %>%
+    step_log(hp)
+
+  # both the spec and recipe have a non-trivial bundler
+  expect_true(
+    has_bundler(
+      workflow() %>%
+        add_model(spec_with_bundler) %>%
+        add_recipe(rec_with_bundler) %>%
+        fit(data = mtcars)
+    )
+  )
+
+  # just the spec has a non-trivial bundler
+  expect_true(
+    has_bundler(
+      workflow() %>%
+        add_model(spec_with_bundler) %>%
+        add_recipe(rec_no_bundler) %>%
+        fit(data = mtcars)
+    )
+  )
+
+  # just the recipe has a non-trivial bundler
+  expect_true(
+    has_bundler(
+      workflow() %>%
+        add_model(spec_no_bundler) %>%
+        add_recipe(rec_with_bundler) %>%
+        fit(data = mtcars)
+    )
+  )
+
+  # neither the spec and recipe have a non-trivial bundler
+  expect_false(
+    has_bundler(
+      workflow() %>%
+        add_model(spec_no_bundler) %>%
+        add_recipe(rec_no_bundler) %>%
+        fit(data = mtcars)
+    )
+  )
+})
+
+test_that("has_bundler.model_fit works", {
+  skip_if_not_installed("parsnip")
+  skip_if_not_installed("xgboost")
+
+  library(parsnip)
+  library(xgboost)
+
+  set.seed(1)
+
+  spec <-
+    boost_tree(trees = 5, mtry = 3) %>%
+    set_mode("regression") %>%
+    set_engine("xgboost")
+
+  fit_with_bundler <-
+    spec %>%
+    fit(mpg ~ ., data = mtcars)
+
+  fit_no_bundler <-
+    linear_reg() %>%
+    set_mode("regression") %>%
+    set_engine("lm") %>%
+    fit(mpg ~ ., data = mtcars)
+
+  expect_true( has_bundler(spec_with_bundler))
+  expect_false(has_bundler(spec_no_bundler))
+
+  expect_warning(spec_has_bundler <- has_bundler(spec))
+  expect_false(spec_has_bundler)
+})
+
+test_that("has_bundler.recipe works", {
+  skip_if_not_installed("recipes")
+  skip_if_not_installed("embed")
+
+  library(recipes)
+  library(embed)
+
+  skip_if_not(is_tf_available())
+
+  rec_with_bundler <-
+    recipe(mpg ~ ., data = mtcars) %>%
+    step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2)
+
+  rec_no_bundler <-
+    recipe(mpg ~ ., data = mtcars) %>%
+    step_log(hp)
+
+  rec_with_both <-
+    recipe(mpg ~ ., data = mtcars) %>%
+    step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2) %>%
+    step_log(hp)
+
+  expect_true( has_bundler(rec_with_bundler))
+  expect_false(has_bundler(rec_no_bundler))
+  expect_true( has_bundler(rec_with_both))
+})
+
+test_that("has_bundler.bundle works", {
+  x <- 1L
+  class(x) <- "bundle"
+
+  expect_snapshot_warning(bundle_has_bundler <- has_bundler(x))
+  expect_false(bundle_has_bundler)
 })
 
 test_that("situate constructor works", {

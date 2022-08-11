@@ -2,9 +2,27 @@
 % Please edit documentation in R/utils.R
 \name{has_bundler}
 \alias{has_bundler}
+\alias{has_bundler.workflow}
+\alias{has_bundler.model_fit}
+\alias{has_bundler.recipe}
+\alias{has_bundler.default}
+\alias{has_bundler.bundle}
+\alias{has_bundler.model_spec}
 \title{Check whether an object has a bundling method}
 \usage{
 has_bundler(x)
+
+\method{has_bundler}{workflow}(x)
+
+\method{has_bundler}{model_fit}(x)
+
+\method{has_bundler}{recipe}(x)
+
+\method{has_bundler}{default}(x)
+
+\method{has_bundler}{bundle}(x)
+
+\method{has_bundler}{model_spec}(x)
 }
 \arguments{
 \item{x}{A model object to bundle.}
@@ -14,15 +32,41 @@ A logical.
 }
 \description{
 Given a model object, this function will return whether the object
-will dispatch to a method other than \code{bundle.default()} (the identity
-function).
-}
-\details{
+will dispatch to a non-trivial bundler. For most objects, \code{has_bundler()}
+simply returns whether the object will dispatch to \code{bundle.default()}, the
+identity function. For some objects, whose bundling methods recurse into
+elements of the inputted object, \code{has_bundler()} returns whether the
+final dispatch to a \code{bundle()} method is \code{bundle.default()} for \emph{all} of
+the recursed elements. More plainly---if bundling an object \code{x} will make a
+call to native serialization methods anywhere inside its interals,
+\code{has_bundler(x)} will return \code{TRUE}.
+
 Note that a return value of \code{FALSE} does not necessarily mean that
 the object \code{x} cannot be saved and re-loaded in a new session---many model
 objects, like \code{\link[stats:lm]{stats::lm()}} and \code{\link[stats:glm]{stats::glm()}} output, can be effectively
 saved and re-loaded in a new session without any bundling.
 }
+\section{bundle and butcher}{
+
+butcher is an R package that allows users to remove parts of a fitted model
+object that are not needed for prediction. However, native serialization
+methods for some model objects need access to elements that are removed
+by \code{\link[butcher:butcher]{butcher::butcher()}}.
+
+The \code{has_bundler()} function is thus a convenient helper to (conservatively)
+determine whether an object can be \code{\link[butcher:butcher]{butcher::butcher()}}ed before bundling.
+If \code{has_bundler(x)} is \code{FALSE}, then one can safely \code{\link[butcher:butcher]{butcher::butcher()}}
+before bundling. To prepare an object for efficient and safe serialization,
+then, use:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{if (!has_bundler(x)) \{
+  x <- butcher(x)
+\}
+
+bundle(x)
+}\if{html}{\out{</div>}}
+}
+
 \seealso{
 \code{\link[=bundle]{bundle()}}, \code{\link[=unbundle]{unbundle()}}
 }
