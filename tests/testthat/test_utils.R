@@ -150,8 +150,8 @@ test_that("has_bundler.model_fit works", {
     set_engine("lm") %>%
     fit(mpg ~ ., data = mtcars)
 
-  expect_true( has_bundler(spec_with_bundler))
-  expect_false(has_bundler(spec_no_bundler))
+  expect_true( has_bundler(fit_with_bundler))
+  expect_false(has_bundler(fit_no_bundler))
 
   expect_warning(spec_has_bundler <- has_bundler(spec))
   expect_false(spec_has_bundler)
