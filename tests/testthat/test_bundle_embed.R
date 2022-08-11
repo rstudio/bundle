@@ -1,6 +1,10 @@
 test_that("bundling + unbundling step_umap", {
   skip_if_not_installed("embed")
+  skip_if_not_installed("butcher")
+
   library(embed)
+  library(butcher)
+
   skip_if_not(is_tf_available())
 
   set.seed(1)

@@ -2,11 +2,13 @@ test_that("bundling + unbundling torch fits", {
   skip_if_not_installed("torch")
   skip_if_not_installed("torchvision")
   skip_if_not_installed("luz")
+  skip_if_not_installed("butcher")
   skip_on_cran()
 
   library(torch)
   library(torchvision)
   library(luz)
+  library(butcher)
 
   if (Sys.getenv("TORCH_HOME") == "") {
     skip("pytorch or lantern not installed")

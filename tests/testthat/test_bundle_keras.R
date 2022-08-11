@@ -1,6 +1,9 @@
 test_that("bundling + unbundling keras fits", {
   skip_if_not_installed("keras")
+  skip_if_not_installed("butcher")
+
   library(keras)
+  library(butcher)
 
   set.seed(1)
 

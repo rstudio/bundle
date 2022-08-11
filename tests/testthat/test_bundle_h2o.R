@@ -1,8 +1,11 @@
 test_that("bundling + unbundling h2o fits", {
   skip_if_not_installed("h2o")
   skip_if_not_installed("modeldata")
+  skip_if_not_installed("butcher")
+
   library(h2o)
   library(modeldata)
+  library(butcher)
 
   set.seed(1)
 
