@@ -46,27 +46,6 @@ the object \code{x} cannot be saved and re-loaded in a new session---many model
 objects, like \code{\link[stats:lm]{stats::lm()}} and \code{\link[stats:glm]{stats::glm()}} output, can be effectively
 saved and re-loaded in a new session without any bundling.
 }
-\section{bundle and butcher}{
-
-butcher is an R package that allows users to remove parts of a fitted model
-object that are not needed for prediction. However, native serialization
-methods for some model objects need access to elements that are removed
-by \code{\link[butcher:butcher]{butcher::butcher()}}.
-
-The \code{has_bundler()} function is thus a convenient helper to (conservatively)
-determine whether an object can be \code{\link[butcher:butcher]{butcher::butcher()}}ed before bundling.
-If \code{has_bundler(x)} is \code{FALSE}, then one can safely \code{\link[butcher:butcher]{butcher::butcher()}}
-before bundling. To prepare an object for efficient and safe serialization,
-then, use:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{if (!has_bundler(x)) \{
-  x <- butcher(x)
-\}
-
-bundle(x)
-}\if{html}{\out{</div>}}
-}
-
 \seealso{
 \code{\link[=bundle]{bundle()}}, \code{\link[=unbundle]{unbundle()}}
 }

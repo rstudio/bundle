@@ -67,26 +67,6 @@ print.bundle <- function(x, ...) {
 #' objects, like [stats::lm()] and [stats::glm()] output, can be effectively
 #' saved and re-loaded in a new session without any bundling.
 #'
-#' @section bundle and butcher:
-#' butcher is an R package that allows users to remove parts of a fitted model
-#' object that are not needed for prediction. However, native serialization
-#' methods for some model objects need access to elements that are removed
-#' by [butcher::butcher()].
-#'
-#' The `has_bundler()` function is thus a convenient helper to (conservatively)
-#' determine whether an object can be [butcher::butcher()]ed before bundling.
-#' If `has_bundler(x)` is `FALSE`, then one can safely [butcher::butcher()]
-#' before bundling. To prepare an object for efficient and safe serialization,
-#' then, use:
-#'
-#' ```
-#' if (!has_bundler(x)) {
-#'   x <- butcher(x)
-#' }
-#'
-#' bundle(x)
-#' ```
-#'
 #' @seealso [bundle()], [unbundle()]
 #' @inheritParams bundle
 #' @return A logical.

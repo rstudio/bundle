@@ -30,7 +30,6 @@ Imports:
     utils
 Suggests:
     bonsai,
-    butcher,
     caret,
     callr,
     covr,
