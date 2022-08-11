@@ -146,7 +146,7 @@ Oof. Hm.
 
 After a bit of poking around in keras' documentation, you might come across the keras vignette "Saving and serializing models" at `vignette("saving_serializing", package = "keras")`. That vignette points us to several functions _in the keras package_ that will allow us to save our model fit in a way that allows it to predict in a new session.
 
-Given this new understanding, we can update our mental map a bit. Some objects require extra information when they're loaded into new environments in order to do their thing. In this case, this keras model object needs access to additional reference in order to predict on new data.
+Given this new understanding, we can update our mental map a bit. Some objects require extra information when they're loaded into new environments in order to do their thing. In this case, this keras model object needs access to additional references in order to predict on new data.
 
 ```{r diagram-02, echo = FALSE, fig.alt = "A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow.", out.width = '100%'}
 knitr::include_graphics("figures/diagram_02.png")
