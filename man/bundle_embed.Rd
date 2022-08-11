@@ -78,7 +78,6 @@ This method wraps \code{\link[uwot:save_uwot]{uwot::save_uwot()}} and \code{\lin
 Other bundlers: 
 \code{\link{bundle.H2OAutoML}()},
 \code{\link{bundle.keras.engine.training.Model}()},
-\code{\link{bundle.lgb.Booster}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
 \code{\link{bundle.recipe}()},

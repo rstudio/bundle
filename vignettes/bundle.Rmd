@@ -14,19 +14,9 @@ resource_files:
 
 ```{r, include = FALSE}
 should_eval <- 
-  rlang::is_installed("lightgbm") && 
+  rlang::is_installed("keras") && 
   rlang::is_installed("callr") &&
   rlang::is_installed("xgboost")
-
-error_hook <- knitr::knit_hooks$get("error")
-knitr::knit_hooks$set(error = function(x, options) {
-  if (!is.null(n <- options$linewidth)) {
-    x <- knitr:::split_lines(x)
-    if (any(nchar(x) > n)) x <- strwrap(x, width = n)
-    x <- c(paste(x[1:(length(x) - 1)], collapse = '\n#> '), '\n')
-  }
-  error_hook(x, options)
-})
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -43,10 +33,10 @@ This vignette will walk through preparing a statistical model to be saved to dem
 library(bundle)
 ```
 
-In addition to the package itself, we'll load the lightgbm and xgboost packages to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.
+In addition to the package itself, we'll load the keras and xgboost packages to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.
 
 ```{r setup-exts}
-library(lightgbm)
+library(keras)
 library(xgboost)
 
 library(callr)
@@ -54,28 +44,32 @@ library(callr)
 
 ## Saving things is hard
 
-As an example, let's fit a simple model with the lightgbm package, modeling miles per gallon using the rest of the variables in the built-in `mtcars` dataset.
+As an example, let's fit a model with the keras package, building a neural network that models miles per gallon using the rest of the variables in the built-in `mtcars` dataset.
 
 ```{r mtcars-fit}
-cars_train <- 
-  lgb.Dataset(
-    data = as.matrix(mtcars[1:25, 2:ncol(mtcars)]), 
-    label = mtcars[1:25, 1],
-    params = list(feature_pre_filter = "false")
-  )
+cars <- mtcars %>%
+  as.matrix() %>%
+  scale()
 
-cars_test <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
+x_train <- cars[1:25, 2:ncol(cars)]
+y_train <- cars[1:25, 1]
 
-lgb_fit <-
-  lgb.train(
-    params = list(
-      max_depth = 3, 
-      min_data_in_leaf = 5, 
-      objective = "regression"
-    ), 
-    data = cars_train, 
-    nrounds = 5,
-    verbose = -1
+x_test <- cars[26:32, 2:ncol(cars)]
+y_test <- cars[26:32, 1]
+
+keras_fit <- 
+  keras_model_sequential()  %>%
+  layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') %>%
+  compile(
+    loss = 'mean_squared_error',
+    optimizer = optimizer_adam(learning_rate = .01)
+  ) 
+
+keras_fit %>%
+  fit(
+    x = x_train, y = y_train,
+    epochs = 100, batch_size = 1,
+    verbose = 0
   )
 ```
 
@@ -88,7 +82,7 @@ knitr::include_graphics("figures/diagram_01.png")
 We pass a model object to the `predict()` function, along with some new data to predict on, and get predictions back. Let's try that out:
 
 ```{r predict-example}
-predict(lgb_fit, cars_test)
+predict(keras_fit, x_test)
 ```
 
 Perfect.
@@ -124,34 +118,35 @@ So, our approach might be:
 
 First, saving our model object to file:
 
-```{r lgb-save}
+```{r keras-save}
 temp_file <- tempfile()
 
-saveRDS(lgb_fit, file = temp_file)
+saveRDS(keras_fit, file = temp_file)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
 
-```{r lgb-fresh-rds, linewidth = 60, error = TRUE}
+```{r keras-fresh-rds, linewidth = 60, error = TRUE}
 r(
-  function(temp_file) {
-    library(lightgbm)
+  function(temp_file, new_data) {
+    library(keras)
     
     model_object <- readRDS(file = temp_file)
-    
-    new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
     
     predict(model_object, new_data)
   },
   args = list(
-    temp_file = temp_file
+    temp_file = temp_file,
+    new_data = x_test
   )
 )
 ```
 
-Oof. This error _does_ seem to point us to something helpful, though: it tells at that the lightgbm package provides its own functions to save lightgbm objects. 
+Oof. Hm. 
 
-Given this new understanding, we can update our mental map a bit. Some objects require extra information when they're loaded into new environments in order to do their thing. In this case, this lightgbm model object needs access to a Booster instance in order to predict on new data.
+After a bit of poking around in keras' documentation, you might come across the keras vignette "Saving and serializing models" at `vignette("saving_serializing", package = "keras")`. That vignette points us to several functions _in the keras package_ that will allow us to save our model fit in a way that allows it to predict in a new session.
+
+Given this new understanding, we can update our mental map a bit. Some objects require extra information when they're loaded into new environments in order to do their thing. In this case, this keras model object needs access to additional references in order to predict on new data.
 
 ```{r diagram-02, echo = FALSE, fig.alt = "A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow.", out.width = '100%'}
 knitr::include_graphics("figures/diagram_02.png")
@@ -159,35 +154,35 @@ knitr::include_graphics("figures/diagram_02.png")
 
 In computer science, these bits of "extra information" are called _references_. Those references need to persist---or be restored---in new environments in order for the objects that reference them to work well.
 
-These kinds of custom methods to save objects, like the ones that lightgbm provide, are often referred to as _native serialization_. Methods for native serialization know which references need to be brought along in order for an object to effectively do it's thing in a new environment.
+These kinds of custom methods to save objects, like the ones that keras provide, are often referred to as _native serialization_. Methods for native serialization know which references need to be brought along in order for an object to effectively do its thing in a new environment.
 
 Let's make use of native serialization, then!
 
 ## Native serialization, and where it falls short
 
-lightgbm's error was really informative in telling us what we ought to do from here---if we save the model with their native serialization rather than `saveRDS`, we'll be good to go.
+keras' vignette is really informative in telling us what we ought to do from here---if we save the model with their native serialization rather than `saveRDS`, we'll be good to go.
 
 Saving our model object with their methods:
 
-```{r saveRDS-lgb-booster}
-saveRDS.lgb.Booster(lgb_fit, file = temp_file)
+```{r save-model-tf}
+temp_dir <- tempdir()
+save_model_tf(keras_fit, filepath = temp_dir)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
 
-```{r fresh-lbg-booster}
+```{r fresh-keras-fit}
 r(
-  function(temp_file) {
-    library(lightgbm)
+  function(temp_dir, new_data) {
+    library(keras)
     
-    model_object <- readRDS.lgb.Booster(file = temp_file)
-    
-    new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
+    model_object <- load_model_tf(filepath = temp_dir)
     
     predict(model_object, new_data)
   },
   args = list(
-    temp_file = temp_file
+    temp_dir = temp_dir,
+    new_data = x_test
   )
 )
 ```
@@ -222,27 +217,26 @@ Bundles are just lists with two elements:
 
 When `unbundle()` is called on a bundle object, the `situate()` element of the bundle will re-load the `object` element and restore needed references in the new environment. Thus, the output of `unbundle()` is ready to go for prediction wherever it is called.
 
-To be a bit more concrete, lets return to the lightgbm example. Bundling the model fit:
+To be a bit more concrete, lets return to the keras example. Bundling the model fit:
 
-```{r lgb-bundle}
-lgb_bundle <- bundle(lgb_fit)
+```{r keras-bundle}
+keras_bundle <- bundle(keras_fit)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
 
-```{r lgb-fresh-bundle}
+```{r keras-fresh-bundle}
 r(
-  function(model_bundle) {
+  function(model_bundle, new_data) {
     library(bundle)
     
     model_object <- unbundle(model_bundle)
-    
-    new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
-    
+ 
     predict(model_object, new_data)
   },
   args = list(
-    model_bundle = lgb_bundle
+    model_bundle = keras_bundle,
+    new_data = x_test
   )
 )
 ```
@@ -256,8 +250,8 @@ First, fitting a quick xgboost model:
 ```{r xgboost-fit}
 xgb_fit <- 
   xgboost(
-    data = as.matrix(mtcars[1:25, 2:ncol(mtcars)]), 
-    label =  mtcars[1:25, 1],
+    data = x_train, 
+    label = y_train,
     nrounds = 5
   )
 ```
@@ -272,17 +266,16 @@ Now, starting up a fresh R session and predicting on new data:
 
 ```{r xgboost-fresh-bundle}
 r(
-  function(model_bundle) {
+  function(model_bundle, new_data) {
     library(bundle)
     
     model_object <- unbundle(model_bundle)
     
-    new_data <- as.matrix(mtcars[26:32, 2:ncol(mtcars)])
-    
     predict(model_object, new_data)
   },
   args = list(
-    model_bundle = xgb_bundle
+    model_bundle = xgb_bundle,
+    new_data = x_test
   )
 )
 ```
