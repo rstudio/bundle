@@ -23,7 +23,7 @@ test_that("bundling + unbundling step_umap", {
   baked_data_unbundled <- bake(rec_unbundled, iris)
   expect_equal(baked_data, baked_data_unbundled)
 
-  baked_data_new <- callr::r(
+  bake_bundle_umap <-
     function(step_umap_bundled_) {
       library(bundle)
       library(recipes)
@@ -31,11 +31,28 @@ test_that("bundling + unbundling step_umap", {
 
       step_umap_unbundled <- unbundle(step_umap_bundled_)
       bake(step_umap_unbundled, iris)
-    },
+    }
+
+  baked_data_new <- callr::r(
+    bake_bundle_umap,
     args = list(
       step_umap_bundled_ = step_umap_bundled
     )
   )
 
   expect_equal(as.data.frame(baked_data), as.data.frame(baked_data_new))
+
+  # interaction with butcher
+  expect_silent({
+    rec_bundle_butchered <- bundle(butcher(rec))
+  })
+
+  baked_data_butchered <- callr::r(
+    bake_bundle_umap,
+    args = list(
+      step_umap_bundled_ = step_umap_bundled
+    )
+  )
+
+  expect_equal(as.data.frame(baked_data), as.data.frame(baked_data_butchered))
 })

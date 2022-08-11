@@ -160,4 +160,11 @@ test_that("bundling + unbundling h2o fits", {
   expect_equal(multi_preds$data, res$multi_unbundled_preds_new)
   expect_equal(auto_reg_preds$data, res$auto_reg_unbundled_preds_new)
   expect_equal(auto_bin_preds$data, res$auto_bin_unbundled_preds_new)
+
+  # interaction with butcher
+  expect_silent({
+    reg_fit_butchered <- butcher(reg_fit)
+  })
+
+  expect_equal(reg_fit, reg_fit_butchered)
 })
