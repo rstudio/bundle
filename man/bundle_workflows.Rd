@@ -56,11 +56,11 @@ This bundler wraps \code{\link[=bundle.model_fit]{bundle.model_fit()}} and \code
 }
 \section{bundle and butcher}{
 
-butcher is an R package that allows users to remove parts of a fitted model
-object that are not needed for prediction.
+The \href{https://butcher.tidymodels.org/}{butcher} package allows you to remove
+parts of a fitted model object that are not needed for prediction.
 
 This bundle method is compatible with pre-butchering. That is, for a
-fitted model \code{x}, users can safely call:
+fitted model \code{x}, you can safely call:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{res <-
   x \%>\%
