@@ -54,6 +54,23 @@ more information on bundles and their usage.
 \details{
 This bundler wraps \code{\link[=bundle.model_fit]{bundle.model_fit()}} and \code{\link[=bundle.recipe]{bundle.recipe()}}.
 }
+\section{bundle and butcher}{
+
+The \href{https://butcher.tidymodels.org/}{butcher} package allows you to remove
+parts of a fitted model object that are not needed for prediction.
+
+This bundle method is compatible with pre-butchering. That is, for a
+fitted model \code{x}, you can safely call:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{res <-
+  x \%>\%
+  butcher() \%>\%
+  bundle()
+}\if{html}{\out{</div>}}
+
+and predict with the output of \code{unbundle(res)} in a new R session.
+}
+
 \examples{
 \dontshow{if (rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------

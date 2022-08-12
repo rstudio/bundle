@@ -12,6 +12,8 @@
 #'
 #' @details This bundler wraps [bundle.model_fit()] and [bundle.recipe()].
 #'
+#' @template butcher_details
+#'
 #' @examplesIf rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))
 #' # fit model and bundle ------------------------------------------------
 #' library(workflows)
@@ -50,12 +52,14 @@ bundle.workflow <- function(x, ...) {
 
   res <- swap_element(x, "fit", "fit")
   res <- swap_element(res, "pre", "actions", "recipe", "recipe")
+  res <- swap_element(res, "pre", "mold", "blueprint", "recipe")
 
   bundle_constr(
     object = res,
     situate = situate_constr(function(object) {
       res <- bundle::swap_element(object, "fit", "fit")
       res <- bundle::swap_element(res, "pre", "actions", "recipe", "recipe")
+      res <- bundle::swap_element(res, "pre", "mold", "blueprint", "recipe")
 
       structure(res, class = !!class(x))
     }),

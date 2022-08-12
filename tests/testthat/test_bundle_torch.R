@@ -2,11 +2,13 @@ test_that("bundling + unbundling torch fits", {
   skip_if_not_installed("torch")
   skip_if_not_installed("torchvision")
   skip_if_not_installed("luz")
+  skip_if_not_installed("butcher")
   skip_on_cran()
 
   library(torch)
   library(torchvision)
   library(luz)
+  library(butcher)
 
   if (Sys.getenv("TORCH_HOME") == "") {
     skip("pytorch or lantern not installed")
@@ -93,7 +95,7 @@ test_that("bundling + unbundling torch fits", {
 
   # only want bundled model and original preds to persist.
   # test again in new R session:
-  mod_unbundled_preds_new <- callr::r(
+  predict_bundle_torch <-
     function(mod_bundle, test_dl) {
       library(bundle)
       library(torch)
@@ -102,7 +104,10 @@ test_that("bundling + unbundling torch fits", {
 
       mod_unbundled <- unbundle(mod_bundle)
       as_array(predict(mod_unbundled, test_dl))
-    },
+    }
+
+  mod_unbundled_preds_new <- callr::r(
+    predict_bundle_torch,
     args = list(
       mod_bundle = mod_bundle,
       test_dl = test_dl
@@ -110,4 +115,19 @@ test_that("bundling + unbundling torch fits", {
   )
 
   expect_equal(mod_preds[1:100,1:100], mod_unbundled_preds_new[1:100,1:100])
+
+  # interaction with butcher
+  expect_silent({
+    mod_bundle_butchered <- bundle(butcher(mod))
+  })
+
+  mod_unbundled_preds_butchered <- callr::r(
+    predict_bundle_torch,
+    args = list(
+      mod_bundle = mod_bundle_butchered,
+      test_dl = test_dl
+    )
+  )
+
+  expect_equal(mod_preds[1:100,1:100], mod_unbundled_preds_butchered[1:100,1:100])
 })

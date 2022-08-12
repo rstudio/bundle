@@ -56,6 +56,23 @@ Primarily, these methods call \code{\link[=bundle]{bundle()}} on the output of
 \code{train_model_object$finalModel}. See the class of the output of that
 slot for more details on the bundling method for that object.
 }
+\section{bundle and butcher}{
+
+The \href{https://butcher.tidymodels.org/}{butcher} package allows you to remove
+parts of a fitted model object that are not needed for prediction.
+
+This bundle method is compatible with pre-butchering. That is, for a
+fitted model \code{x}, you can safely call:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{res <-
+  x \%>\%
+  butcher() \%>\%
+  bundle()
+}\if{html}{\out{</div>}}
+
+and predict with the output of \code{unbundle(res)} in a new R session.
+}
+
 \examples{
 \dontshow{if (rlang::is_installed("caret")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------

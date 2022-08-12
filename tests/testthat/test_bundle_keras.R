@@ -1,6 +1,9 @@
 test_that("bundling + unbundling keras fits", {
   skip_if_not_installed("keras")
+  skip_if_not_installed("butcher")
+
   library(keras)
+  library(butcher)
 
   set.seed(1)
 
@@ -60,14 +63,17 @@ test_that("bundling + unbundling keras fits", {
 
   # only want bundled model and original preds to persist.
   # test again in new R session:
-  mod_unbundled_preds_new <- callr::r(
+  predict_bundle_keras <-
     function(mod_bundle, x_test) {
       library(bundle)
       library(keras)
 
       mod_unbundled <- unbundle(mod_bundle)
       predict(mod_unbundled, x_test)
-    },
+    }
+
+  mod_unbundled_preds_new <- callr::r(
+    predict_bundle_keras,
     args = list(
       mod_bundle = mod_bundle,
       x_test = x_test
@@ -75,4 +81,19 @@ test_that("bundling + unbundling keras fits", {
   )
 
   expect_equal(mod_preds, mod_unbundled_preds_new)
+
+  # interaction with butcher
+  expect_silent({
+    mod_bundle_butchered <- bundle(butcher(mod))
+  })
+
+  mod_unbundled_preds_butchered <- callr::r(
+    predict_bundle_keras,
+    args = list(
+      mod_bundle = mod_bundle_butchered,
+      x_test = x_test
+    )
+  )
+
+  expect_equal(mod_preds, mod_unbundled_preds_butchered)
 })
