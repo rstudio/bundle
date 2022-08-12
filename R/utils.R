@@ -48,27 +48,6 @@ print.bundle <- function(x, ...) {
 }
 
 # convenience functions --------------------------------------------------------
-#' Check whether an object has a bundling method
-#'
-#' Given a model object, this function will return whether the object
-#' will dispatch to a method other than `bundle.default()` (the identity
-#' function).
-#'
-#' Note that a return value of `FALSE` does not necessarily mean that
-#' the object `x` cannot be saved and re-loaded in a new session---many model
-#' objects, like [stats::lm()] and [stats::glm()] output, can be effectively
-#' saved and re-loaded in a new session without any bundling.
-#'
-#' @seealso [bundle()], [unbundle()]
-#' @inheritParams bundle
-#' @return A logical.
-#' @export
-has_bundler <- function(x) {
-  bundlers <- purrr::map(class(x), getS3method, f = "bundle", optional = TRUE)
-
-  !all(purrr::map_lgl(bundlers, is.null))
-}
-
 # "swap" an element of an object with its (un)bundled friend
 #' @rdname internal_functions
 #' @keywords internal
