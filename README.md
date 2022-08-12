@@ -76,6 +76,7 @@ First, loading needed packages:
 library(bundle)
 library(parsnip)
 library(callr)
+library(waldo)
 ```
 
 Fitting the boosted tree model:
@@ -92,14 +93,14 @@ mod
 #> parsnip model object
 #> 
 #> ##### xgb.Booster
-#> raw: 8.1 Kb 
+#> raw: 7.9 Kb 
 #> call:
 #>   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, 
 #>     colsample_bytree = 1, colsample_bynode = 0.3, min_child_weight = 1, 
-#>     subsample = 1, objective = "reg:squarederror"), data = x$data, 
-#>     nrounds = 5, watchlist = x$watchlist, verbose = 0, nthread = 1)
+#>     subsample = 1), data = x$data, nrounds = 5, watchlist = x$watchlist, 
+#>     verbose = 0, nthread = 1, objective = "reg:squarederror")
 #> params (as set within xgb.train):
-#>   eta = "0.3", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "0.3", min_child_weight = "1", subsample = "1", objective = "reg:squarederror", nthread = "1", validate_parameters = "TRUE"
+#>   eta = "0.3", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "0.3", min_child_weight = "1", subsample = "1", nthread = "1", objective = "reg:squarederror", validate_parameters = "TRUE"
 #> xgb.attributes:
 #>   niter
 #> callbacks:
@@ -110,14 +111,36 @@ mod
 #> evaluation_log:
 #>  iter training_rmse
 #>     1     14.640496
-#>     2     10.918576
-#>     3      8.181425
-#>     4      6.180951
-#>     5      4.689767
+#>     2     10.911261
+#>     3      8.208964
+#>     4      6.215970
+#>     5      4.755759
 ```
 
-Now that the model is fitted, we’ll prepare it to be passed to another R
-session by bundling it:
+Note that simply saving and loading the model results in changes to the
+fitted model:
+
+``` r
+temp_file <- tempfile()
+saveRDS(mod, temp_file)
+mod2 <- readRDS(temp_file)
+
+compare(mod, mod2)
+#> `old$fit$handle` is <pointer: 0x126e4b820>
+#> `new$fit$handle` is <pointer: 0x0>
+#> 
+#> `old$fit$handle` is attr(,"class")
+#> `new$fit$handle` is attr(,"class")
+#> 
+#> `old$fit$handle` is [1] "xgb.Booster.handle"
+#> `new$fit$handle` is [1] "xgb.Booster.handle"
+```
+
+Saving and reloading `mod2` didn’t preserve xgboost’s reference to its
+`pointer`, which may result in failures later in the modeling process.
+
+We thus need to prepare the fitted model to be saved before passing it
+to another R session. We can do so by bundling it:
 
 ``` r
 # bundle the model
@@ -150,13 +173,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.4
-#> 2  20.4
-#> 3  20.4
-#> 4  13.2
-#> 5  16.3
+#> 1  22.2
+#> 2  22.2
+#> 3  18.6
+#> 4  13.5
+#> 5  16.7
 #> 6  11.4
-#> 7  18.9
+#> 7  18.2
 ```
 
 For a more in-depth demonstration of the package, see the main vignette

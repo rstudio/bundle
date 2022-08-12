@@ -78,6 +78,7 @@ First, loading needed packages:
 library(bundle)
 library(parsnip)
 library(callr)
+library(waldo)
 ```
 
 Fitting the boosted tree model:
@@ -93,7 +94,19 @@ mod <-
 mod
 ```
 
-Now that the model is fitted, we'll prepare it to be passed to another R session by bundling it:
+Note that simply saving and loading the model results in changes to the fitted model:
+
+```{r}
+temp_file <- tempfile()
+saveRDS(mod, temp_file)
+mod2 <- readRDS(temp_file)
+
+compare(mod, mod2)
+```
+
+Saving and reloading `mod2` didn't preserve xgboost's reference to its `pointer`, which may result in failures later in the modeling process.
+
+We thus need to prepare the fitted model to be saved before passing it to another R session. We can do so by bundling it:
 
 ```{r}
 # bundle the model
@@ -101,7 +114,6 @@ bundled_mod <-
   bundle(mod)
 
 bundled_mod
-
 ```
 
 Passing the model to another R session and generating predictions on new data:
