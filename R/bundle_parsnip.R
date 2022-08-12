@@ -12,6 +12,7 @@
 #' @details Primarily, these methods call [bundle()] on the output of
 #'   [parsnip::extract_fit_engine()]. See the class of the output of that
 #'   function for more details on the bundling method for that object.
+#' @template butcher_details
 #' @examplesIf rlang::is_installed("parsnip") && rlang::is_installed("xgboost")
 #' # fit model and bundle ------------------------------------------------
 #' library(parsnip)

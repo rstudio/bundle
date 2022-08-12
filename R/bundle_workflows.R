@@ -12,6 +12,8 @@
 #'
 #' @details This bundler wraps [bundle.model_fit()] and [bundle.recipe()].
 #'
+#' @template butcher_details
+#'
 #' @examplesIf rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))
 #' # fit model and bundle ------------------------------------------------
 #' library(workflows)
