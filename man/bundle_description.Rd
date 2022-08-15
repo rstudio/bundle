@@ -12,16 +12,18 @@ R holds most objects in memory. However, some models store their data in locatio
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/simonpcouch/bundle}
-  \item Report bugs at \url{https://github.com/simonpcouch/bundle/issues}
+  \item \url{https://github.com/rstudio/bundle}
+  \item \url{https://rstudio.github.io/bundle/}
+  \item Report bugs at \url{https://github.com/rstudio/bundle/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Simon Couch \email{simonpatrickcouch@gmail.com}
+\strong{Maintainer}: Julia Silge \email{julia.silge@rstudio.com} (\href{https://orcid.org/0000-0002-3671-836X}{ORCID})
 
 Authors:
 \itemize{
+  \item Simon Couch \email{simonpatrickcouch@gmail.com}
   \item Qiushi Yan \email{qiushi.yann@gmail.com}
   \item Max Kuhn \email{max@rstudio.com}
 }
