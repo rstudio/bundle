@@ -25,7 +25,7 @@ library(dplyr)
 method_df <- function(method_name) {
   m <- as.vector(utils::methods(method_name))
   tibble::tibble(class = gsub(paste0(method_name, "[.]"), "", m),
-                 !!method_name := clisymbols::symbol$tick)
+                 !!method_name := "x")
 }
 
 replace_na <- function(x) {
