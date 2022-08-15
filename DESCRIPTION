@@ -34,6 +34,7 @@ Suggests:
     caret,
     callr,
     covr,
+    dplyr,
     embed,
     h2o,
     keras,

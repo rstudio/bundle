@@ -12,11 +12,13 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+should_eval <- rlang::is_installed("dplyr")
 ```
 
 The following methods are currently available in `bundle`: 
 
-```{r table, echo = FALSE, warnings = FALSE, message = FALSE}
+```{r table, echo = FALSE, warnings = FALSE, message = FALSE, eval = should_eval}
 library(bundle)
 library(dplyr)
 
