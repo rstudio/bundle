@@ -1,0 +1,63 @@
+---
+title: "Available bundling methods"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Available bundling methods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The following methods are currently available in `bundle`: 
+
+```{r table, echo = FALSE, warnings = FALSE, message = FALSE}
+library(bundle)
+library(dplyr)
+
+method_df <- function(method_name) {
+  m <- as.vector(utils::methods(method_name))
+  tibble::tibble(class = gsub(paste0(method_name, "[.]"), "", m),
+                 !!method_name := clisymbols::symbol$tick)
+}
+
+replace_na <- function(x) {
+  x[is.na(x)] <- " "
+  x
+}
+
+out <- method_df("bundle") %>% 
+  mutate(
+    package = case_when(
+      grepl("H2O", class) ~ "H2O",
+      class == "keras.engine.training.Model" ~ "keras",
+      class == "luz_module_fitted" ~ "torch",
+      class == "model_fit" ~ "parsnip",
+      class == "model_stack" ~ "stacks",
+      class == "recipe" ~ "recipes",
+      class == "step_umap" ~ "embed",
+      class == "train" ~ "caret",
+      class == "workflow" ~ "workflows",
+      class == "xgb.Booster" ~ "xgboost",
+      TRUE ~ ""
+    ),
+    ecosystem = case_when(
+      package %in% c("parsnip", "stacks", "recipes", 
+                     "embed", "workflows") ~ "tidymodels",
+      TRUE ~ ""
+    )
+  ) %>%
+  select(ecosystem, package, class) %>%
+  arrange(ecosystem, package, class) %>%
+  replace_na() %>%
+  knitr::kable()
+
+out
+```
+
+Note that a model object not being included in this table does not necessarily mean that the object cannot be saved and re-loaded in a new session---many model objects, like [stats::lm()](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/lm.html) and [stats::glm()](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html) output, can be effectively saved and re-loaded in a new session without any bundling!
