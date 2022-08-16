@@ -107,15 +107,10 @@ bundle.luz_module_fitted <- function(x, ...) {
   rlang::check_installed("torch")
   rlang::check_dots_empty()
 
-  res <- x
-
-  # see luz::luz_save and luz:::model_to_raw
   suppressWarnings({
     con <- rawConnection(raw(), open = "wr")
-    torch::torch_save(res$model, con)
-    serialized_model <- rawConnectionValue(con)
-    res$ctx$.serialized_model <- serialized_model
-    res$ctx$.serialization_version <- 2L
+    luz::luz_save(x, con)
+    res <- rawConnectionValue(con)
   })
 
   close(con)
@@ -123,18 +118,11 @@ bundle.luz_module_fitted <- function(x, ...) {
   bundle_constr(
     object = res,
     situate = situate_constr(function(object) {
-      # see luz::luz_load and luz:::model_from_raw
-      con <- rawConnection(object$ctx$.serialized_model)
+      con <- rawConnection(object)
       on.exit({
         close(con)
       }, add = TRUE)
-      res <- torch::torch_load(con)
-
-      object$model <- res
-      object$ctx$.serialized_model <- NULL
-      object$ctx$.serialization_version <- NULL
-
-      structure(object, class = !!class(x))
+      res <- luz::luz_load(con)
     }),
     desc_class = class(x)[1],
     pkg_versions = c("luz" = utils::packageVersion("luz"))
