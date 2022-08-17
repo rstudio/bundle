@@ -13,6 +13,7 @@
 #' @seealso This method adapts the xgboost internal functions
 #'   `predict.xgb.Booster.handle()` and `xgb.handleToBooster()`, as well
 #'   as  [xgboost::xgb.serialize()].
+#' @template butcher_details
 #' @examplesIf rlang::is_installed("xgboost")
 #' # fit model and bundle ------------------------------------------------
 #' library(xgboost)

@@ -10,6 +10,7 @@
 #'   from [embed][embed::step_umap].
 #' @template param_unused_dots
 #' @seealso This method wraps [uwot::save_uwot()] and [uwot::load_uwot()].
+#' @template butcher_details
 #' @examplesIf rlang::is_installed("recipes") && rlang::is_installed("embed")
 #' # fit model and bundle ------------------------------------------------
 #' library(recipes)

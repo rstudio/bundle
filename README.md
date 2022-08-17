@@ -13,8 +13,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![CRAN
 status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org/package=bundle)
 [![Codecov test
-coverage](https://codecov.io/gh/simonpcouch/bundle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/simonpcouch/bundle?branch=main)
-[![R-CMD-check](https://github.com/simonpcouch/bundle/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/simonpcouch/bundle/actions/workflows/R-CMD-check.yaml)
+coverage](https://codecov.io/gh/rstudio/bundle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle?branch=main)
+[![R-CMD-check](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 R holds most objects in memory. However, some models store their data in
@@ -76,6 +76,7 @@ First, loading needed packages:
 library(bundle)
 library(parsnip)
 library(callr)
+library(waldo)
 ```
 
 Fitting the boosted tree model:
@@ -109,15 +110,59 @@ mod
 #> nfeatures : 10 
 #> evaluation_log:
 #>  iter training_rmse
-#>     1     14.640496
-#>     2     10.918576
-#>     3      8.181425
-#>     4      6.180951
-#>     5      4.689767
+#>     1     14.631798
+#>     2     10.905053
+#>     3      8.219282
+#>     4      6.258573
+#>     5      4.764464
 ```
 
-Now that the model is fitted, we’ll prepare it to be passed to another R
-session by bundling it:
+Note that simply saving and loading the model results in changes to the
+fitted model:
+
+``` r
+temp_file <- tempfile()
+saveRDS(mod, temp_file)
+mod2 <- readRDS(temp_file)
+
+compare(mod, mod2)
+#> `old$fit$handle` is <pointer: 0x132393ef0>
+#> `new$fit$handle` is <pointer: 0x0>
+#> 
+#> `old$fit$handle` is attr(,"class")
+#> `new$fit$handle` is attr(,"class")
+#> 
+#> `old$fit$handle` is [1] "xgb.Booster.handle"
+#> `new$fit$handle` is [1] "xgb.Booster.handle"
+#> 
+#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))` is length 5
+#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))` is length 4
+#> 
+#> names(parent.env(parent.env(attr(old$preproc$terms, '.Environment')))) vs names(parent.env(parent.env(attr(new$preproc$terms, '.Environment'))))
+#>   "..."
+#>   "mod"
+#> - "mod2"
+#>   "should_eval"
+#>   "temp_file"
+#> 
+#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is <pointer: 0x132393ef0>
+#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is <pointer: 0x0>
+#> 
+#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is attr(,"class")
+#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is attr(,"class")
+#> 
+#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is [1] "xgb.Booster.handle"
+#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is [1] "xgb.Booster.handle"
+#> 
+#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod2` is an S3 object of class <_xgb.Booster/model_fit>, a list
+#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod2` is absent
+```
+
+Saving and reloading `mod2` didn’t preserve xgboost’s reference to its
+`pointer`, which may result in failures later in the modeling process.
+
+We thus need to prepare the fitted model to be saved before passing it
+to another R session. We can do so by bundling it:
 
 ``` r
 # bundle the model
@@ -150,13 +195,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.4
-#> 2  20.4
-#> 3  20.4
-#> 4  13.2
-#> 5  16.3
-#> 6  11.4
-#> 7  18.9
+#> 1  22.2
+#> 2  22.2
+#> 3  22.2
+#> 4  15.1
+#> 5  16.2
+#> 6  12.6
+#> 7  18.8
 ```
 
 For a more in-depth demonstration of the package, see the main vignette

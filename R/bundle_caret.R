@@ -12,6 +12,7 @@
 #' @details Primarily, these methods call [bundle()] on the output of
 #'   `train_model_object$finalModel`. See the class of the output of that
 #'   slot for more details on the bundling method for that object.
+#' @template butcher_details
 #' @examplesIf rlang::is_installed("caret")
 #' # fit model and bundle ------------------------------------------------
 #' library(caret)
