@@ -2,6 +2,7 @@ test_that("bundling + unbundling tidymodels stacks", {
   skip_if_not_installed("stacks")
   skip_if_not_installed("parsnip")
   skip_if_not_installed("workflows")
+  skip_if_not_installed("kernlab")
 
   library(stacks)
 
