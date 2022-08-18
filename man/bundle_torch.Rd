@@ -146,6 +146,7 @@ Other bundlers:
 \code{\link{bundle.H2OAutoML}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.model_fit}()},
+\code{\link{bundle.model_stack}()},
 \code{\link{bundle.recipe}()},
 \code{\link{bundle.step_umap}()},
 \code{\link{bundle.train}()},
