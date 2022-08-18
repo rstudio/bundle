@@ -101,7 +101,7 @@ temp_file <- tempfile()
 saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
-compare(mod, mod2)
+compare(mod, mod2, ignore_formula_env = TRUE)
 ```
 
 Saving and reloading `mod2` didn't preserve xgboost's reference to its `pointer`, which may result in failures later in the modeling process.

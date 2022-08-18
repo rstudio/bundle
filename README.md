@@ -111,10 +111,10 @@ mod
 #> evaluation_log:
 #>  iter training_rmse
 #>     1     14.631798
-#>     2     10.905053
-#>     3      8.219282
-#>     4      6.258573
-#>     5      4.764464
+#>     2     10.865171
+#>     3      8.129132
+#>     4      6.123023
+#>     5      4.681486
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -125,8 +125,8 @@ temp_file <- tempfile()
 saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
-compare(mod, mod2)
-#> `old$fit$handle` is <pointer: 0x132393ef0>
+compare(mod, mod2, ignore_formula_env = TRUE)
+#> `old$fit$handle` is <pointer: 0x124af9c30>
 #> `new$fit$handle` is <pointer: 0x0>
 #> 
 #> `old$fit$handle` is attr(,"class")
@@ -134,28 +134,6 @@ compare(mod, mod2)
 #> 
 #> `old$fit$handle` is [1] "xgb.Booster.handle"
 #> `new$fit$handle` is [1] "xgb.Booster.handle"
-#> 
-#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))` is length 5
-#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))` is length 4
-#> 
-#> names(parent.env(parent.env(attr(old$preproc$terms, '.Environment')))) vs names(parent.env(parent.env(attr(new$preproc$terms, '.Environment'))))
-#>   "..."
-#>   "mod"
-#> - "mod2"
-#>   "should_eval"
-#>   "temp_file"
-#> 
-#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is <pointer: 0x132393ef0>
-#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is <pointer: 0x0>
-#> 
-#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is attr(,"class")
-#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is attr(,"class")
-#> 
-#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is [1] "xgb.Booster.handle"
-#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is [1] "xgb.Booster.handle"
-#> 
-#> `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod2` is an S3 object of class <_xgb.Booster/model_fit>, a list
-#> `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod2` is absent
 ```
 
 Saving and reloading `mod2` didn’t preserve xgboost’s reference to its
@@ -195,13 +173,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.2
-#> 2  22.2
-#> 3  22.2
-#> 4  15.1
-#> 5  16.2
-#> 6  12.6
-#> 7  18.8
+#> 1  22.5
+#> 2  20.6
+#> 3  18.9
+#> 4  14.4
+#> 5  16.1
+#> 6  12.0
+#> 7  17.3
 ```
 
 For a more in-depth demonstration of the package, see the main vignette
