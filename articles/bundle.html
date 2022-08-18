@@ -122,13 +122,13 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">keras_fit</span>, <span class="va">x_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5639107</span></span>
-<span><span class="co">#&gt; [2,]  1.6926514</span></span>
-<span><span class="co">#&gt; [3,]  0.9728527</span></span>
-<span><span class="co">#&gt; [4,]  0.5155955</span></span>
-<span><span class="co">#&gt; [5,] -0.7771358</span></span>
-<span><span class="co">#&gt; [6,] -1.9420159</span></span>
-<span><span class="co">#&gt; [7,]  1.0381167</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4912262</span></span>
+<span><span class="co">#&gt; [2,]  1.5670553</span></span>
+<span><span class="co">#&gt; [3,]  0.9758402</span></span>
+<span><span class="co">#&gt; [4,]  0.6693859</span></span>
+<span><span class="co">#&gt; [5,] -0.7397636</span></span>
+<span><span class="co">#&gt; [6,] -1.7066863</span></span>
+<span><span class="co">#&gt; [7,]  0.9601441</span></span></code></pre></div>
 <p>Perfect.</p>
 <p>If we’re satisfied with this model and think it provides some valuable insights, we might want to deploy it somewhere—maybe on a Shiny app—so that others can make use of it.</p>
 <p>The callr package will be helpful for emulating this kind of situation. The package allows us to start up a fresh R session and pass a few objects in.</p>
@@ -212,13 +212,13 @@
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5639107</span></span>
-<span><span class="co">#&gt; [2,]  1.6926514</span></span>
-<span><span class="co">#&gt; [3,]  0.9728527</span></span>
-<span><span class="co">#&gt; [4,]  0.5155955</span></span>
-<span><span class="co">#&gt; [5,] -0.7771358</span></span>
-<span><span class="co">#&gt; [6,] -1.9420159</span></span>
-<span><span class="co">#&gt; [7,]  1.0381167</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4912262</span></span>
+<span><span class="co">#&gt; [2,]  1.5670553</span></span>
+<span><span class="co">#&gt; [3,]  0.9758402</span></span>
+<span><span class="co">#&gt; [4,]  0.6693859</span></span>
+<span><span class="co">#&gt; [5,] -0.7397636</span></span>
+<span><span class="co">#&gt; [6,] -1.7066863</span></span>
+<span><span class="co">#&gt; [7,]  0.9601441</span></span></code></pre></div>
 <p>Awesome! Making use of their methods, we were able to effectively save our model, load it in a new R session, and predict on new data.</p>
 <p>Now, a new scenario—I’ve heard that xgboost models are super performant, and want to try to productionize those, too. How would we do that?</p>
 <p>Based on our workflow just now, we could try to just save it with <code>saveRDS</code> and see if we get an informative error somewhere along the way to predicting in a new R session. Or, maybe a better approach would be to read through their documentation and see if we can find anything related to serialization.</p>
@@ -258,13 +258,13 @@
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5639107</span></span>
-<span><span class="co">#&gt; [2,]  1.6926514</span></span>
-<span><span class="co">#&gt; [3,]  0.9728527</span></span>
-<span><span class="co">#&gt; [4,]  0.5155955</span></span>
-<span><span class="co">#&gt; [5,] -0.7771358</span></span>
-<span><span class="co">#&gt; [6,] -1.9420159</span></span>
-<span><span class="co">#&gt; [7,]  1.0381167</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4912262</span></span>
+<span><span class="co">#&gt; [2,]  1.5670553</span></span>
+<span><span class="co">#&gt; [3,]  0.9758402</span></span>
+<span><span class="co">#&gt; [4,]  0.6693859</span></span>
+<span><span class="co">#&gt; [5,] -0.7397636</span></span>
+<span><span class="co">#&gt; [6,] -1.7066863</span></span>
+<span><span class="co">#&gt; [7,]  0.9601441</span></span></code></pre></div>
 <p>Huzzah!</p>
 <p>The best part is, if you wanted to do the same thing for an xgboost object, you could use the same code!</p>
 <p>First, fitting a quick xgboost model:</p>

@@ -137,47 +137,25 @@
 <span><span class="co">#&gt; evaluation_log:</span></span>
 <span><span class="co">#&gt;  iter training_rmse</span></span>
 <span><span class="co">#&gt;     1     14.631798</span></span>
-<span><span class="co">#&gt;     2     10.905053</span></span>
-<span><span class="co">#&gt;     3      8.219282</span></span>
-<span><span class="co">#&gt;     4      6.258573</span></span>
-<span><span class="co">#&gt;     5      4.764464</span></span></code></pre></div>
+<span><span class="co">#&gt;     2     10.865171</span></span>
+<span><span class="co">#&gt;     3      8.129132</span></span>
+<span><span class="co">#&gt;     4      6.123023</span></span>
+<span><span class="co">#&gt;     5      4.681486</span></span></code></pre></div>
 <p>Note that simply saving and loading the model results in changes to the fitted model:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">temp_file</span><span class="op">)</span></span>
 <span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">temp_file</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">compare</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">mod2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `old$fit$handle` is &lt;pointer: 0x132393ef0&gt;</span></span>
+<span><span class="fu"><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">compare</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">mod2</span>, ignore_formula_env <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `old$fit$handle` is &lt;pointer: 0x124af9c30&gt;</span></span>
 <span><span class="co">#&gt; `new$fit$handle` is &lt;pointer: 0x0&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; `old$fit$handle` is attr(,"class")</span></span>
 <span><span class="co">#&gt; `new$fit$handle` is attr(,"class")</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; `old$fit$handle` is [1] "xgb.Booster.handle"</span></span>
-<span><span class="co">#&gt; `new$fit$handle` is [1] "xgb.Booster.handle"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))` is length 5</span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))` is length 4</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; names(parent.env(parent.env(attr(old$preproc$terms, '.Environment')))) vs names(parent.env(parent.env(attr(new$preproc$terms, '.Environment'))))</span></span>
-<span><span class="co">#&gt;   "..."</span></span>
-<span><span class="co">#&gt;   "mod"</span></span>
-<span><span class="co">#&gt; - "mod2"</span></span>
-<span><span class="co">#&gt;   "should_eval"</span></span>
-<span><span class="co">#&gt;   "temp_file"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is &lt;pointer: 0x132393ef0&gt;</span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is &lt;pointer: 0x0&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is attr(,"class")</span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is attr(,"class")</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod$fit$handle` is [1] "xgb.Booster.handle"</span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod$fit$handle` is [1] "xgb.Booster.handle"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(old$preproc$terms, '.Environment')))$mod2` is an S3 object of class &lt;_xgb.Booster/model_fit&gt;, a list</span></span>
-<span><span class="co">#&gt; `parent.env(parent.env(attr(new$preproc$terms, '.Environment')))$mod2` is absent</span></span></code></pre></div>
+<span><span class="co">#&gt; `new$fit$handle` is [1] "xgb.Booster.handle"</span></span></code></pre></div>
 <p>Saving and reloading <code>mod2</code> didn’t preserve xgboost’s reference to its <code>pointer</code>, which may result in failures later in the modeling process.</p>
 <p>We thus need to prepare the fitted model to be saved before passing it to another R session. We can do so by bundling it:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -207,13 +185,13 @@
 <span><span class="co">#&gt; # A tibble: 7 × 1</span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  22.2</span></span>
-<span><span class="co">#&gt; 2  22.2</span></span>
-<span><span class="co">#&gt; 3  22.2</span></span>
-<span><span class="co">#&gt; 4  15.1</span></span>
-<span><span class="co">#&gt; 5  16.2</span></span>
-<span><span class="co">#&gt; 6  12.6</span></span>
-<span><span class="co">#&gt; 7  18.8</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  22.5</span></span>
+<span><span class="co">#&gt; 2  20.6</span></span>
+<span><span class="co">#&gt; 3  18.9</span></span>
+<span><span class="co">#&gt; 4  14.4</span></span>
+<span><span class="co">#&gt; 5  16.1</span></span>
+<span><span class="co">#&gt; 6  12.0</span></span>
+<span><span class="co">#&gt; 7  17.3</span></span></code></pre></div>
 <p>For a more in-depth demonstration of the package, see the main vignette with:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"bundle"</span><span class="op">)</span></span></code></pre></div>
