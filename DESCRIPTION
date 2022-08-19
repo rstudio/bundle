@@ -38,12 +38,14 @@ Suggests:
     modeldata,
     parsnip,
     recipes,
+    renv,
     rmarkdown,
     stacks,
     testthat (>= 3.0.0),
     torch,
     torchvision,
     uwot,
+    vetiver,
     workflows,
     xgboost
 VignetteBuilder: 
