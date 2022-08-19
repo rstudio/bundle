@@ -97,8 +97,7 @@ bundle_h2o <- function(x, ...) {
 
       res
     }),
-    desc_class = "h2o",
-    pkg_versions = c("h2o" = utils::packageVersion("h2o"))
+    desc_class = "h2o"
   )
 }
 

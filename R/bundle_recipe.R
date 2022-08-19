@@ -29,7 +29,6 @@ bundle.recipe <- function(x, ...) {
       object$steps <- steps_unbundled
       structure(object, class = !!class(x))
     }),
-    desc_class = "recipe",
-    pkg_versions = c("recipes" = utils::packageVersion("recipes"))
+    desc_class = "recipe"
   )
 }

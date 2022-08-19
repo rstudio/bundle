@@ -49,7 +49,6 @@ bundle.train <- function(x, ...) {
 
       structure(res, class = !!class(x))
     }),
-    desc_class = "train",
-    pkg_versions = c("caret" = utils::packageVersion("caret"))
+    desc_class = "train"
   )
 }

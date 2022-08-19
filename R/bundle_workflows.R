@@ -63,7 +63,6 @@ bundle.workflow <- function(x, ...) {
 
       structure(res, class = !!class(x))
     }),
-    desc_class = "workflow",
-    pkg_versions = c("workflows" = utils::packageVersion("workflows"))
+    desc_class = "workflow"
   )
 }

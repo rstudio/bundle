@@ -51,7 +51,6 @@ bundle.step_umap <- function(x, ...) {
       object$object <- umap_fit
       object
     }),
-    desc_class = "step_umap",
-    pkg_versions = c("uwot" = utils::packageVersion("uwot"))
+    desc_class = "step_umap"
   )
 }
