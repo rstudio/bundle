@@ -44,6 +44,14 @@ of \code{\link[=unbundle]{unbundle()}} is a model object that is ready to \code{
 and other restored functionality (like plotting or summarizing) is supported
 as a side effect only.
 
+The bundle package wraps native serialization methods from model-supplying
+packages. Between versions, those model-supplying packages may change their
+native serialization methods, possibly introducing problems with re-loading
+objects serialized with previous package versions. The bundle package does
+not provide checks for these sorts of changes, and ought to be used in
+conjunction with tooling for managing and monitoring model environments
+like \link[vetiver:vetiver-package]{vetiver} or \link[renv:renv-package]{renv}.
+
 See \code{vignette("bundle")} for more information on bundling and its motivation.
 }
 \description{
