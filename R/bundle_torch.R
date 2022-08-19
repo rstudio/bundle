@@ -124,7 +124,6 @@ bundle.luz_module_fitted <- function(x, ...) {
       }, add = TRUE)
       res <- luz::luz_load(con)
     }),
-    desc_class = class(x)[1],
-    pkg_versions = c("luz" = utils::packageVersion("luz"))
+    desc_class = class(x)[1]
   )
 }

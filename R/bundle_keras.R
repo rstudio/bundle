@@ -83,7 +83,6 @@ bundle.keras.engine.training.Model <- function(x, ...) {
 
       res
     }),
-    desc_class = "keras",
-    pkg_versions = c("keras" = utils::packageVersion("keras"))
+    desc_class = "keras"
   )
 }

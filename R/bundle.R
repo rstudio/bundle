@@ -37,7 +37,5 @@ unbundle.default <- function(x) x
 
 #' @export
 unbundle.bundle <- function(x) {
-  x <- check_for_pkgs(x)
-
   x$situate(get_object(x))
 }

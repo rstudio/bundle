@@ -6,7 +6,7 @@
 \alias{swap_element}
 \title{Internal Functions}
 \usage{
-bundle_constr(object, situate, desc_class, pkg_versions)
+bundle_constr(object, situate, desc_class)
 
 situate_constr(fn)
 

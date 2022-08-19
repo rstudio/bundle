@@ -52,7 +52,6 @@ bundle.model_stack <- function(x, ...) {
 
       structure(res, class = !!class(x))
     }),
-    desc_class = "model_stack",
-    pkg_versions = c("stacks" = utils::packageVersion("stacks"))
+    desc_class = "model_stack"
   )
 }

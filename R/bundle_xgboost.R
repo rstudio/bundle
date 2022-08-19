@@ -58,7 +58,6 @@ bundle.xgb.Booster <- function(x, ...) {
 
       res
     }),
-    desc_class = class(x)[1],
-    pkg_versions = c("xgboost" = utils::packageVersion("xgboost"))
+    desc_class = class(x)[1]
   )
 }

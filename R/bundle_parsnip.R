@@ -47,7 +47,6 @@ bundle.model_fit <- function(x, ...) {
 
       structure(res, class = !!class(x))
     }),
-    desc_class = "model_fit",
-    pkg_versions = c("parsnip" = utils::packageVersion("parsnip"))
+    desc_class = "model_fit"
   )
 }
