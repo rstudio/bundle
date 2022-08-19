@@ -136,6 +136,15 @@ and other restored functionality (like plotting or summarizing) is supported
 as a side effect only.</p>
 
 
+<p>The bundle package wraps native serialization methods from model-supplying
+packages. Between versions, those model-supplying packages may change their
+native serialization methods, possibly introducing problems with re-loading
+objects serialized with previous package versions. The bundle package does
+not provide checks for these sorts of changes, and ought to be used in
+conjunction with tooling for managing and monitoring model environments
+like <a href="https://rstudio.github.io/vetiver-r/reference/vetiver-package.html" class="external-link">vetiver</a> or <a href="https://rstudio.github.io/renv/reference/renv-package.html" class="external-link">renv</a>.</p>
+
+
 <p>See <code><a href="../articles/bundle.html">vignette("bundle")</a></code> for more information on bundling and its motivation.</p>
     </div>
     <div class="section level2">
@@ -190,18 +199,18 @@ as a side effect only.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H2O is not running yet, starting it now...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Note:  In case of errors look at the following log files:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     /tmp/RtmpaCFV30/file398a1df23aa7/h2o_runner_started_from_r.out</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     /tmp/RtmpaCFV30/file398a146e7d39/h2o_runner_started_from_r.err</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     /tmp/RtmpDpIJDK/file3dc372a6290/h2o_runner_started_from_r.out</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     /tmp/RtmpDpIJDK/file3dc36e998f08/h2o_runner_started_from_r.err</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Starting H2O JVM and connecting: .... Connection successful!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> R is connected to the H2O cluster: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster uptime:         2 seconds 659 milliseconds </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster uptime:         2 seconds 545 milliseconds </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster timezone:       UTC </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     H2O data parsing timezone:  UTC </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster version:        3.36.1.2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster version age:    2 months and 23 days  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster version age:    2 months and 24 days  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster name:           H2O_started_from_R_runner_ydg016 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster total nodes:    1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster total memory:   1.70 GB </span>
