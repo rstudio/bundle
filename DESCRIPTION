@@ -18,6 +18,7 @@ License: MIT + file LICENSE
 URL: https://github.com/rstudio/bundle, https://rstudio.github.io/bundle/
 BugReports: https://github.com/rstudio/bundle/issues
 Imports:
+    fs,
     glue,
     purrr,
     rlang,
@@ -46,6 +47,7 @@ Suggests:
     torchvision,
     uwot,
     vetiver,
+    withr,
     workflows,
     xgboost
 VignetteBuilder: 
