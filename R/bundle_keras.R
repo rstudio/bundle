@@ -82,17 +82,19 @@ bundle.keras.engine.training.Model <- function(x, ...) {
     utils::tar(
       tarfile = file_loc,
       compression = "gzip",
-      tar = "internal"
+      tar = Sys.getenv("RSCONNECT_TAR", "internal")
     )
   )
 
-  serialized <- serialize(file_loc, connection = NULL)
+  serialized <- readBin(file_loc, "raw", file.size(file_loc), endian = "little")
 
   bundle_constr(
     object = serialized,
     situate = situate_constr(function(object) {
+      new_file <- fs::file_temp(pattern = "unbundle", ext = ".tar.gz")
       unbundle_dir <- fs::dir_create(tempdir(), "unbundle")
-      utils::untar(unserialize(object), exdir = unbundle_dir)
+      writeBin(object, new_file, endian = "little")
+      utils::untar(new_file, exdir = unbundle_dir)
       res <- keras::load_model_tf(unbundle_dir)
 
       res
