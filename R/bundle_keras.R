@@ -69,8 +69,7 @@
 #' @method bundle keras.engine.training.Model
 #' @export
 bundle.keras.engine.training.Model <- function(x, ...) {
-  rlang::check_installed("keras")
-  rlang::check_installed("withr")
+  rlang::check_installed(c("keras", "withr", "fs"))
   rlang::check_dots_empty()
 
   file_loc <- fs::file_temp(pattern = "bundle", ext = ".tar.gz")

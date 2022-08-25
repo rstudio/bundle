@@ -18,7 +18,6 @@ License: MIT + file LICENSE
 URL: https://github.com/rstudio/bundle, https://rstudio.github.io/bundle/
 BugReports: https://github.com/rstudio/bundle/issues
 Imports:
-    fs,
     glue,
     purrr,
     rlang,
@@ -30,6 +29,7 @@ Suggests:
     caret,
     covr,
     embed,
+    fs,
     h2o,
     keras,
     kernlab,
