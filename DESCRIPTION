@@ -21,7 +21,8 @@ Imports:
     glue,
     purrr,
     rlang,
-    utils
+    utils,
+    withr
 Suggests:
     bonsai,
     butcher,
@@ -29,7 +30,6 @@ Suggests:
     caret,
     covr,
     embed,
-    fs,
     h2o,
     keras,
     kernlab,
@@ -47,7 +47,6 @@ Suggests:
     torchvision,
     uwot,
     vetiver,
-    withr,
     workflows,
     xgboost
 VignetteBuilder: 
