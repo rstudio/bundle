@@ -69,17 +69,32 @@
 #' @method bundle keras.engine.training.Model
 #' @export
 bundle.keras.engine.training.Model <- function(x, ...) {
-  rlang::check_installed("keras")
+  rlang::check_installed(c("keras", "withr", "fs"))
   rlang::check_dots_empty()
 
-  file_loc <- tempfile()
-  keras::save_model_tf(x, file_loc)
-  serialized <- serialize(file_loc, connection = NULL)
+  file_loc <- fs::file_temp(pattern = "bundle", ext = ".tar.gz")
+  tmp_dir <- fs::dir_create(tempdir(), "bundle")
+  keras::save_model_tf(x, tmp_dir)
+
+  withr::with_dir(
+    tmp_dir,
+    utils::tar(
+      tarfile = file_loc,
+      compression = "gzip",
+      tar = Sys.getenv("RSCONNECT_TAR", "internal")
+    )
+  )
+
+  serialized <- readBin(file_loc, "raw", file.size(file_loc), endian = "little")
 
   bundle_constr(
     object = serialized,
     situate = situate_constr(function(object) {
-      res <- keras::load_model_tf(unserialize(object))
+      new_file <- fs::file_temp(pattern = "unbundle", ext = ".tar.gz")
+      unbundle_dir <- fs::dir_create(tempdir(), "unbundle")
+      writeBin(object, new_file, endian = "little")
+      utils::untar(new_file, exdir = unbundle_dir)
+      res <- keras::load_model_tf(unbundle_dir)
 
       res
     }),

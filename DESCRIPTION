@@ -29,6 +29,7 @@ Suggests:
     caret,
     covr,
     embed,
+    fs,
     h2o,
     keras,
     kernlab,
@@ -46,6 +47,7 @@ Suggests:
     torchvision,
     uwot,
     vetiver,
+    withr,
     workflows,
     xgboost
 VignetteBuilder: 
