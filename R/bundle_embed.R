@@ -37,16 +37,18 @@ bundle.step_umap <- function(x, ...) {
   rlang::check_installed("uwot")
 
   res <- x
-  file_loc <- tempfile()
   umap_fit <- res$object
+  file_loc <- withr::local_tempfile(pattern = "bundle")
   uwot::save_uwot(umap_fit, file_loc)
-  raw <- serialize(file_loc, connection = NULL)
+  raw <- readBin(file_loc, "raw", file.size(file_loc), endian = "little")
   res$object <- raw
 
   bundle_constr(
     object = res,
     situate = situate_constr(function(object) {
-      umap_fit <- uwot::load_uwot(unserialize(object$object))
+      new_file <- withr::local_tempfile(pattern = "unbundle")
+      writeBin(object$object, new_file, endian = "little")
+      umap_fit <- uwot::load_uwot(new_file)
       umap_fit$mod_dir <- NULL
       object$object <- umap_fit
       object
