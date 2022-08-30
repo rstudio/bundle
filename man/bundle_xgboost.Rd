@@ -98,9 +98,8 @@ xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-This method adapts the xgboost internal functions
-\code{predict.xgb.Booster.handle()} and \code{xgb.handleToBooster()}, as well
-as  \code{\link[xgboost:xgb.serialize]{xgboost::xgb.serialize()}}.
+This method adapts the xgboost functions \code{\link[xgboost:xgb.save.raw]{xgboost::xgb.save.raw()}}
+and \code{\link[xgboost:xgb.load.raw]{xgboost::xgb.load.raw()}}.
 
 Other bundlers: 
 \code{\link{bundle.H2OAutoML}()},

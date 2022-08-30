@@ -10,9 +10,8 @@
 #'   [xgboost::xgb.train()].
 #' @template param_unused_dots
 #' @rdname bundle_xgboost
-#' @seealso This method adapts the xgboost internal functions
-#'   `predict.xgb.Booster.handle()` and `xgb.handleToBooster()`, as well
-#'   as  [xgboost::xgb.serialize()].
+#' @seealso This method adapts the xgboost functions [xgboost::xgb.save.raw()]
+#'   and [xgboost::xgb.load.raw()].
 #' @template butcher_details
 #' @examplesIf rlang::is_installed("xgboost")
 #' # fit model and bundle ------------------------------------------------
@@ -40,16 +39,12 @@ bundle.xgb.Booster <- function(x, ...) {
   rlang::check_installed("xgboost")
   rlang::check_dots_empty()
 
-  object <- xgboost::xgb.serialize(x)
+  object <- xgboost::xgb.save.raw(x, raw_format = "ubj")
 
   bundle_constr(
     object = object,
     situate = situate_constr(function(object) {
-      unserialized <- xgboost::xgb.unserialize(object)
-
-      # see xgboost:::predict.xgb.Booster.handle and xgboost:::xgb.handleToBooster
-      res <- list(handle = unserialized, raw = NULL)
-      class(res) <- "xgb.Booster"
+      res <- xgboost::xgb.load.raw(object, as_booster = TRUE)
 
       res$params <- list(
         objective = !!x$params$objective,
