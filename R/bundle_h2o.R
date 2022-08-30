@@ -77,22 +77,24 @@ bundle_h2o <- function(x, ...) {
   rlang::check_dots_empty()
   rlang::check_installed("h2o")
 
-  file_loc <- tempfile()
+  file_loc <- withr::local_tempfile(pattern = "bundle")
 
   if (x@have_mojo) {
     file_loc <- with_no_progress(h2o::h2o.save_mojo(x, path = file_loc))
   } else {
     file_loc <- with_no_progress(h2o::h2o.saveModel(x, path = file_loc))
   }
-  raw <- serialize(file_loc, connection = NULL)
+  raw <- readBin(file_loc, "raw", file.size(file_loc), endian = "little")
 
   bundle_constr(
     object = raw,
     situate = situate_constr(function(object) {
+      new_file <- withr::local_tempfile(pattern = "unbundle")
+      writeBin(object, new_file, endian = "little")
       if (!!x@have_mojo) {
-        res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(unserialize(object)))
+        res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(new_file))
       } else {
-        res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(unserialize(object)))
+        res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(new_file))
       }
 
       res
