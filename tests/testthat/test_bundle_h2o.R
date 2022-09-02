@@ -1,4 +1,4 @@
-test_that("bundling + unbundling h2o fits", {
+test_that("bundling + unbundling h2o fits (regression)", {
   skip_if_not_installed("h2o")
   skip_if_not_installed("modeldata")
   skip_if_not_installed("butcher")
@@ -7,167 +7,676 @@ test_that("bundling + unbundling h2o fits", {
   library(modeldata)
   library(butcher)
 
-  set.seed(1)
+  h2o.init()
+
+  test_data <- as.h2o(mtcars)
+
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    reg_data <- as.h2o(mtcars)
+
+    reg_fit <-
+      h2o.glm(
+        x = colnames(reg_data)[2:length(colnames(reg_data))],
+        y = colnames(reg_data)[1],
+        training_frame = reg_data
+      )
+  }
+
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(mod)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_unbundled <- bundle::unbundle(mod_bundle)
+
+        res <- predict(mod_unbundled, test_data)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = test_data
+      )
+    )
+
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(butcher::butcher(mod))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
+
+        res <- predict(mod_butchered_unbundled, test_data)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = test_data
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, test_data)
+
+  # check classes
+  expect_s3_class(mod_bundle, "bundled_h2o")
+  expect_s4_class(unbundle(mod_bundle), "H2ORegressionModel")
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
+
+  # compare predictions
+  expect_equal(mod_preds$data, mod_unbundled_preds$data)
+  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
+
+  h2o.shutdown(prompt = FALSE)
+})
+
+test_that("bundling + unbundling h2o fits (binary)", {
+  skip_if_not_installed("h2o")
+  skip_if_not_installed("modeldata")
+  skip_if_not_installed("butcher")
+
+  library(h2o)
+  library(modeldata)
+  library(butcher)
 
   h2o.init()
 
-  n <- 100
-  p <- 5
+  set.seed(2)
 
-  reg_data <- mtcars %>% as.h2o()
-  bin_data <- sim_noise(n, p, outcome = "classification", num_classes = 2) %>% as.h2o()
-  multi_data <- sim_noise(n, p, outcome = "classification", num_classes = 3) %>% as.h2o()
-
-  reg_fit <-
-    h2o.glm(
-      x = colnames(reg_data)[2:length(colnames(reg_data))],
-      y = colnames(reg_data)[1],
-      training_frame = reg_data
+  test_data <-
+    as.h2o(
+      modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 2)
     )
 
-  bin_fit <-
-    h2o.glm(
-      x = paste0("noise_", 1:5),
-      y = "class",
-      training_frame = bin_data
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    set.seed(1)
+
+    bin_data <-
+      as.h2o(
+        modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 2)
+      )
+
+    bin_fit <-
+      h2o.glm(
+        x = paste0("noise_", 1:5),
+        y = "class",
+        training_frame = bin_data
+      )
+
+    bin_fit
+  }
+
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(mod)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
     )
 
-  multi_fit <-
-    h2o.glm(
-      x = paste0("noise_", 1:5),
-      y = "class",
-      training_frame = multi_data
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_unbundled <- bundle::unbundle(mod_bundle)
+
+        res <- predict(mod_unbundled, test_data)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = test_data
+      )
     )
 
-  auto_reg_fit <-
-    h2o.automl(
-      x = colnames(reg_data)[2:length(colnames(reg_data))],
-      y = colnames(reg_data)[1],
-      training_frame = reg_data,
-      max_runtime_secs = 5
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(butcher::butcher(mod))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
     )
 
-  auto_bin_fit <-
-    h2o.automl(
-      x = paste0("noise_", 1:5),
-      y = "class",
-      training_frame = bin_data,
-      max_runtime_secs = 5
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
+
+        res <- predict(mod_butchered_unbundled, test_data)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = test_data
+      )
     )
 
-  reg_bundle <- bundle(reg_fit)
-  bin_bundle <- bundle(bin_fit)
-  multi_bundle <- bundle(multi_fit)
-  auto_reg_bundle <- bundle(auto_reg_fit)
-  auto_bin_bundle <- bundle(auto_bin_fit)
+  # run expectations -----------------------------------------------------------
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, test_data)
 
-  reg_unbundled <- unbundle(reg_bundle)
-  bin_unbundled <- unbundle(bin_bundle)
-  multi_unbundled <- unbundle(multi_bundle)
-  auto_reg_unbundled <- unbundle(auto_reg_bundle)
-  auto_bin_unbundled <- unbundle(auto_bin_bundle)
-
-  expect_s3_class(reg_bundle, "bundled_h2o")
-  expect_s3_class(bin_bundle, "bundled_h2o")
-  expect_s3_class(multi_bundle, "bundled_h2o")
-  expect_s3_class(auto_reg_bundle, "bundled_h2o")
-  expect_s3_class(auto_bin_bundle, "bundled_h2o")
-
-  expect_s4_class(reg_unbundled, "H2ORegressionModel")
-  expect_s4_class(bin_unbundled, "H2OBinomialModel")
-  expect_s4_class(multi_unbundled, "H2OMultinomialModel")
-  expect_s4_class(auto_reg_unbundled, "H2ORegressionModel")
-  expect_s4_class(auto_bin_unbundled, "H2OBinomialModel")
+  # check classes
+  expect_s3_class(mod_bundle, "bundled_h2o")
+  expect_s4_class(unbundle(mod_bundle), "H2OBinomialModel")
 
   # ensure that the situater function didn't bring along the whole model
-  expect_false("x" %in% names(environment(reg_bundle$situate)))
-  expect_false("x" %in% names(environment(bin_bundle$situate)))
-  expect_false("x" %in% names(environment(multi_bundle$situate)))
-  expect_false("x" %in% names(environment(auto_reg_bundle$situate)))
-  expect_false("x" %in% names(environment(auto_bin_bundle$situate)))
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
 
-  expect_error(bundle(reg_unbundled, boop = "bop"), class = "rlib_error_dots")
-  expect_error(bundle(bin_unbundled, boop = "bop"), class = "rlib_error_dots")
-  expect_error(bundle(multi_unbundled, boop = "bop"), class = "rlib_error_dots")
-  expect_error(bundle(auto_reg_unbundled, boop = "bop"), class = "rlib_error_dots")
-  expect_error(bundle(auto_bin_unbundled, boop = "bop"), class = "rlib_error_dots")
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
 
-  reg_preds <- predict(reg_fit, reg_data)
-  bin_preds <- predict(bin_fit, bin_data)
-  multi_preds <- predict(multi_fit, multi_data)
-  auto_reg_preds <- predict(auto_reg_fit, reg_data)
-  auto_bin_preds <- predict(auto_bin_fit, bin_data)
+  # compare predictions
+  expect_equal(mod_preds$data, mod_unbundled_preds$data)
+  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
 
-  reg_unbundled_preds <- predict(reg_unbundled, reg_data)
-  bin_unbundled_preds <- predict(bin_unbundled, bin_data)
-  multi_unbundled_preds <- predict(multi_unbundled, multi_data)
-  auto_reg_unbundled_preds <- predict(auto_reg_unbundled, reg_data)
-  auto_bin_unbundled_preds <- predict(auto_bin_unbundled, bin_data)
+  h2o.shutdown(prompt = FALSE)
+})
 
-  expect_equal(reg_preds$data, reg_unbundled_preds$data)
-  expect_equal(bin_preds$data, bin_unbundled_preds$data)
-  expect_equal(multi_preds$data, multi_unbundled_preds$data)
-  expect_equal(auto_reg_preds$data, auto_reg_unbundled_preds$data)
-  expect_equal(auto_bin_preds$data, auto_bin_unbundled_preds$data)
+test_that("bundling + unbundling h2o fits (multinomial)", {
+  skip_if_not_installed("h2o")
+  skip_if_not_installed("modeldata")
+  skip_if_not_installed("butcher")
 
+  library(h2o)
+  library(modeldata)
+  library(butcher)
 
-  # only want bundled models and original preds to persist.
-  # test again in new R session:
-  res <- callr::r(
-    function(reg_bundle_,   reg_data_,
-             bin_bundle_,   bin_data_,
-             multi_bundle_, multi_data_,
-             auto_reg_bundle_,
-             auto_bin_bundle_) {
-      library(bundle)
-      library(h2o)
+  h2o.init()
 
-      h2o.init()
+  set.seed(2)
 
-      reg_unbundled <- unbundle(reg_bundle_)
-      bin_unbundled <- unbundle(bin_bundle_)
-      multi_unbundled <- unbundle(multi_bundle_)
-      auto_reg_unbundled <- unbundle(auto_reg_bundle_)
-      auto_bin_unbundled <- unbundle(auto_bin_bundle_)
-
-      reg_unbundled_preds <- predict(reg_unbundled, reg_data_)
-      bin_unbundled_preds <- predict(bin_unbundled, bin_data_)
-      multi_unbundled_preds <- predict(multi_unbundled, multi_data_)
-      auto_reg_unbundled_preds <- predict(auto_reg_unbundled, reg_data_)
-      auto_bin_unbundled_preds <- predict(auto_bin_unbundled, bin_data_)
-
-      h2o.shutdown(prompt = FALSE)
-
-      list(
-        reg_unbundled_preds_new = reg_unbundled_preds$data,
-        bin_unbundled_preds_new = bin_unbundled_preds$data,
-        multi_unbundled_preds_new = multi_unbundled_preds$data,
-        auto_reg_unbundled_preds_new = auto_reg_unbundled_preds$data,
-        auto_bin_unbundled_preds_new = auto_bin_unbundled_preds$data
-      )
-    },
-    args = list(
-      reg_bundle_ = reg_bundle,
-      reg_data_ = reg_data,
-      bin_bundle_ = bin_bundle,
-      bin_data_ = bin_data,
-      multi_bundle_ = multi_bundle,
-      multi_data_ = multi_data,
-      auto_reg_bundle_ = auto_reg_bundle,
-      auto_bin_bundle_ = auto_bin_bundle
+  test_data <-
+    as.h2o(
+      modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 3)
     )
-  )
 
-  expect_equal(reg_preds$data, res$reg_unbundled_preds_new)
-  expect_equal(bin_preds$data, res$bin_unbundled_preds_new)
-  expect_equal(multi_preds$data, res$multi_unbundled_preds_new)
-  expect_equal(auto_reg_preds$data, res$auto_reg_unbundled_preds_new)
-  expect_equal(auto_bin_preds$data, res$auto_bin_unbundled_preds_new)
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    set.seed(1)
 
-  # interaction with butcher
-  expect_silent({
-    reg_fit_butchered <- butcher(reg_fit)
-  })
+    multi_data <-
+      as.h2o(
+        modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 3)
+      )
 
-  expect_equal(reg_fit, reg_fit_butchered)
+    multi_fit <-
+      h2o.glm(
+        x = paste0("noise_", 1:5),
+        y = "class",
+        training_frame = multi_data
+      )
+
+    multi_fit
+  }
+
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(mod)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_unbundled <- bundle::unbundle(mod_bundle)
+
+        res <- predict(mod_unbundled, test_data)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = test_data
+      )
+    )
+
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(butcher::butcher(mod))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
+
+        res <- predict(mod_butchered_unbundled, test_data)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = test_data
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, test_data)
+
+  # check classes
+  expect_s3_class(mod_bundle, "bundled_h2o")
+  expect_s4_class(unbundle(mod_bundle), "H2OMultinomialModel")
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
+
+  # compare predictions
+  expect_equal(mod_preds$data, mod_unbundled_preds$data)
+  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
+
+  h2o.shutdown(prompt = FALSE)
+})
+
+test_that("bundling + unbundling h2o fits (automl regression)", {
+  skip_if_not_installed("h2o")
+  skip_if_not_installed("modeldata")
+  skip_if_not_installed("butcher")
+
+  library(h2o)
+  library(modeldata)
+  library(butcher)
+
+  h2o.init()
+
+  test_data <- mtcars
+
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    reg_data <-
+      as.h2o(mtcars)
+
+    reg_fit <-
+      h2o.automl(
+        x = colnames(reg_data)[2:length(colnames(reg_data))],
+        y = colnames(reg_data)[1],
+        training_frame = reg_data,
+        max_runtime_secs = 5
+      )
+
+    reg_fit
+  }
+
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(mod)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_unbundled <- bundle::unbundle(mod_bundle)
+
+        res <- predict(mod_unbundled, as.h2o(test_data))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = test_data
+      )
+    )
+
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(butcher::butcher(mod))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
+
+        res <- predict(mod_butchered_unbundled, as.h2o(test_data))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = test_data
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  h2o.init()
+
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, as.h2o(test_data))
+
+  # check classes
+  expect_s3_class(mod_bundle, "bundled_h2o")
+  expect_s4_class(unbundle(mod_bundle), "H2ORegressionModel")
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
+
+  # compare predictions
+  expect_equal(mod_preds$data, mod_unbundled_preds$data)
+  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
+
+  h2o.shutdown(prompt = FALSE)
+})
+
+test_that("bundling + unbundling h2o fits (automl classification)", {
+  skip_if_not_installed("h2o")
+  skip_if_not_installed("modeldata")
+  skip_if_not_installed("butcher")
+
+  library(h2o)
+  library(modeldata)
+  library(butcher)
+
+  h2o.init()
+
+  set.seed(2)
+
+  test_data <-
+    modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 2)
+
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    set.seed(1)
+
+    bin_data <-
+      as.h2o(
+        modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 2)
+      )
+
+    bin_fit <-
+      h2o.automl(
+        x = paste0("noise_", 1:5),
+        y = "class",
+        training_frame = bin_data,
+        max_runtime_secs = 5
+      )
+
+    bin_fit
+  }
+
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(mod)
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_unbundled <- bundle::unbundle(mod_bundle)
+
+        res <- predict(mod_unbundled, as.h2o(test_data))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = test_data
+      )
+    )
+
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(h2o)
+
+        h2o.init()
+
+        mod <- fit_model()
+
+        res <- bundle::bundle(butcher::butcher(mod))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(h2o)
+
+        h2o.init()
+
+        mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
+
+        res <- predict(mod_butchered_unbundled, as.h2o(test_data))
+
+        h2o.shutdown(prompt = FALSE)
+
+        res
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = test_data
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  h2o.init()
+
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, as.h2o(test_data))
+
+  # check classes
+  expect_s3_class(mod_bundle, "bundled_h2o")
+  expect_s4_class(unbundle(mod_bundle), "H2OBinomialModel")
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
+
+  # compare predictions
+  expect_equal(mod_preds$data, mod_unbundled_preds$data)
+  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
+
+  h2o.shutdown(prompt = FALSE)
 })

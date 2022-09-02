@@ -6,44 +6,93 @@ test_that("bundling + unbundling tidymodels stacks", {
 
   library(stacks)
 
-  set.seed(1)
+  test_data <- stacks::tree_frogs_reg_test
 
-  mod <-
-    stacks() %>%
-    add_candidates(reg_res_lr) %>%
-    add_candidates(reg_res_svm) %>%
-    blend_predictions(times = 10) %>%
-    fit_members()
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    set.seed(1)
 
-  mod_bundle <- bundle(mod)
-  mod_unbundled <- unbundle(mod_bundle)
+    mod <-
+      stacks() %>%
+      add_candidates(reg_res_lr) %>%
+      add_candidates(reg_res_svm) %>%
+      blend_predictions(times = 10) %>%
+      fit_members()
+  }
 
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(stacks)
+
+        mod <- fit_model()
+
+        bundle::bundle(mod)
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(stacks)
+
+        mod_unbundled <- bundle::unbundle(mod_bundle)
+
+        predict(mod_unbundled, test_data)
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = test_data
+      )
+    )
+
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(stacks)
+
+        mod <- fit_model()
+
+        bundle::bundle(butcher::butcher(mod))
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(stacks)
+
+        mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
+
+        predict(mod_butchered_unbundled, test_data)
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = test_data
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, test_data)
+
+  # check classes
   expect_s3_class(mod_bundle, "bundled_model_stack")
-  expect_s3_class(mod_bundle$object$coefs, "bundled_model_fit")
-  expect_s3_class(mod_bundle$object$member_fits[[1]], "bundled_workflow")
+  expect_s3_class(unbundle(mod_bundle), "model_stack")
 
   # ensure that the situater function didn't bring along the whole model
-  expect_false("x" %in% names(environment(mod$situate)))
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
 
-  mod_preds <- predict(mod, stacks::tree_frogs_reg_test)
-  mod_unbundled_preds <- predict(mod_unbundled, new_data = stacks::tree_frogs_reg_test)
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
 
+  # compare predictions
   expect_equal(mod_preds, mod_unbundled_preds)
-
-  # only want bundled model and original preds to persist.
-  # test again in new R session:
-  mod_unbundled_preds_new <- callr::r(
-    function(mod_bundle_) {
-      library(bundle)
-      library(stacks)
-
-      mod_unbundled_ <- unbundle(mod_bundle_)
-      predict(mod_unbundled_, stacks::tree_frogs_reg_test)
-    },
-    args = list(
-      mod_bundle_ = mod_bundle
-    )
-  )
-
-  expect_equal(mod_preds, mod_unbundled_preds_new)
+  expect_equal(mod_preds, mod_butchered_unbundled_preds)
 })

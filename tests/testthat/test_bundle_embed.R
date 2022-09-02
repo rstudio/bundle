@@ -3,60 +3,94 @@ test_that("bundling + unbundling step_umap", {
   skip_if_not_installed("butcher")
 
   library(embed)
-  library(butcher)
 
   skip_if_not(is_tf_available())
 
-  set.seed(1)
-  rec <- recipe(Species ~ ., data = iris) %>%
-    step_umap(all_predictors(), outcome = vars(Species), num_comp = 2) %>%
-    prep()
+  # define a function to prep a recipe ------------------------------------------
+  prep_rec <- function() {
+    set.seed(1)
 
-  baked_data <- bake(rec, iris)
+    rec <- recipe(mpg ~ ., data = mtcars) %>%
+      step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2) %>%
+      prep()
 
-  rec_bundled <- bundle(rec)
-  step_umap_bundled <- bundle(rec$steps[[1]])
-  expect_s3_class(rec_bundled, "bundled_recipe")
-  expect_s3_class(step_umap_bundled, "bundled_step_umap")
+    rec
+  }
 
-  rec_unbundled <- unbundle(rec_bundled)
-  step_umap_unbundled <- unbundle(step_umap_bundled)
-  expect_s3_class(rec_unbundled, "recipe")
-  expect_s3_class(step_umap_unbundled, "step_umap")
+  # pass prep fn to a new session, prep, bundle, return bundle -----------------
+  rec_bundle <-
+    callr::r(
+      function(prep_rec) {
+        library(embed)
 
-  baked_data_unbundled <- bake(rec_unbundled, iris)
-  expect_equal(baked_data, baked_data_unbundled)
+        mod <- prep_rec()
 
-  bake_bundle_umap <-
-    function(step_umap_bundled_) {
-      library(bundle)
-      library(recipes)
-      library(embed)
-
-      step_umap_unbundled <- unbundle(step_umap_bundled_)
-      bake(step_umap_unbundled, iris)
-    }
-
-  baked_data_new <- callr::r(
-    bake_bundle_umap,
-    args = list(
-      step_umap_bundled_ = step_umap_bundled
+        bundle::bundle(mod)
+      },
+      args = list(prep_rec = prep_rec)
     )
-  )
 
-  expect_equal(as.data.frame(baked_data), as.data.frame(baked_data_new))
+  # pass the bundle to a new session, unbundle it, return baked data -----------
+  rec_unbundled_data <-
+    callr::r(
+      function(rec_bundle, test_data) {
+        library(embed)
 
-  # interaction with butcher
-  expect_silent({
-    rec_bundle_butchered <- bundle(butcher(rec))
-  })
+        rec_unbundled <- bundle::unbundle(rec_bundle)
 
-  baked_data_butchered <- callr::r(
-    bake_bundle_umap,
-    args = list(
-      step_umap_bundled_ = step_umap_bundled
+        bake(rec_unbundled, test_data)
+      },
+      args = list(
+        rec_bundle = rec_bundle,
+        test_data = mtcars
+      )
     )
-  )
 
-  expect_equal(as.data.frame(baked_data), as.data.frame(baked_data_butchered))
+  # pass prep fn to a new session, fit, butcher, bundle, return bundle ---------
+  rec_butchered_bundle <-
+    callr::r(
+      function(prep_rec) {
+        library(embed)
+
+        mod <- prep_rec()
+
+        bundle::bundle(butcher::butcher(mod))
+      },
+      args = list(prep_rec = prep_rec)
+    )
+
+  # pass that function to a new session, prep, bundle, return bundle -----------
+  rec_butchered_unbundled_data <-
+    callr::r(
+      function(rec_butchered_bundle, test_data) {
+        library(embed)
+
+        rec_butchered_unbundled <- bundle::unbundle(rec_butchered_bundle)
+
+        bake(rec_butchered_unbundled, test_data)
+      },
+      args = list(
+        rec_butchered_bundle = rec_butchered_bundle,
+        test_data = mtcars
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  rec_fit <- prep_rec()
+  rec_data <- bake(rec_fit, mtcars)
+
+  # check classes
+  expect_s3_class(rec_bundle, "bundled_recipe")
+  expect_s3_class(rec_bundle$object$steps[[1]], "bundled_step_umap")
+  expect_s3_class(unbundle(rec_bundle), "recipe")
+
+  # ensure that the situater function didn't bring along the whole recipe
+  expect_false("x" %in% names(environment(rec_bundle$situate)))
+
+  # pass silly dots
+  expect_error(bundle(rec_fit, boop = "bop"), class = "rlib_error_dots")
+
+  # compare baked data
+  expect_equal(as.data.frame(rec_data), as.data.frame(rec_unbundled_data))
+  expect_equal(as.data.frame(rec_data), as.data.frame(rec_butchered_unbundled_data))
 })
