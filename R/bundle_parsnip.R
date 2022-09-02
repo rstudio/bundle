@@ -37,6 +37,7 @@
 #' @export
 bundle.model_fit <- function(x, ...) {
   rlang::check_installed("parsnip")
+  rlang::check_dots_empty()
 
   res <- swap_element(x, "fit")
 

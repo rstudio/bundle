@@ -39,6 +39,7 @@
 #' @export
 bundle.train <- function(x, ...) {
   rlang::check_installed("caret")
+  rlang::check_dots_empty()
 
   res <- swap_element(x, "finalModel")
 
