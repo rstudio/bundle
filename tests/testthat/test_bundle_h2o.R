@@ -7,7 +7,7 @@ test_that("bundling + unbundling h2o fits (regression)", {
   library(modeldata)
   library(butcher)
 
-  test_data <- as.h2o(mtcars)
+  test_data <- mtcars
 
   # define a function to fit a model -------------------------------------------
   fit_model <- function() {
@@ -50,7 +50,7 @@ test_that("bundling + unbundling h2o fits (regression)", {
 
         mod_unbundled <- bundle::unbundle(mod_bundle)
 
-        res <- predict(mod_unbundled, test_data)
+        res <- predict(mod_unbundled, as.h2o(test_data))
 
         h2o.shutdown(prompt = FALSE)
 
@@ -91,7 +91,7 @@ test_that("bundling + unbundling h2o fits (regression)", {
 
         mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
 
-        res <- predict(mod_butchered_unbundled, test_data)
+        res <- predict(mod_butchered_unbundled, as.h2o(test_data))
 
         h2o.shutdown(prompt = FALSE)
 
@@ -107,7 +107,7 @@ test_that("bundling + unbundling h2o fits (regression)", {
   h2o.init()
 
   mod_fit <- fit_model()
-  mod_preds <- predict(mod_fit, test_data)
+  mod_preds <- predict(mod_fit, as.h2o(test_data))
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_h2o")
@@ -138,9 +138,7 @@ test_that("bundling + unbundling h2o fits (binary)", {
   set.seed(2)
 
   test_data <-
-    as.h2o(
-      modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 2)
-    )
+    modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 2)
 
   # define a function to fit a model -------------------------------------------
   fit_model <- function() {
@@ -190,7 +188,7 @@ test_that("bundling + unbundling h2o fits (binary)", {
 
         mod_unbundled <- bundle::unbundle(mod_bundle)
 
-        res <- predict(mod_unbundled, test_data)
+        res <- predict(mod_unbundled, as.h2o(test_data))
 
         h2o.shutdown(prompt = FALSE)
 
@@ -231,7 +229,7 @@ test_that("bundling + unbundling h2o fits (binary)", {
 
         mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
 
-        res <- predict(mod_butchered_unbundled, test_data)
+        res <- predict(mod_butchered_unbundled, as.h2o(test_data))
 
         h2o.shutdown(prompt = FALSE)
 
@@ -247,7 +245,8 @@ test_that("bundling + unbundling h2o fits (binary)", {
   h2o.init()
 
   mod_fit <- fit_model()
-  mod_preds <- predict(mod_fit, test_data)
+  h2o_test_data <- as.h2o(test_data)
+  mod_preds <- predict(mod_fit, h2o_test_data)
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_h2o")
@@ -278,9 +277,7 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
   set.seed(2)
 
   test_data <-
-    as.h2o(
-      modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 3)
-    )
+    modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 3)
 
   # define a function to fit a model -------------------------------------------
   fit_model <- function() {
@@ -330,7 +327,7 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
 
         mod_unbundled <- bundle::unbundle(mod_bundle)
 
-        res <- predict(mod_unbundled, test_data)
+        res <- predict(mod_unbundled, as.h2o(test_data))
 
         h2o.shutdown(prompt = FALSE)
 
@@ -371,7 +368,7 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
 
         mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
 
-        res <- predict(mod_butchered_unbundled, test_data)
+        res <- predict(mod_butchered_unbundled, as.h2o(test_data))
 
         h2o.shutdown(prompt = FALSE)
 
@@ -387,7 +384,7 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
   h2o.init()
 
   mod_fit <- fit_model()
-  mod_preds <- predict(mod_fit, test_data)
+  mod_preds <- predict(mod_fit, as.h2o(test_data))
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_h2o")
