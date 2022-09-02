@@ -7,8 +7,6 @@ test_that("bundling + unbundling h2o fits (regression)", {
   library(modeldata)
   library(butcher)
 
-  h2o.init()
-
   test_data <- as.h2o(mtcars)
 
   # define a function to fit a model -------------------------------------------
@@ -106,6 +104,8 @@ test_that("bundling + unbundling h2o fits (regression)", {
     )
 
   # run expectations -----------------------------------------------------------
+  h2o.init()
+
   mod_fit <- fit_model()
   mod_preds <- predict(mod_fit, test_data)
 
@@ -134,8 +134,6 @@ test_that("bundling + unbundling h2o fits (binary)", {
   library(h2o)
   library(modeldata)
   library(butcher)
-
-  h2o.init()
 
   set.seed(2)
 
@@ -246,6 +244,8 @@ test_that("bundling + unbundling h2o fits (binary)", {
     )
 
   # run expectations -----------------------------------------------------------
+  h2o.init()
+
   mod_fit <- fit_model()
   mod_preds <- predict(mod_fit, test_data)
 
@@ -274,8 +274,6 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
   library(h2o)
   library(modeldata)
   library(butcher)
-
-  h2o.init()
 
   set.seed(2)
 
@@ -386,6 +384,8 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
     )
 
   # run expectations -----------------------------------------------------------
+  h2o.init()
+
   mod_fit <- fit_model()
   mod_preds <- predict(mod_fit, test_data)
 
@@ -414,8 +414,6 @@ test_that("bundling + unbundling h2o fits (automl regression)", {
   library(h2o)
   library(modeldata)
   library(butcher)
-
-  h2o.init()
 
   test_data <- mtcars
 
@@ -548,8 +546,6 @@ test_that("bundling + unbundling h2o fits (automl classification)", {
   library(h2o)
   library(modeldata)
   library(butcher)
-
-  h2o.init()
 
   set.seed(2)
 
