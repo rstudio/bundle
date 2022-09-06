@@ -1,10 +1,9 @@
 test_that("bundling + unbundling h2o fits (regression)", {
+  skip_if(!interactive())
   skip_if_not_installed("h2o")
-  skip_if_not_installed("modeldata")
   skip_if_not_installed("butcher")
 
   library(h2o)
-  library(modeldata)
   library(butcher)
 
   test_data <- mtcars
@@ -52,6 +51,8 @@ test_that("bundling + unbundling h2o fits (regression)", {
 
         res <- predict(mod_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -93,9 +94,12 @@ test_that("bundling + unbundling h2o fits (regression)", {
 
         res <- predict(mod_butchered_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
+
       },
       args = list(
         mod_butchered_bundle = mod_butchered_bundle,
@@ -108,25 +112,28 @@ test_that("bundling + unbundling h2o fits (regression)", {
 
   mod_fit <- fit_model()
   mod_preds <- predict(mod_fit, as.h2o(test_data))
+  mod_preds <- as.data.frame(mod_preds)
+
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_h2o")
   expect_s4_class(unbundle(mod_bundle), "H2ORegressionModel")
 
+  h2o.shutdown(prompt = FALSE)
+
   # ensure that the situater function didn't bring along the whole model
   expect_false("x" %in% names(environment(mod_bundle$situate)))
 
-  # pass silly dots
-  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
-
   # compare predictions
-  expect_equal(mod_preds$data, mod_unbundled_preds$data)
-  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
+  expect_equal(mod_preds, mod_unbundled_preds)
+  expect_equal(mod_preds, mod_butchered_unbundled_preds)
 
-  h2o.shutdown(prompt = FALSE)
 })
 
 test_that("bundling + unbundling h2o fits (binary)", {
+  skip_if(!interactive())
   skip_if_not_installed("h2o")
   skip_if_not_installed("modeldata")
   skip_if_not_installed("butcher")
@@ -190,6 +197,8 @@ test_that("bundling + unbundling h2o fits (binary)", {
 
         res <- predict(mod_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -231,6 +240,8 @@ test_that("bundling + unbundling h2o fits (binary)", {
 
         res <- predict(mod_butchered_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -247,25 +258,29 @@ test_that("bundling + unbundling h2o fits (binary)", {
   mod_fit <- fit_model()
   h2o_test_data <- as.h2o(test_data)
   mod_preds <- predict(mod_fit, h2o_test_data)
+  mod_preds <- as.data.frame(mod_preds)
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_h2o")
   expect_s4_class(unbundle(mod_bundle), "H2OBinomialModel")
 
-  # ensure that the situater function didn't bring along the whole model
-  expect_false("x" %in% names(environment(mod_bundle$situate)))
-
   # pass silly dots
   expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
 
-  # compare predictions
-  expect_equal(mod_preds$data, mod_unbundled_preds$data)
-  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
-
   h2o.shutdown(prompt = FALSE)
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
+  # compare predictions
+  expect_equal(mod_preds, mod_unbundled_preds)
+  expect_equal(mod_preds, mod_butchered_unbundled_preds)
+
+
 })
 
 test_that("bundling + unbundling h2o fits (multinomial)", {
+  skip_if(!interactive())
   skip_if_not_installed("h2o")
   skip_if_not_installed("modeldata")
   skip_if_not_installed("butcher")
@@ -329,6 +344,8 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
 
         res <- predict(mod_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -370,6 +387,8 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
 
         res <- predict(mod_butchered_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -385,31 +404,31 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
 
   mod_fit <- fit_model()
   mod_preds <- predict(mod_fit, as.h2o(test_data))
+  mod_preds <- as.data.frame(mod_preds)
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_h2o")
   expect_s4_class(unbundle(mod_bundle), "H2OMultinomialModel")
 
-  # ensure that the situater function didn't bring along the whole model
-  expect_false("x" %in% names(environment(mod_bundle$situate)))
-
   # pass silly dots
   expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
 
-  # compare predictions
-  expect_equal(mod_preds$data, mod_unbundled_preds$data)
-  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
-
   h2o.shutdown(prompt = FALSE)
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
+  # compare predictions
+  expect_equal(mod_preds, mod_unbundled_preds)
+  expect_equal(mod_preds, mod_butchered_unbundled_preds)
 })
 
 test_that("bundling + unbundling h2o fits (automl regression)", {
+  skip_if(!interactive())
   skip_if_not_installed("h2o")
-  skip_if_not_installed("modeldata")
   skip_if_not_installed("butcher")
 
   library(h2o)
-  library(modeldata)
   library(butcher)
 
   test_data <- mtcars
@@ -461,6 +480,8 @@ test_that("bundling + unbundling h2o fits (automl regression)", {
 
         res <- predict(mod_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -502,6 +523,8 @@ test_that("bundling + unbundling h2o fits (automl regression)", {
 
         res <- predict(mod_butchered_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -517,25 +540,27 @@ test_that("bundling + unbundling h2o fits (automl regression)", {
 
   mod_fit <- fit_model()
   mod_preds <- predict(mod_fit, as.h2o(test_data))
+  mod_preds <- as.data.frame(mod_preds)
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_h2o")
   expect_s4_class(unbundle(mod_bundle), "H2ORegressionModel")
 
-  # ensure that the situater function didn't bring along the whole model
-  expect_false("x" %in% names(environment(mod_bundle$situate)))
-
   # pass silly dots
   expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
 
-  # compare predictions
-  expect_equal(mod_preds$data, mod_unbundled_preds$data)
-  expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
-
   h2o.shutdown(prompt = FALSE)
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
+  # compare predictions
+  expect_equal(mod_preds, mod_unbundled_preds)
+  expect_equal(mod_preds, mod_butchered_unbundled_preds)
 })
 
 test_that("bundling + unbundling h2o fits (automl classification)", {
+  skip_if(!interactive())
   skip_if_not_installed("h2o")
   skip_if_not_installed("modeldata")
   skip_if_not_installed("butcher")
@@ -600,6 +625,8 @@ test_that("bundling + unbundling h2o fits (automl classification)", {
 
         res <- predict(mod_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -641,6 +668,8 @@ test_that("bundling + unbundling h2o fits (automl classification)", {
 
         res <- predict(mod_butchered_unbundled, as.h2o(test_data))
 
+        res <- as.data.frame(res)
+
         h2o.shutdown(prompt = FALSE)
 
         res
@@ -656,20 +685,21 @@ test_that("bundling + unbundling h2o fits (automl classification)", {
 
   mod_fit <- fit_model()
   mod_preds <- predict(mod_fit, as.h2o(test_data))
+  mod_preds <- as.data.frame(mod_preds)
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_h2o")
   expect_s4_class(unbundle(mod_bundle), "H2OBinomialModel")
 
-  # ensure that the situater function didn't bring along the whole model
-  expect_false("x" %in% names(environment(mod_bundle$situate)))
-
   # pass silly dots
   expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
+
+  h2o.shutdown(prompt = FALSE)
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
 
   # compare predictions
   expect_equal(mod_preds$data, mod_unbundled_preds$data)
   expect_equal(mod_preds$data, mod_butchered_unbundled_preds$data)
-
-  h2o.shutdown(prompt = FALSE)
 })
