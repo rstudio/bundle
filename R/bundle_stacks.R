@@ -38,6 +38,7 @@ bundle.model_stack <- function(x, ...) {
   rlang::check_installed("stacks")
   rlang::check_installed("parsnip")
   rlang::check_installed("workflows")
+  rlang::check_dots_empty()
 
   res <- x
   res[["member_fits"]] <- lapply(res[["member_fits"]], bundle)

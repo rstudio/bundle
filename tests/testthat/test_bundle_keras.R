@@ -3,97 +3,112 @@ test_that("bundling + unbundling keras fits", {
   skip_if_not_installed("butcher")
 
   library(keras)
-  library(butcher)
 
-  set.seed(1)
+  test_data <-
+    mtcars[26:32, 2:ncol(mtcars)] %>%
+    as.matrix() %>%
+    scale()
 
-  # example fit adapted from keras basics vignette
-  mnist <- dataset_mnist()
-  x_train <- mnist$train$x
-  y_train <- mnist$train$y
-  x_test <- mnist$test$x
-  y_test <- mnist$test$y
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    cars <- mtcars[1:25, ] %>%
+      as.matrix() %>%
+      scale()
 
-  x_train <- array_reshape(x_train, c(nrow(x_train), 784))
-  x_test <- array_reshape(x_test, c(nrow(x_test), 784))
+    x_train <- cars[, 2:ncol(cars)]
+    y_train <- cars[, 1]
 
-  x_train <- x_train / 255
-  x_test <- x_test / 255
+    keras_fit <-
+      keras_model_sequential()  %>%
+      layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') %>%
+      compile(
+        loss = 'mean_squared_error',
+        optimizer = optimizer_adam(learning_rate = .01)
+      )
 
-  y_train <- to_categorical(y_train, 10)
-  y_test <- to_categorical(y_test, 10)
+    keras_fit %>%
+      fit(
+        x = x_train, y = y_train,
+        epochs = 100, batch_size = 1,
+        verbose = 0
+      )
 
-  mod <- keras_model_sequential()
+    keras_fit
+  }
 
-  mod %>%
-    layer_dense(units = 128, activation = 'relu', input_shape = c(784)) %>%
-    layer_dropout(rate = 0.4) %>%
-    layer_dense(units = 64, activation = 'relu') %>%
-    layer_dropout(rate = 0.3) %>%
-    layer_dense(units = 10, activation = 'softmax')
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(keras)
 
-  mod %>% compile(
-    loss = 'categorical_crossentropy',
-    optimizer = optimizer_rmsprop(),
-    metrics = c('accuracy')
-  )
+        mod <- fit_model()
 
-  mod %>% fit(
-    x_train, y_train,
-    epochs = 5, batch_size = 128,
-    validation_split = 0.2,
-    verbose = 0
-  )
+        bundle::bundle(mod)
+      },
+      args = list(fit_model = fit_model)
+    )
 
-  mod_bundle <- bundle(mod)
-  mod_unbundled <- unbundle(mod_bundle)
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(keras)
 
+        mod_unbundled <- bundle::unbundle(mod_bundle)
+
+        predict(mod_unbundled, test_data)
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = test_data
+      )
+    )
+
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(keras)
+
+        mod <- fit_model()
+
+        bundle::bundle(butcher::butcher(mod))
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(keras)
+
+        mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
+
+        predict(mod_butchered_unbundled, test_data)
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = test_data
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, test_data)
+
+  # check classes
   expect_s3_class(mod_bundle, "bundled_keras")
-  expect_s3_class(mod_unbundled, "keras.engine.training.Model")
+  expect_s3_class(unbundle(mod_bundle), "keras.engine.training.Model")
 
   # ensure that the situater function didn't bring along the whole model
   expect_false("x" %in% names(environment(mod_bundle$situate)))
 
-  expect_error(bundle(mod, boop = "bop"), class = "rlib_error_dots")
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
 
-  mod_preds <- predict(mod, x_test)
-  mod_unbundled_preds <- predict(mod_unbundled, x_test)
-
+  # compare predictions
   expect_equal(mod_preds, mod_unbundled_preds)
-
-  # only want bundled model and original preds to persist.
-  # test again in new R session:
-  predict_bundle_keras <-
-    function(mod_bundle, x_test) {
-      library(bundle)
-      library(keras)
-
-      mod_unbundled <- unbundle(mod_bundle)
-      predict(mod_unbundled, x_test)
-    }
-
-  mod_unbundled_preds_new <- callr::r(
-    predict_bundle_keras,
-    args = list(
-      mod_bundle = mod_bundle,
-      x_test = x_test
-    )
-  )
-
-  expect_equal(mod_preds, mod_unbundled_preds_new)
-
-  # interaction with butcher
-  expect_silent({
-    mod_bundle_butchered <- bundle(butcher(mod))
-  })
-
-  mod_unbundled_preds_butchered <- callr::r(
-    predict_bundle_keras,
-    args = list(
-      mod_bundle = mod_bundle_butchered,
-      x_test = x_test
-    )
-  )
-
-  expect_equal(mod_preds, mod_unbundled_preds_butchered)
+  expect_equal(mod_preds, mod_butchered_unbundled_preds)
 })

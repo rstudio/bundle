@@ -77,7 +77,7 @@ bundle_h2o <- function(x, ...) {
   rlang::check_dots_empty()
   rlang::check_installed("h2o")
 
-  file_loc <- withr::local_tempfile(pattern = "bundle")
+  file_loc <- withr::local_tempdir(pattern = "bundle")
 
   if (x@have_mojo) {
     file_loc <- with_no_progress(h2o::h2o.save_mojo(x, path = file_loc))

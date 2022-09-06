@@ -1,30 +1,40 @@
-test_that("bundling + unbundling tidymodels stacks", {
-  skip_if_not_installed("stacks")
-  skip_if_not_installed("parsnip")
-  skip_if_not_installed("workflows")
-  skip_if_not_installed("kernlab")
+# Testing strategy for bundle
 
-  library(stacks)
+Many bundling methods rely on temporary files to interface with native serialization methods from modeling packages. However, the resulting bundles ought not to depend on the existence of those temporary files, which likely will not exist at `unbundle()` time. 
 
-  test_data <- stacks::tree_frogs_reg_test
+The testing strategy for the package thus must pay close attention to when temporary files will persist. Note that, within an R session, the output of `tempdir()` is stable and (kindof) unique, though that directory will be deleted when the session is closed.
+
+The testing strategy for bundles acknowledges this:
+
+* Define a function to fit a model
+	* Pass that function to a new session, run it, bundle the output, return the bundle
+      		* Pass the bundle (and test data) to a new session, unbundle it, generate and return predictions
+	* Pass that function to a new session, run it, butcher the output, bundle the butchered out, return the bundle
+      		* Pass the bundle (and test data) to a new session, unbundle it, generate and return predictions
+
+At that point, we have the properly generated predictions from the bundled and butchered+bundled objects (and know whether either of those callr sessions errored out). We're then free to run all testthat expectations and compare the predictions of each model object.
+
+The template for this testing strategy with an example model-supplying package modLibrary is as follows:
+
+``` r
+test_that("bundling + unbundling modLibrary fits", {
+  skip_if_not_installed("modLibrary")
+  skip_if_not_installed("butcher")
+
+  library(modLibrary)
+
+  test_data <- mtcars
 
   # define a function to fit a model -------------------------------------------
   fit_model <- function() {
-    set.seed(1)
-
-    mod <-
-      stacks() %>%
-      add_candidates(reg_res_lr) %>%
-      add_candidates(reg_res_svm) %>%
-      blend_predictions(times = 10) %>%
-      fit_members()
+    # code to fit a model using modLibrary
   }
 
   # pass fit fn to a new session, fit, bundle, return bundle -------------------
   mod_bundle <-
     callr::r(
       function(fit_model) {
-        library(stacks)
+        library(modLibrary)
 
         mod <- fit_model()
 
@@ -37,7 +47,7 @@ test_that("bundling + unbundling tidymodels stacks", {
   mod_unbundled_preds <-
     callr::r(
       function(mod_bundle, test_data) {
-        library(stacks)
+        library(modLibrary)
 
         mod_unbundled <- bundle::unbundle(mod_bundle)
 
@@ -53,7 +63,7 @@ test_that("bundling + unbundling tidymodels stacks", {
   mod_butchered_bundle <-
     callr::r(
       function(fit_model) {
-        library(stacks)
+        library(modLibrary)
 
         mod <- fit_model()
 
@@ -66,7 +76,7 @@ test_that("bundling + unbundling tidymodels stacks", {
   mod_butchered_unbundled_preds <-
     callr::r(
       function(mod_butchered_bundle, test_data) {
-        library(stacks)
+        library(modLibrary)
 
         mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
 
@@ -83,8 +93,8 @@ test_that("bundling + unbundling tidymodels stacks", {
   mod_preds <- predict(mod_fit, test_data)
 
   # check classes
-  expect_s3_class(mod_bundle, "bundled_model_stack")
-  expect_s3_class(unbundle(mod_bundle), "model_stack")
+  expect_s3_class(mod_bundle, "bundled_mod_class")
+  expect_s3_class(unbundle(mod_bundle), "mod_class")
 
   # ensure that the situater function didn't bring along the whole model
   expect_false("x" %in% names(environment(mod_bundle$situate)))
@@ -96,3 +106,4 @@ test_that("bundling + unbundling tidymodels stacks", {
   expect_equal(mod_preds, mod_unbundled_preds)
   expect_equal(mod_preds, mod_butchered_unbundled_preds)
 })
+```

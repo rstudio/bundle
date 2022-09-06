@@ -3,65 +3,97 @@ test_that("bundling + unbundling xgboost fits", {
   skip_if_not_installed("butcher")
 
   library(xgboost)
-  library(butcher)
 
-  set.seed(1)
-
-  data(agaricus.train)
   data(agaricus.test)
 
-  xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
-                 max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
-                 objective = "binary:logistic")
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    set.seed(1)
 
-  xgb_bundle <- bundle(xgb)
-  xgb_unbundled <- unbundle(xgb_bundle)
+    data(agaricus.train)
 
-  expect_s3_class(xgb_bundle, "bundled_xgb.Booster")
-  expect_s3_class(xgb_unbundled, "xgb.Booster")
+    xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
+                   max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
+                   objective = "binary:logistic")
 
-  # ensure that the situater function didn't bring along the whole model
-  expect_false("x" %in% names(environment(xgb_bundle$situate)))
-
-  expect_error(bundle(xgb, boop = "bop"), class = "rlib_error_dots")
-
-  xgb_preds <- predict(xgb, agaricus.test$data)
-  xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
-
-  expect_equal(xgb_preds, xgb_unbundled_preds)
-
-  # only want bundled model and original preds to persist.
-  # test again in new R session:
-  predict_bundle_xgb <- function(xgb_bundle_, agaricus.test_) {
-    library(bundle)
-    library(xgboost)
-
-    xgb_unbundled <- unbundle(xgb_bundle_)
-    predict(xgb_unbundled, agaricus.test_$data)
+    xgb
   }
 
-  xgb_unbundled_preds_new <- callr::r(
-    predict_bundle_xgb,
-    args = list(
-      xgb_bundle_ = xgb_bundle,
-      agaricus.test_ = agaricus.test
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(xgboost)
+
+        mod <- fit_model()
+
+        bundle::bundle(mod)
+      },
+      args = list(fit_model = fit_model)
     )
-  )
 
-  expect_equal(xgb_preds, xgb_unbundled_preds_new)
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(xgboost)
 
-  # interaction with butcher
-  expect_silent({
-    xgb_bundle_butchered <- bundle(butcher(xgb))
-  })
+        mod_unbundled <- bundle::unbundle(mod_bundle)
 
-  xgb_unbundled_preds_butchered <- callr::r(
-    predict_bundle_xgb,
-    args = list(
-      xgb_bundle_ = xgb_bundle_butchered,
-      agaricus.test_ = agaricus.test
+        predict(mod_unbundled, test_data)
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = agaricus.test$data
+      )
     )
-  )
 
-  expect_equal(xgb_preds, xgb_unbundled_preds_butchered)
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(xgboost)
+
+        mod <- fit_model()
+
+        bundle::bundle(butcher::butcher(mod))
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(bundle)
+
+        mod_butchered_unbundled <- unbundle(mod_butchered_bundle)
+
+        predict(mod_butchered_unbundled, test_data)
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = agaricus.test$data
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  data(agaricus.test)
+
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, agaricus.test$data)
+
+  # check classes
+  expect_s3_class(mod_bundle, "bundled_xgb.Booster")
+  expect_s3_class(unbundle(mod_bundle), "xgb.Booster")
+
+  # ensure that the situater function didn't bring along the whole model
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
+
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
+
+  # compare predictions
+  expect_equal(mod_preds, mod_unbundled_preds)
+  expect_equal(mod_preds, mod_butchered_unbundled_preds)
 })

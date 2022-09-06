@@ -49,6 +49,7 @@
 bundle.workflow <- function(x, ...) {
   rlang::check_installed("workflows")
   rlang::check_installed("parsnip")
+  rlang::check_dots_empty()
 
   res <- swap_element(x, "fit", "fit")
   res <- swap_element(res, "pre", "actions", "recipe", "recipe")

@@ -1,48 +1,96 @@
 test_that("bundling + unbundling parsnip model_fits (xgboost)", {
   skip_if_not_installed("parsnip")
   skip_if_not_installed("xgboost")
+  skip_if_not_installed("butcher")
 
   library(parsnip)
   library(xgboost)
 
-  set.seed(1)
+  # define a function to fit a model -------------------------------------------
+  fit_model <- function() {
+    set.seed(1)
 
-  mod <-
-    boost_tree(trees = 5, mtry = 3) %>%
-    set_mode("regression") %>%
-    set_engine("xgboost") %>%
-    fit(mpg ~ ., data = mtcars)
+    mod <-
+      boost_tree(trees = 5, mtry = 3) %>%
+      set_mode("regression") %>%
+      set_engine("xgboost") %>%
+      fit(mpg ~ ., data = mtcars)
+  }
 
-  mod_bundle <- bundle(mod)
-  mod_unbundled <- unbundle(mod_bundle)
+  # pass fit fn to a new session, fit, bundle, return bundle -------------------
+  mod_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(parsnip)
 
+        mod <- fit_model()
+
+        bundle::bundle(mod)
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_unbundled_preds <-
+    callr::r(
+      function(mod_bundle, test_data) {
+        library(parsnip)
+
+        mod_unbundled <- bundle::unbundle(mod_bundle)
+
+        predict(mod_unbundled, test_data)
+      },
+      args = list(
+        mod_bundle = mod_bundle,
+        test_data = mtcars
+      )
+    )
+
+  # pass fit fn to a new session, fit, butcher, bundle, return bundle ----------
+  mod_butchered_bundle <-
+    callr::r(
+      function(fit_model) {
+        library(parsnip)
+
+        mod <- fit_model()
+
+        bundle::bundle(butcher::butcher(mod))
+      },
+      args = list(fit_model = fit_model)
+    )
+
+  # pass the bundle to a new session, unbundle it, return predictions ----------
+  mod_butchered_unbundled_preds <-
+    callr::r(
+      function(mod_butchered_bundle, test_data) {
+        library(parsnip)
+
+        mod_butchered_unbundled <- bundle::unbundle(mod_butchered_bundle)
+
+        predict(mod_butchered_unbundled, test_data)
+      },
+      args = list(
+        mod_butchered_bundle = mod_butchered_bundle,
+        test_data = mtcars
+      )
+    )
+
+  # run expectations -----------------------------------------------------------
+  mod_fit <- fit_model()
+  mod_preds <- predict(mod_fit, mtcars)
+
+  # check classes
   expect_s3_class(mod_bundle, "bundled_model_fit")
-  expect_s3_class(mod_unbundled, "_xgb.Booster")
-  expect_s3_class(mod_unbundled, "model_fit")
+  expect_s3_class(unbundle(mod_bundle), "_xgb.Booster")
+  expect_s3_class(unbundle(mod_bundle), "model_fit")
 
   # ensure that the situater function didn't bring along the whole model
-  expect_false("x" %in% names(environment(mod$situate)))
+  expect_false("x" %in% names(environment(mod_bundle$situate)))
 
-  mod_preds <- predict(mod, mtcars)
-  mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)
+  # pass silly dots
+  expect_error(bundle(mod_fit, boop = "bop"), class = "rlib_error_dots")
 
+  # compare predictions
   expect_equal(mod_preds, mod_unbundled_preds)
-
-  # only want bundled model and original preds to persist.
-  # test again in new R session:
-  mod_unbundled_preds_new <- callr::r(
-    function(mod_bundle_) {
-      library(bundle)
-      library(parsnip)
-      library(xgboost)
-
-      mod_unbundled_ <- unbundle(mod_bundle_)
-      predict(mod_unbundled_, mtcars)
-    },
-    args = list(
-      mod_bundle_ = mod_bundle
-    )
-  )
-
-  expect_equal(mod_preds, mod_unbundled_preds_new)
+  expect_equal(mod_preds, mod_butchered_unbundled_preds)
 })
