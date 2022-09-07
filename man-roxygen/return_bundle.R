@@ -16,11 +16,11 @@
 #'     references, such as server instances and environmental variables.}
 #'
 #' Bundles are R objects that represent a "standalone" version of their
-#' analogous model object. Thus, bundles are ready for saving to file---saving
+#' analogous model object. Thus, bundles are ready for saving to a file; saving
 #' with [base::saveRDS()] is our recommended serialization strategy for bundles,
 #' unless documented otherwise for a specific method.
 #'
-#' To restore the inputted model object `x` in a new environment, load its
+#' To restore the original model object `x` in a new environment, load its
 #' bundle with [base::readRDS()] and run [unbundle()] on it. The output
 #' of [unbundle()] is a model object that is ready to [predict()] on new data,
 #' and other restored functionality (like plotting or summarizing) is supported
