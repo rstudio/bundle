@@ -50,11 +50,11 @@ unserialized version of \code{object}. \code{situate()} will also restore needed
 references, such as server instances and environmental variables.}
 
 Bundles are R objects that represent a "standalone" version of their
-analogous model object. Thus, bundles are ready for saving to file---saving
+analogous model object. Thus, bundles are ready for saving to a file; saving
 with \code{\link[base:readRDS]{base::saveRDS()}} is our recommended serialization strategy for bundles,
 unless documented otherwise for a specific method.
 
-To restore the inputted model object \code{x} in a new environment, load its
+To restore the original model object \code{x} in a new environment, load its
 bundle with \code{\link[base:readRDS]{base::readRDS()}} and run \code{\link[=unbundle]{unbundle()}} on it. The output
 of \code{\link[=unbundle]{unbundle()}} is a model object that is ready to \code{\link[=predict]{predict()}} on new data,
 and other restored functionality (like plotting or summarizing) is supported
@@ -71,7 +71,7 @@ like \link[vetiver:vetiver-package]{vetiver} or \link[renv:renv-package]{renv}.
 See \code{vignette("bundle")} for more information on bundling and its motivation.
 }
 \description{
-Bundling a model prepares it to be saved to file and later
+Bundling a model prepares it to be saved to a file and later
 restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
