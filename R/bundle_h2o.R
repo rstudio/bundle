@@ -92,9 +92,9 @@ bundle_h2o <- function(x, ...) {
       new_file <- withr::local_tempfile(pattern = "unbundle")
       writeBin(object, new_file, endian = "little")
       if (!!x@have_mojo) {
-        res <- h2o:::with_no_h2o_progress(h2o::h2o.import_mojo(new_file))
+        res <- h2o::with_no_h2o_progress(h2o::h2o.import_mojo(new_file))
       } else {
-        res <- h2o:::with_no_h2o_progress(h2o::h2o.loadModel(new_file))
+        res <- h2o::with_no_h2o_progress(h2o::h2o.loadModel(new_file))
       }
 
       res
@@ -117,5 +117,5 @@ select_from_automl <- function(x, id = NULL, n = NULL) {
 }
 
 with_no_progress <- function(expr) {
-  rlang::eval_tidy(h2o:::with_no_h2o_progress(expr))
+  rlang::eval_tidy(h2o::with_no_h2o_progress(expr))
 }
