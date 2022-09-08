@@ -16,7 +16,8 @@ resource_files:
 should_eval <- 
   rlang::is_installed("keras") && 
   rlang::is_installed("callr") &&
-  rlang::is_installed("xgboost")
+  rlang::is_installed("xgboost") &&
+  !is.null(tensorflow::tf_version())
 
 knitr::opts_chunk$set(
   collapse = TRUE,

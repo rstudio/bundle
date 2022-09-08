@@ -16,7 +16,7 @@
 #' @template param_unused_dots
 #' @seealso These methods wrap [h2o::h2o.save_mojo()] and
 #'   [h2o::h2o.saveModel()].
-#' @examplesIf FALSE
+#' @examplesIf identical(Sys.getenv("NOT_CRAN"), "true")
 #' # fit model and bundle ------------------------------------------------
 #' library(h2o)
 #'
