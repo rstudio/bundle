@@ -1,5 +1,5 @@
 Package: bundle
-Title: Serialize Model Objects With A Consistent Interface
+Title: Serialize Model Objects with a Consistent Interface
 Version: 0.0.0.9200
 Authors@R: c(
     person("Julia", "Silge", , "julia.silge@rstudio.com", role = c("aut", "cre"),
