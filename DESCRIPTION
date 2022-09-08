@@ -10,7 +10,7 @@ Authors@R: c(
     person("RStudio", role = c("cph", "fnd"))
   )
 Description: Typically, models in R exist in memory and can be saved via
-    native R serialization. However, some models store information in locations 
+    regular R serialization. However, some models store information in locations 
     that cannot be saved using R serialization alone. The goal of 'bundle' is 
     to provide a common API to capture this information, situate it within a 
     portable object, and restore it for use in new settings.
