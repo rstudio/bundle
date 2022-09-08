@@ -15,7 +15,7 @@
 #' @details This bundler does not currently support custom keras extensions,
 #'   such as use of a [keras::new_layer_class()] or custom metric function.
 #'   In such situations, consider using [keras::with_custom_object_scope()].
-#' @examplesIf !is.null(tensorflow::tf_version()) && identical(Sys.getenv("NOT_CRAN"), "true")
+#' @examplesIf rlang::is_installed(c("keras")) && identical(Sys.getenv("NOT_CRAN"), "true")
 #' # fit model and bundle ------------------------------------------------
 #' library(keras)
 #'
