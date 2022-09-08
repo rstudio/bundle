@@ -43,6 +43,7 @@ Suggests:
     rmarkdown,
     stacks,
     testthat (>= 3.0.0),
+    tensorflow,
     torch,
     torchvision,
     uwot,
