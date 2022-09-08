@@ -64,7 +64,7 @@ such as use of a \code{\link[keras:new-classes]{keras::new_layer_class()}} or cu
 In such situations, consider using \code{\link[keras:with_custom_object_scope]{keras::with_custom_object_scope()}}.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(Sys.getenv("NOT_CRAN"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(keras)
 

@@ -76,7 +76,7 @@ restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(Sys.getenv("NOT_CRAN"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(h2o)
 

@@ -82,7 +82,7 @@ and predict with the output of \code{unbundle(res)} in a new R session.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("caret")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("caret") && identical(Sys.getenv("NOT_CRAN"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(caret)
 
