@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Typically, models in R exist in memory and can be saved as `.rds` files. However, some models store information in locations that cannot be saved using `save()` or `saveRDS()` directly. The goal of bundle is to provide a common API to capture this information, situate it within a portable object, and restore it for use in new settings.
+Typically, models in R exist in memory and can be saved as `.rds` files. However, some models store information in locations that cannot be saved using `save()` or `saveRDS()` directly. The goal of bundle is to provide a common interface to capture this information, situate it within a portable object, and restore it for use in new settings.
 
 This vignette walks through how to prepare a statistical model for saving to demonstrate the benefits of using bundle.
 

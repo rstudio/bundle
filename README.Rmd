@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/rstudio/bundle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle?branch=main)
 <!-- badges: end -->
 
-Typically, models in R exist in memory and can be saved as `.rds` files. However, some models store information in locations that cannot be saved using `save()` or `saveRDS()` directly. The goal of bundle is to provide a common API to capture this information, situate it within a portable object, and restore it for use in new settings.
+Typically, models in R exist in memory and can be saved as `.rds` files. However, some models store information in locations that cannot be saved using `save()` or `saveRDS()` directly. The goal of bundle is to provide a common interface to capture this information, situate it within a portable object, and restore it for use in new settings.
 
 ## Installation
 

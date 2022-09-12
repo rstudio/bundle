@@ -15,8 +15,8 @@ coverage](https://codecov.io/gh/rstudio/bundle/branch/main/graph/badge.svg)](htt
 Typically, models in R exist in memory and can be saved as `.rds` files.
 However, some models store information in locations that cannot be saved
 using `save()` or `saveRDS()` directly. The goal of bundle is to provide
-a common API to capture this information, situate it within a portable
-object, and restore it for use in new settings.
+a common interface to capture this information, situate it within a
+portable object, and restore it for use in new settings.
 
 ## Installation
 
@@ -94,7 +94,7 @@ mod
 #> parsnip model object
 #> 
 #> ##### xgb.Booster
-#> raw: 7.9 Kb 
+#> raw: 8.1 Kb 
 #> call:
 #>   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, 
 #>     colsample_bytree = 1, colsample_bynode = 0.3, min_child_weight = 1, 
@@ -111,11 +111,11 @@ mod
 #> nfeatures : 10 
 #> evaluation_log:
 #>  iter training_rmse
-#>     1     14.631798
-#>     2     10.865171
-#>     3      8.149249
-#>     4      6.151912
-#>     5      4.697926
+#>     1     14.695244
+#>     2     10.903444
+#>     3      8.231602
+#>     4      6.256097
+#>     5      4.757736
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -127,7 +127,7 @@ saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
 compare(mod, mod2, ignore_formula_env = TRUE)
-#> `old$fit$handle` is <pointer: 0x106258d80>
+#> `old$fit$handle` is <pointer: 0x13cf89a60>
 #> `new$fit$handle` is <pointer: 0x0>
 #> 
 #> `old$fit$handle` is attr(,"class")
@@ -174,13 +174,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.5
-#> 2  18.8
-#> 3  18.8
-#> 4  15.9
-#> 5  15.9
-#> 6  13.4
-#> 7  17.5
+#> 1  21.9
+#> 2  18.2
+#> 3  18.2
+#> 4  14.9
+#> 5  15.7
+#> 6  12.8
+#> 7  20.4
 ```
 
 For a more in-depth demonstration of the package, see the [main
