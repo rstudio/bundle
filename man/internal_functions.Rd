@@ -12,6 +12,11 @@ situate_constr(fn)
 
 swap_element(x, ...)
 }
+\value{
+The two \verb{_constr()} functions are constructors that return a bundle
+and a situater, respectively. \code{swap_element()} returns \code{x} after swapping
+out the specified element.
+}
 \description{
 These functions are not user-facing and are only exported for developer
 extensions.
