@@ -7,7 +7,7 @@
 \alias{bundle-package}
 \title{bundle: Serialize Model Objects With A Consistent Interface}
 \description{
-Typically, models in R exist in memory and can be saved via regular R serialization. However, some models store information in locations that cannot be saved using R serialization alone. The goal of 'bundle' is to provide a common interface to capture this information, situate it within a portable object, and restore it for use in new settings.
+Typically, models in 'R' exist in memory and can be saved via regular 'R' serialization. However, some models store information in locations that cannot be saved using 'R' serialization alone. The goal of 'bundle' is to provide a common interface to capture this information, situate it within a portable object, and restore it for use in new settings.
 }
 \seealso{
 Useful links:

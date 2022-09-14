@@ -64,7 +64,8 @@ via the luz package, "a higher level API for torch providing
 abstractions to allow for much less verbose training loops."
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("torch")) && identical(Sys.getenv("NOT_CRAN"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (torch::torch_is_installed()) {
 # fit model and bundle ------------------------------------------------
 library(torch)
 library(torchvision)
@@ -140,6 +141,7 @@ mod_bundle <- bundle(mod)
 mod_unbundled <- unbundle(mod_bundle)
 
 mod_unbundled_preds <- predict(mod_unbundled, test_dl)
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{
