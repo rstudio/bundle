@@ -13,7 +13,7 @@
 #'   `train_model_object$finalModel`. See the class of the output of that
 #'   slot for more details on the bundling method for that object.
 #' @template butcher_details
-#' @examplesIf rlang::is_installed("caret")
+#' @examplesIf rlang::is_installed("caret") && identical(Sys.getenv("NOT_CRAN"), "true")
 #' # fit model and bundle ------------------------------------------------
 #' library(caret)
 #'

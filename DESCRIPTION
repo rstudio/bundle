@@ -1,6 +1,6 @@
 Package: bundle
-Title: Serialize Objects With A Consistent Interface
-Version: 0.0.0.9200
+Title: Serialize Model Objects with a Consistent Interface
+Version: 0.1.0
 Authors@R: c(
     person("Julia", "Silge", , "julia.silge@rstudio.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3671-836X")),
@@ -9,11 +9,11 @@ Authors@R: c(
     person("Max", "Kuhn", , "max@rstudio.com", role = "aut"),
     person("RStudio", role = c("cph", "fnd"))
   )
-Description: R holds most objects in memory. However, some models store
-    their data in locations that are not included when one uses `save()`
-    or `saveRDS()`.  bundle provides a common API to capture this
-    information, situate it within a portable object, and restore it for
-    use in new settings.
+Description: Typically, models in 'R' exist in memory and can be saved via
+    regular 'R' serialization. However, some models store information in 
+    locations that cannot be saved using 'R' serialization alone. The goal of 
+    'bundle' is to provide a common interface to capture this information, 
+    situate it within a portable object, and restore it for use in new settings.
 License: MIT + file LICENSE
 URL: https://github.com/rstudio/bundle, https://rstudio.github.io/bundle/
 BugReports: https://github.com/rstudio/bundle/issues
@@ -43,6 +43,7 @@ Suggests:
     rmarkdown,
     stacks,
     testthat (>= 3.0.0),
+    tensorflow,
     torch,
     torchvision,
     uwot,

@@ -3,74 +3,75 @@
 
 # bundle
 
-*NOTE: This package is very early on in its development and is not yet
-minimally functional.*
-
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org/package=bundle)
 [![Codecov test
 coverage](https://codecov.io/gh/rstudio/bundle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle?branch=main)
-[![R-CMD-check](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-R holds most objects in memory. However, some models store their data in
-locations that are not included when one uses `save()` or `saveRDS()`.
-bundle provides a common API to capture this information, situate it
-within a portable object, and restore it for use in new settings.
+Typically, models in R exist in memory and can be saved as `.rds` files.
+However, some models store information in locations that cannot be saved
+using `save()` or `saveRDS()` directly. The goal of bundle is to provide
+a common interface to capture this information, situate it within a
+portable object, and restore it for use in new settings.
 
 ## Installation
 
-You can install the development version of bundle like so:
+You can install the released version of vetiver from
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-pak::pak("simonpcouch/bundle")
+install.packages("bundle")
+```
+
+And the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("rstudio/bundle")
 ```
 
 ## Overview
 
 We often imagine a trained model as a somewhat “standalone” R
-object—given some new data, the object can generate predictions on its
-own:
+object—given some new data, the R object can generate predictions on its
+own. In reality, some types of model objects also make use of
+*references* to generate predictions. A reference is a piece of
+information that a model object refers to that isn’t part of the object
+itself; this could be anything from a connection with a server to an
+internal function in the package used to train the model. When we call
+`predict()`, model objects know where to look to retrieve that data, but
+saving model objects can sometimes disrupt those references. Thus, if we
+want to train a model, save it, re-load it into memory in a production
+setting, and generate predictions with it, we may run into issues
+because those references do not exist in the new computational
+environment.
 
-<img src="man/figures/diagram_01.png" title="A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label predict." alt="A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label predict." width="100%" />
-
-In reality, model objects also make use of *references* to generate
-predictions. A reference is a piece of data that a model object refers
-to that isn’t part of the object itself—this could be anything from a
-connection with a server to an internal function in the package used to
-train the model. Under the hood, when we call `predict()`, model objects
-know where to look to retrieve that data:
-
-<img src="man/figures/diagram_02.png" title="A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow." alt="A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow." width="100%" />
-
-Saving model objects can sometimes disrupt those references. Thus, if we
-want to train a model, save it, re-load it in a production setting, and
-generate predictions with it, we may run into issues:
-
-<img src="man/figures/diagram_03.png" title="A diagram showing the same set of rectangles, representing a prediction problem, as before. This version of the diagram adds two boxes, labeled R Session numbe r one, and R session number two. In R session number two, we have a new rectangle labeled standalone model object. In focus is the arrow from the model object, in R Session number one, to the standalone model object in R session number two." alt="A diagram showing the same set of rectangles, representing a prediction problem, as before. This version of the diagram adds two boxes, labeled R Session numbe r one, and R session number two. In R session number two, we have a new rectangle labeled standalone model object. In focus is the arrow from the model object, in R Session number one, to the standalone model object in R session number two." width="100%" />
-
-We thus need some way to preserve access to those references. This
+We need some way to preserve access to those references. The bundle
 package provides a consistent interface for *bundling* model objects
 with their references so that they can be safely saved and re-loaded in
 production:
 
-<img src="man/figures/diagram_04.png" title="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." alt="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." width="100%" />
+<img src="man/figures/diagram_04.png" alt="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." width="100%" />
 
-So, when you’re ready to save your model, `bundle()` it first, and once
-you’ve loaded it in a new setting, `unbundle()` it. It’s that simple!
+For more on this diagram, see the [main bundle
+vignette](https://rstudio.github.io/bundle/articles/bundle.html).
+
+When you’re ready to save your model, `bundle()` it first. Once you’ve
+loaded it in a new setting, `unbundle()` it!
 
 ## Example
 
-bundle prepares model objects so that they can be effectively saved and
-re-loaded for use in new R sessions. To demonstrate using bundle, we
-will train a boosted tree model, bundle it, and then pass the bundle
-into another R session to generate predictions on new data.
+The bundle package prepares model objects so that they can be
+effectively saved and re-loaded for use in new R sessions. To
+demonstrate using bundle, we will train a boosted tree model using
+[XGBoost](https://xgboost.readthedocs.io/), bundle it, and then pass the
+bundle into another R session to generate predictions on new data.
 
-First, loading needed packages:
+First, load needed packages:
 
 ``` r
 library(bundle)
@@ -79,7 +80,7 @@ library(callr)
 library(waldo)
 ```
 
-Fitting the boosted tree model:
+Fit the boosted tree model:
 
 ``` r
 # fit an boosted tree with xgboost via parsnip
@@ -110,11 +111,11 @@ mod
 #> nfeatures : 10 
 #> evaluation_log:
 #>  iter training_rmse
-#>     1     14.631798
-#>     2     10.865171
-#>     3      8.129132
-#>     4      6.123023
-#>     5      4.681486
+#>     1     14.695244
+#>     2     10.903444
+#>     3      8.231602
+#>     4      6.256097
+#>     5      4.757736
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -126,7 +127,7 @@ saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
 compare(mod, mod2, ignore_formula_env = TRUE)
-#> `old$fit$handle` is <pointer: 0x124af9c30>
+#> `old$fit$handle` is <pointer: 0x13cf89a60>
 #> `new$fit$handle` is <pointer: 0x0>
 #> 
 #> `old$fit$handle` is attr(,"class")
@@ -136,7 +137,7 @@ compare(mod, mod2, ignore_formula_env = TRUE)
 #> `new$fit$handle` is [1] "xgb.Booster.handle"
 ```
 
-Saving and reloading `mod2` didn’t preserve xgboost’s reference to its
+Saving and reloading `mod2` didn’t preserve XGBoost’s reference to its
 `pointer`, which may result in failures later in the modeling process.
 
 We thus need to prepare the fitted model to be saved before passing it
@@ -173,25 +174,33 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.5
-#> 2  20.6
-#> 3  18.9
-#> 4  14.4
-#> 5  16.1
-#> 6  12.0
-#> 7  17.3
+#> 1  21.9
+#> 2  18.2
+#> 3  18.2
+#> 4  14.9
+#> 5  15.7
+#> 6  12.8
+#> 7  20.4
 ```
 
-For a more in-depth demonstration of the package, see the main vignette
-with:
+For a more in-depth demonstration of the package, see the [main
+vignette](https://rstudio.github.io/bundle/articles/bundle.html) with
+`vignette("bundle")`.
 
-``` r
-vignette("bundle")
-```
+## Contributing
 
-## Code of Conduct
-
-Please note that the bundle project is released with a [Contributor Code
-of
-Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+This project is released with a [Contributor Code of
+Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
+
+-   For questions and discussions about our packages, modeling, and
+    machine learning, please [post on RStudio
+    Community](https://community.rstudio.com/new-topic?category_id=15&tags=question).
+
+-   If you think you have encountered a bug, please [submit an
+    issue](https://github.com/rstudio/bundle/issues).
+
+-   Either way, learn how to create and share a
+    [reprex](https://reprex.tidyverse.org/articles/articles/learn-reprex.html)
+    (a minimal, reproducible example), to clearly communicate about your
+    code.

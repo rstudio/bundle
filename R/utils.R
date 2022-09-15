@@ -5,6 +5,10 @@
 #' These functions are not user-facing and are only exported for developer
 #' extensions.
 #'
+#' @return The two `_constr()` functions are constructors that return a bundle
+#' and a situater, respectively. `swap_element()` returns `x` after swapping
+#' out the specified element.
+#'
 #' @rdname internal_functions
 #' @keywords internal
 #' @export

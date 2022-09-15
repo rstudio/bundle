@@ -16,7 +16,10 @@ resource_files:
 should_eval <- 
   rlang::is_installed("keras") && 
   rlang::is_installed("callr") &&
-  rlang::is_installed("xgboost")
+  rlang::is_installed("xgboost") 
+
+should_eval <- 
+  ifelse(should_eval, !is.null(tensorflow::tf_version()), should_eval)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -25,9 +28,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-R holds most objects in memory. However, some model objects store their data in locations that are not included when one uses `save()` or `saveRDS()`. bundle provides a common API to capture this information, situate it within a portable object, and restore it for use in new settings.
+Typically, models in R exist in memory and can be saved as `.rds` files. However, some models store information in locations that cannot be saved using `save()` or `saveRDS()` directly. The goal of bundle is to provide a common interface to capture this information, situate it within a portable object, and restore it for use in new settings.
 
-This vignette will walk through preparing a statistical model to be saved to demonstrate the benefits of using bundle.
+This vignette walks through how to prepare a statistical model for saving to demonstrate the benefits of using bundle.
 
 ```{r setup}
 library(bundle)
@@ -87,7 +90,7 @@ predict(keras_fit, x_test)
 
 Perfect.
 
-If we're satisfied with this model and think it provides some valuable insights, we might want to deploy it somewhere---maybe on a Shiny app---so that others can make use of it.
+If we're satisfied with this model and think it provides some valuable insights, we might want to deploy it somewhere---maybe as a REST API or as a Shiny app---so that others can make use of it.
 
 The callr package will be helpful for emulating this kind of situation. The package allows us to start up a fresh R session and pass a few objects in. 
 
@@ -116,7 +119,7 @@ So, our approach might be:
 * load the model object into the new session
 * predict on new data with the loaded model object
 
-First, saving our model object to file:
+First, saving our model object to a file:
 
 ```{r keras-save}
 temp_file <- tempfile()
@@ -160,7 +163,7 @@ Let's make use of native serialization, then!
 
 ## Native serialization, and where it falls short
 
-keras' vignette is really informative in telling us what we ought to do from here---if we save the model with their native serialization rather than `saveRDS`, we'll be good to go.
+keras' vignette is really informative in telling us what we ought to do from here; if we save the model with the native serialization rather than `saveRDS`, we'll be good to go.
 
 Saving our model object with their methods:
 
@@ -189,7 +192,7 @@ r(
 
 Awesome! Making use of their methods, we were able to effectively save our model, load it in a new R session, and predict on new data.
 
-Now, a new scenario---I've heard that xgboost models are super performant, and want to try to productionize those, too. How would we do that?
+Now let's consider a new scenario---I've heard that xgboost models are super performant, and want to try to productionize those, too. How would we do that?
 
 Based on our workflow just now, we could try to just save it with `saveRDS` and see if we get an informative error somewhere along the way to predicting in a new R session. Or, maybe a better approach would be to read through their documentation and see if we can find anything related to serialization. 
 
@@ -203,7 +206,7 @@ knitr::include_graphics("figures/diagram_03.png")
 
 ## Using bundle
 
-bundle provides a consistent interface to prepare R model objects to be saved and re-loaded. The package provides two functions---`bundle()` and `unbundle()`---that take care of all of the minutae of preparing to save and load R objects effectively.
+bundle provides a consistent interface to prepare R model objects to be saved and re-loaded. The package provides two functions, `bundle()` and `unbundle()`, that take care of all of the minutae of preparing to save and load R objects effectively.
 
 ```{r diagram-04, echo = FALSE, fig.alt = "A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle.", out.width = '100%'}
 knitr::include_graphics("figures/diagram_04.png")
@@ -212,7 +215,7 @@ knitr::include_graphics("figures/diagram_04.png")
 
 Bundles are just lists with two elements:
 
-* `object`: The `object` element of a bundle is the serialized version of the inputted model object. In the simplest situations in modeling, this object is just the output of a native serialization function like `saveRDS.lgb.Booster` that we used earlier.
+* `object`: The `object` element of a bundle is the serialized version of the original model object. In the simplest situations in modeling, this object is just the output of a native serialization function like `save_model_tf()` that we used earlier.
 * `situate()`: The `situate()` element of a bundle is a function that _situates_ the `object` element in its new environment. It takes in the `object` element as input, but also "freezes" reference that existed when the original object was created.
 
 When `unbundle()` is called on a bundle object, the `situate()` element of the bundle will re-load the `object` element and restore needed references in the new environment. Thus, the output of `unbundle()` is ready to go for prediction wherever it is called.

@@ -33,11 +33,11 @@ unserialized version of \code{object}. \code{situate()} will also restore needed
 references, such as server instances and environmental variables.}
 
 Bundles are R objects that represent a "standalone" version of their
-analogous model object. Thus, bundles are ready for saving to file---saving
+analogous model object. Thus, bundles are ready for saving to a file; saving
 with \code{\link[base:readRDS]{base::saveRDS()}} is our recommended serialization strategy for bundles,
 unless documented otherwise for a specific method.
 
-To restore the inputted model object \code{x} in a new environment, load its
+To restore the original model object \code{x} in a new environment, load its
 bundle with \code{\link[base:readRDS]{base::readRDS()}} and run \code{\link[=unbundle]{unbundle()}} on it. The output
 of \code{\link[=unbundle]{unbundle()}} is a model object that is ready to \code{\link[=predict]{predict()}} on new data,
 and other restored functionality (like plotting or summarizing) is supported
@@ -54,7 +54,7 @@ like \link[vetiver:vetiver-package]{vetiver} or \link[renv:renv-package]{renv}.
 See \code{vignette("bundle")} for more information on bundling and its motivation.
 }
 \description{
-Bundling a model prepares it to be saved to file and later
+Bundling a model prepares it to be saved to a file and later
 restored for prediction in a new R session. See the 'Value' section for
 more information on bundles and their usage.
 }
@@ -62,13 +62,10 @@ more information on bundles and their usage.
 For now, bundling methods for torch are only available
 via the luz package, "a higher level API for torch providing
 abstractions to allow for much less verbose training loops."
-
-These bundlers rely on serialization methods from luz and torch,
-which are \link[torch:torch_save]{described by the package authors}
-as "experimental" and not for "use for long term storage."
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("torch")) && identical(Sys.getenv("NOT_CRAN"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (torch::torch_is_installed()) {
 # fit model and bundle ------------------------------------------------
 library(torch)
 library(torchvision)
@@ -144,11 +141,11 @@ mod_bundle <- bundle(mod)
 mod_unbundled <- unbundle(mod_bundle)
 
 mod_unbundled_preds <- predict(mod_unbundled, test_dl)
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-This method adapts \code{\link[luz:luz_save]{luz::luz_save()}} and the internal luz function
-\code{model_to_raw()}, as well as \code{\link[torch:torch_save]{torch::torch_save()}}.
+This method wraps \code{\link[luz:luz_save]{luz::luz_save()}} and \code{\link[luz:luz_load]{luz::luz_load()}}.
 
 Other bundlers: 
 \code{\link{bundle.H2OAutoML}()},

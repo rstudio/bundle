@@ -13,7 +13,7 @@
 #' @details This bundler wraps [bundle.model_fit()] and [bundle.workflow()].
 #' Both the fitted members and the meta-learner (in `x$coefs`) are bundled.
 #'
-#' @examplesIf rlang::is_installed(c("stacks"))
+#' @examplesIf rlang::is_installed(c("stacks")) && identical(Sys.getenv("NOT_CRAN"), "true")
 #' # fit model and bundle ------------------------------------------------
 #' library(stacks)
 #'

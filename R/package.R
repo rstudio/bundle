@@ -1,4 +1,4 @@
-#' bundle: Serialize Objects With A Consistent Interface
+#' bundle: Serialize Model Objects With A Consistent Interface
 #'
 #' @docType package
 #' @name bundle_description

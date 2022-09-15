@@ -15,15 +15,11 @@
 #' via the luz package, "a higher level API for torch providing
 #' abstractions to allow for much less verbose training loops."
 #'
-#' These bundlers rely on serialization methods from luz and torch,
-#' which are [described by the package authors][torch::torch_save]
-#' as "experimental" and not for "use for long term storage."
-#'
 #' @method bundle luz_module_fitted
 #' @rdname bundle_torch
-#' @seealso This method adapts [luz::luz_save()] and the internal luz function
-#'   `model_to_raw()`, as well as [torch::torch_save()].
-#' @examplesIf FALSE
+#' @seealso This method wraps [luz::luz_save()] and [luz::luz_load()].
+#' @examplesIf rlang::is_installed(c("torch")) && identical(Sys.getenv("NOT_CRAN"), "true")
+#' if (torch::torch_is_installed()) {
 #' # fit model and bundle ------------------------------------------------
 #' library(torch)
 #' library(torchvision)
@@ -99,6 +95,7 @@
 #' mod_unbundled <- unbundle(mod_bundle)
 #'
 #' mod_unbundled_preds <- predict(mod_unbundled, test_dl)
+#' }
 #'
 #' @aliases bundle.luz_module_fitted
 #' @export
