@@ -67,8 +67,8 @@ more information on bundles and their usage.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>A <a href="https://stacks.tidymodels.org/reference/stacks.html" class="external-link">model_stack</a> object returned
-from <a href="https://stacks.tidymodels.org/reference/fit_members.html" class="external-link">fit_members()</a>.</p></dd>
+<dd><p>A <a href="https://rdrr.io/pkg/stacks/man/stacks.html" class="external-link">model_stack</a> object returned
+from <a href="https://rdrr.io/pkg/stacks/man/fit_members.html" class="external-link">fit_members()</a>.</p></dd>
 
 
 <dt>...</dt>
@@ -154,11 +154,11 @@ Both the fitted members and the meta-learner (in <code>x$coefs</code>) are bundl
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://stacks.tidymodels.org/reference/stacks.html" class="external-link">stacks</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://stacks.tidymodels.org/reference/add_candidates.html" class="external-link">add_candidates</a></span><span class="op">(</span><span class="va">reg_res_lr</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://stacks.tidymodels.org/reference/add_candidates.html" class="external-link">add_candidates</a></span><span class="op">(</span><span class="va">reg_res_svm</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://stacks.tidymodels.org/reference/blend_predictions.html" class="external-link">blend_predictions</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://stacks.tidymodels.org/reference/fit_members.html" class="external-link">fit_members</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/stacks/man/stacks.html" class="external-link">stacks</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/magrittr/man/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/stacks/man/add_candidates.html" class="external-link">add_candidates</a></span><span class="op">(</span><span class="va">reg_res_lr</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/magrittr/man/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/stacks/man/add_candidates.html" class="external-link">add_candidates</a></span><span class="op">(</span><span class="va">reg_res_svm</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/magrittr/man/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/stacks/man/blend_predictions.html" class="external-link">blend_predictions</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/magrittr/man/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/stacks/man/fit_members.html" class="external-link">fit_members</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod_bundle</span> <span class="op">&lt;-</span> <span class="fu"><a href="bundle.html">bundle</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
