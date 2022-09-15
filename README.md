@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org/package=bundle)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Codecov test
@@ -94,7 +96,7 @@ mod
 #> parsnip model object
 #> 
 #> ##### xgb.Booster
-#> raw: 8.1 Kb 
+#> raw: 8 Kb 
 #> call:
 #>   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, 
 #>     colsample_bytree = 1, colsample_bynode = 0.3, min_child_weight = 1, 
@@ -111,11 +113,11 @@ mod
 #> nfeatures : 10 
 #> evaluation_log:
 #>  iter training_rmse
-#>     1     14.695244
-#>     2     10.903444
-#>     3      8.231602
-#>     4      6.256097
-#>     5      4.757736
+#>     1     14.640496
+#>     2     10.911261
+#>     3      8.226121
+#>     4      6.231544
+#>     5      4.761105
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -127,7 +129,7 @@ saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
 compare(mod, mod2, ignore_formula_env = TRUE)
-#> `old$fit$handle` is <pointer: 0x13cf89a60>
+#> `old$fit$handle` is <pointer: 0x147aa3740>
 #> `new$fit$handle` is <pointer: 0x0>
 #> 
 #> `old$fit$handle` is attr(,"class")
@@ -174,13 +176,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  21.9
-#> 2  18.2
-#> 3  18.2
-#> 4  14.9
-#> 5  15.7
-#> 6  12.8
-#> 7  20.4
+#> 1  22.1
+#> 2  20.6
+#> 3  16.5
+#> 4  14.1
+#> 5  16.5
+#> 6  11.8
+#> 7  18.8
 ```
 
 For a more in-depth demonstration of the package, see the [main
