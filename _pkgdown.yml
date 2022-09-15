@@ -2,3 +2,6 @@ url: https://rstudio.github.io/bundle/
 template:
   bootstrap: 5
   package: tidytemplate
+
+development:
+  mode: auto
