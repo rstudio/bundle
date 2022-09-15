@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">bundle</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9200</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,8 +79,8 @@
 
     
     
-<p>R holds most objects in memory. However, some model objects store their data in locations that are not included when one uses <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code> or <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. bundle provides a common API to capture this information, situate it within a portable object, and restore it for use in new settings.</p>
-<p>This vignette will walk through preparing a statistical model to be saved to demonstrate the benefits of using bundle.</p>
+<p>Typically, models in R exist in memory and can be saved as <code>.rds</code> files. However, some models store information in locations that cannot be saved using <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code> or <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> directly. The goal of bundle is to provide a common interface to capture this information, situate it within a portable object, and restore it for use in new settings.</p>
+<p>This vignette walks through how to prepare a statistical model for saving to demonstrate the benefits of using bundle.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/bundle" class="external-link">bundle</a></span><span class="op">)</span></span></code></pre></div>
 <p>In addition to the package itself, we’ll load the keras and xgboost packages to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.</p>
@@ -111,7 +111,6 @@
 <span>    loss <span class="op">=</span> <span class="st">'mean_squared_error'</span>,</span>
 <span>    optimizer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/optimizer_adam.html" class="external-link">optimizer_adam</a></span><span class="op">(</span>learning_rate <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> </span>
-<span><span class="co">#&gt; Loaded Tensorflow version 2.4.0</span></span>
 <span></span>
 <span><span class="va">keras_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span></span>
@@ -125,15 +124,15 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">keras_fit</span>, <span class="va">x_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5739567</span></span>
-<span><span class="co">#&gt; [2,]  1.6032780</span></span>
-<span><span class="co">#&gt; [3,]  1.1065590</span></span>
-<span><span class="co">#&gt; [4,]  0.7043729</span></span>
-<span><span class="co">#&gt; [5,] -0.6427518</span></span>
-<span><span class="co">#&gt; [6,] -1.5898088</span></span>
-<span><span class="co">#&gt; [7,]  1.0097284</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4177884</span></span>
+<span><span class="co">#&gt; [2,]  1.5538720</span></span>
+<span><span class="co">#&gt; [3,]  1.0184844</span></span>
+<span><span class="co">#&gt; [4,]  0.7829083</span></span>
+<span><span class="co">#&gt; [5,] -0.5712827</span></span>
+<span><span class="co">#&gt; [6,] -1.4072598</span></span>
+<span><span class="co">#&gt; [7,]  0.9037059</span></span></code></pre></div>
 <p>Perfect.</p>
-<p>If we’re satisfied with this model and think it provides some valuable insights, we might want to deploy it somewhere—maybe on a Shiny app—so that others can make use of it.</p>
+<p>If we’re satisfied with this model and think it provides some valuable insights, we might want to deploy it somewhere—maybe as a REST API or as a Shiny app—so that others can make use of it.</p>
 <p>The callr package will be helpful for emulating this kind of situation. The package allows us to start up a fresh R session and pass a few objects in.</p>
 <p>We’ll just make use of two of the arguments to the function <code><a href="https://callr.r-lib.org/reference/r.html" class="external-link">r()</a></code>:</p>
 <ul>
@@ -160,7 +159,7 @@
 <li>load the model object into the new session</li>
 <li>predict on new data with the loaded model object</li>
 </ul>
-<p>First, saving our model object to file:</p>
+<p>First, saving our model object to a file:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -194,7 +193,7 @@
 <div class="section level2">
 <h2 id="native-serialization-and-where-it-falls-short">Native serialization, and where it falls short<a class="anchor" aria-label="anchor" href="#native-serialization-and-where-it-falls-short"></a>
 </h2>
-<p>keras’ vignette is really informative in telling us what we ought to do from here—if we save the model with their native serialization rather than <code>saveRDS</code>, we’ll be good to go.</p>
+<p>keras’ vignette is really informative in telling us what we ought to do from here; if we save the model with the native serialization rather than <code>saveRDS</code>, we’ll be good to go.</p>
 <p>Saving our model object with their methods:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -215,15 +214,15 @@
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5739567</span></span>
-<span><span class="co">#&gt; [2,]  1.6032780</span></span>
-<span><span class="co">#&gt; [3,]  1.1065590</span></span>
-<span><span class="co">#&gt; [4,]  0.7043729</span></span>
-<span><span class="co">#&gt; [5,] -0.6427518</span></span>
-<span><span class="co">#&gt; [6,] -1.5898088</span></span>
-<span><span class="co">#&gt; [7,]  1.0097284</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4177884</span></span>
+<span><span class="co">#&gt; [2,]  1.5538720</span></span>
+<span><span class="co">#&gt; [3,]  1.0184844</span></span>
+<span><span class="co">#&gt; [4,]  0.7829083</span></span>
+<span><span class="co">#&gt; [5,] -0.5712827</span></span>
+<span><span class="co">#&gt; [6,] -1.4072598</span></span>
+<span><span class="co">#&gt; [7,]  0.9037059</span></span></code></pre></div>
 <p>Awesome! Making use of their methods, we were able to effectively save our model, load it in a new R session, and predict on new data.</p>
-<p>Now, a new scenario—I’ve heard that xgboost models are super performant, and want to try to productionize those, too. How would we do that?</p>
+<p>Now let’s consider a new scenario—I’ve heard that xgboost models are super performant, and want to try to productionize those, too. How would we do that?</p>
 <p>Based on our workflow just now, we could try to just save it with <code>saveRDS</code> and see if we get an informative error somewhere along the way to predicting in a new R session. Or, maybe a better approach would be to read through their documentation and see if we can find anything related to serialization.</p>
 <p>We’ve done the work of figuring that out, and it turns out the interface is a little bit different. You’ll need to make sure the <code>params</code> object persists across sessions, but <code>saveRDS</code> will work by itself if… ah, I’ll stop myself there.</p>
 <p>What if we could just use the same function for any R object, and it would <em>just work</em>?</p>
@@ -232,12 +231,12 @@
 <div class="section level2">
 <h2 id="using-bundle">Using bundle<a class="anchor" aria-label="anchor" href="#using-bundle"></a>
 </h2>
-<p>bundle provides a consistent interface to prepare R model objects to be saved and re-loaded. The package provides two functions—<code><a href="../reference/bundle.html">bundle()</a></code> and <code><a href="../reference/bundle.html">unbundle()</a></code>—that take care of all of the minutae of preparing to save and load R objects effectively.</p>
+<p>bundle provides a consistent interface to prepare R model objects to be saved and re-loaded. The package provides two functions, <code><a href="../reference/bundle.html">bundle()</a></code> and <code><a href="../reference/bundle.html">unbundle()</a></code>, that take care of all of the minutae of preparing to save and load R objects effectively.</p>
 <p><img src="figures/diagram_04.png" alt="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." width="100%"></p>
 <p>Bundles are just lists with two elements:</p>
 <ul>
 <li>
-<code>object</code>: The <code>object</code> element of a bundle is the serialized version of the inputted model object. In the simplest situations in modeling, this object is just the output of a native serialization function like <code>saveRDS.lgb.Booster</code> that we used earlier.</li>
+<code>object</code>: The <code>object</code> element of a bundle is the serialized version of the original model object. In the simplest situations in modeling, this object is just the output of a native serialization function like <code><a href="https://rdrr.io/pkg/keras/man/save_model_tf.html" class="external-link">save_model_tf()</a></code> that we used earlier.</li>
 <li>
 <code>situate()</code>: The <code>situate()</code> element of a bundle is a function that <em>situates</em> the <code>object</code> element in its new environment. It takes in the <code>object</code> element as input, but also “freezes” reference that existed when the original object was created.</li>
 </ul>
@@ -261,13 +260,13 @@
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5739567</span></span>
-<span><span class="co">#&gt; [2,]  1.6032780</span></span>
-<span><span class="co">#&gt; [3,]  1.1065590</span></span>
-<span><span class="co">#&gt; [4,]  0.7043729</span></span>
-<span><span class="co">#&gt; [5,] -0.6427518</span></span>
-<span><span class="co">#&gt; [6,] -1.5898088</span></span>
-<span><span class="co">#&gt; [7,]  1.0097284</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4177884</span></span>
+<span><span class="co">#&gt; [2,]  1.5538720</span></span>
+<span><span class="co">#&gt; [3,]  1.0184844</span></span>
+<span><span class="co">#&gt; [4,]  0.7829083</span></span>
+<span><span class="co">#&gt; [5,] -0.5712827</span></span>
+<span><span class="co">#&gt; [6,] -1.4072598</span></span>
+<span><span class="co">#&gt; [7,]  0.9037059</span></span></code></pre></div>
 <p>Huzzah!</p>
 <p>The best part is, if you wanted to do the same thing for an xgboost object, you could use the same code!</p>
 <p>First, fitting a quick xgboost model:</p>
