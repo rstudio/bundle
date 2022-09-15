@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">bundle</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,13 +124,13 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">keras_fit</span>, <span class="va">x_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.4052992</span></span>
-<span><span class="co">#&gt; [2,]  1.3477403</span></span>
-<span><span class="co">#&gt; [3,]  0.9251788</span></span>
-<span><span class="co">#&gt; [4,]  0.6044457</span></span>
-<span><span class="co">#&gt; [5,] -0.6366370</span></span>
-<span><span class="co">#&gt; [6,] -1.4542351</span></span>
-<span><span class="co">#&gt; [7,]  0.8619658</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.5479547</span></span>
+<span><span class="co">#&gt; [2,]  1.5219227</span></span>
+<span><span class="co">#&gt; [3,]  1.0293754</span></span>
+<span><span class="co">#&gt; [4,]  0.6308709</span></span>
+<span><span class="co">#&gt; [5,] -0.7060114</span></span>
+<span><span class="co">#&gt; [6,] -1.6721168</span></span>
+<span><span class="co">#&gt; [7,]  0.9684148</span></span></code></pre></div>
 <p>Perfect.</p>
 <p>If we’re satisfied with this model and think it provides some valuable insights, we might want to deploy it somewhere—maybe as a REST API or as a Shiny app—so that others can make use of it.</p>
 <p>The callr package will be helpful for emulating this kind of situation. The package allows us to start up a fresh R session and pass a few objects in.</p>
@@ -214,13 +214,13 @@
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.4052992</span></span>
-<span><span class="co">#&gt; [2,]  1.3477403</span></span>
-<span><span class="co">#&gt; [3,]  0.9251788</span></span>
-<span><span class="co">#&gt; [4,]  0.6044457</span></span>
-<span><span class="co">#&gt; [5,] -0.6366370</span></span>
-<span><span class="co">#&gt; [6,] -1.4542351</span></span>
-<span><span class="co">#&gt; [7,]  0.8619658</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.5479547</span></span>
+<span><span class="co">#&gt; [2,]  1.5219227</span></span>
+<span><span class="co">#&gt; [3,]  1.0293754</span></span>
+<span><span class="co">#&gt; [4,]  0.6308709</span></span>
+<span><span class="co">#&gt; [5,] -0.7060114</span></span>
+<span><span class="co">#&gt; [6,] -1.6721168</span></span>
+<span><span class="co">#&gt; [7,]  0.9684148</span></span></code></pre></div>
 <p>Awesome! Making use of their methods, we were able to effectively save our model, load it in a new R session, and predict on new data.</p>
 <p>Now let’s consider a new scenario—I’ve heard that xgboost models are super performant, and want to try to productionize those, too. How would we do that?</p>
 <p>Based on our workflow just now, we could try to just save it with <code>saveRDS</code> and see if we get an informative error somewhere along the way to predicting in a new R session. Or, maybe a better approach would be to read through their documentation and see if we can find anything related to serialization.</p>
@@ -260,13 +260,13 @@
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.4052992</span></span>
-<span><span class="co">#&gt; [2,]  1.3477403</span></span>
-<span><span class="co">#&gt; [3,]  0.9251788</span></span>
-<span><span class="co">#&gt; [4,]  0.6044457</span></span>
-<span><span class="co">#&gt; [5,] -0.6366370</span></span>
-<span><span class="co">#&gt; [6,] -1.4542351</span></span>
-<span><span class="co">#&gt; [7,]  0.8619658</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.5479547</span></span>
+<span><span class="co">#&gt; [2,]  1.5219227</span></span>
+<span><span class="co">#&gt; [3,]  1.0293754</span></span>
+<span><span class="co">#&gt; [4,]  0.6308709</span></span>
+<span><span class="co">#&gt; [5,] -0.7060114</span></span>
+<span><span class="co">#&gt; [6,] -1.6721168</span></span>
+<span><span class="co">#&gt; [7,]  0.9684148</span></span></code></pre></div>
 <p>Huzzah!</p>
 <p>The best part is, if you wanted to do the same thing for an xgboost object, you could use the same code!</p>
 <p>First, fitting a quick xgboost model:</p>
