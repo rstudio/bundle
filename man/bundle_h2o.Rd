@@ -100,7 +100,7 @@ cars_unbundled <- unbundle(cars_fit)
 
 predict(cars_unbundled, cars_h2o[, 2:11])
 
-h2o.shutdown()
+h2o.shutdown(prompt = FALSE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
