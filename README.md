@@ -32,8 +32,8 @@ install.packages("bundle")
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("rstudio/bundle")
+# install.packages("pak")
+pak::pak("rstudio/bundle")
 ```
 
 ## Overview
@@ -57,7 +57,7 @@ package provides a consistent interface for *bundling* model objects
 with their references so that they can be safely saved and re-loaded in
 production:
 
-<img src="man/figures/diagram_04.png" alt="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." width="100%" />
+<img src="man/figures/diagram_04.png" alt="A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label 'predict'. There are two boxes labeled reference, connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow. There are two boxes, labeled R Session number one, and R session number two. In focus is the arrow from the model object, in R Session number one, to a model object in R session number two. This arrow connecting the model object in R session one and the model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." width="100%" />
 
 For more on this diagram, see the [main bundle
 vignette](https://rstudio.github.io/bundle/articles/bundle.html).
@@ -96,14 +96,14 @@ mod
 #> parsnip model object
 #> 
 #> ##### xgb.Booster
-#> raw: 8 Kb 
+#> raw: 8.1 Kb 
 #> call:
 #>   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, 
 #>     colsample_bytree = 1, colsample_bynode = 0.3, min_child_weight = 1, 
-#>     subsample = 1, objective = "reg:squarederror"), data = x$data, 
-#>     nrounds = 5, watchlist = x$watchlist, verbose = 0, nthread = 1)
+#>     subsample = 1), data = x$data, nrounds = 5, watchlist = x$watchlist, 
+#>     verbose = 0, nthread = 1, objective = "reg:squarederror")
 #> params (as set within xgb.train):
-#>   eta = "0.3", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "0.3", min_child_weight = "1", subsample = "1", objective = "reg:squarederror", nthread = "1", validate_parameters = "TRUE"
+#>   eta = "0.3", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "0.3", min_child_weight = "1", subsample = "1", nthread = "1", objective = "reg:squarederror", validate_parameters = "TRUE"
 #> xgb.attributes:
 #>   niter
 #> callbacks:
@@ -113,11 +113,11 @@ mod
 #> nfeatures : 10 
 #> evaluation_log:
 #>  iter training_rmse
-#>     1     14.640496
-#>     2     10.911261
-#>     3      8.226121
-#>     4      6.231544
-#>     5      4.761105
+#>     1     14.631798
+#>     2     10.865171
+#>     3      8.130434
+#>     4      6.150935
+#>     5      4.681918
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -129,7 +129,7 @@ saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
 compare(mod, mod2, ignore_formula_env = TRUE)
-#> `old$fit$handle` is <pointer: 0x147aa3740>
+#> `old$fit$handle` is <pointer: 0x102ff7800>
 #> `new$fit$handle` is <pointer: 0x0>
 #> 
 #> `old$fit$handle` is attr(,"class")
@@ -176,13 +176,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.1
-#> 2  20.6
-#> 3  16.5
-#> 4  14.1
-#> 5  16.5
-#> 6  11.8
-#> 7  18.8
+#> 1  22.4
+#> 2  22.4
+#> 3  19.0
+#> 4  19.4
+#> 5  16.6
+#> 6  11.2
+#> 7  22.4
 ```
 
 For a more in-depth demonstration of the package, see the [main
@@ -195,14 +195,14 @@ This project is released with a [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
 
--   For questions and discussions about our packages, modeling, and
-    machine learning, please [post on RStudio
-    Community](https://community.rstudio.com/new-topic?category_id=15&tags=question).
+- For questions and discussions about our packages, modeling, and
+  machine learning, please [post on RStudio
+  Community](https://community.rstudio.com/new-topic?category_id=15&tags=question).
 
--   If you think you have encountered a bug, please [submit an
-    issue](https://github.com/rstudio/bundle/issues).
+- If you think you have encountered a bug, please [submit an
+  issue](https://github.com/rstudio/bundle/issues).
 
--   Either way, learn how to create and share a
-    [reprex](https://reprex.tidyverse.org/articles/articles/learn-reprex.html)
-    (a minimal, reproducible example), to clearly communicate about your
-    code.
+- Either way, learn how to create and share a
+  [reprex](https://reprex.tidyverse.org/articles/articles/learn-reprex.html)
+  (a minimal, reproducible example), to clearly communicate about your
+  code.
