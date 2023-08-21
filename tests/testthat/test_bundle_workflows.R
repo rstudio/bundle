@@ -148,8 +148,7 @@ test_that("bundling + unbundling tidymodels workflows (lm + step_umap)", {
 
     rec <-
       recipe(mpg ~ ., data = mtcars) %>%
-      step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2) %>%
-      prep()
+      step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2)
 
     mod <-
       workflow() %>%
