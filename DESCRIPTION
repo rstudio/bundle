@@ -41,7 +41,6 @@ Suggests:
     parsnip,
     recipes,
     renv,
-    reticulate,
     rmarkdown,
     stacks,
     tensorflow,
