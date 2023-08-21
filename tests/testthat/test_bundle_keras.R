@@ -1,7 +1,7 @@
 test_that("bundling + unbundling keras fits", {
   skip_if_not_installed("keras")
   skip_if_not_installed("butcher")
-  skip_if(is.null(tensorflow::tf_version()))
+  skip_if(!reticulate::py_module_available("tensorflow"))
 
   library(keras)
 
