@@ -1,4 +1,5 @@
 test_that("bundling + unbundling keras fits", {
+  skip_on_cran()
   skip_if_not_installed("keras")
   skip_if_not_installed("butcher")
   skip_if(is.null(tensorflow::tf_version()))

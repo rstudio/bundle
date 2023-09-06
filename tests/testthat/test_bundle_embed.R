@@ -1,10 +1,10 @@
 test_that("bundling + unbundling step_umap", {
+  skip_on_cran()
   skip_if_not_installed("embed")
   skip_if_not_installed("butcher")
+  skip_if(is.null(tensorflow::tf_version()))
 
   library(embed)
-
-  skip_if_not(is_tf_available())
 
   # define a function to prep a recipe ------------------------------------------
   prep_rec <- function() {

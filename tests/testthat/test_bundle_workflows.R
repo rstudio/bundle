@@ -123,19 +123,19 @@ test_that("bundling + unbundling tidymodels workflows (xgboost + step_log)", {
 })
 
 test_that("bundling + unbundling tidymodels workflows (lm + step_umap)", {
+  skip_on_cran()
   skip_if_not_installed("workflows")
   skip_if_not_installed("parsnip")
   skip_if_not_installed("recipes")
   skip_if_not_installed("embed")
   skip_if_not_installed("butcher")
+  skip_if(is.null(tensorflow::tf_version()))
 
   library(workflows)
   library(parsnip)
   library(recipes)
   library(embed)
   library(butcher)
-
-  skip_if_not(is_tf_available())
 
   # define a function to fit a model -------------------------------------------
   fit_model <- function() {
