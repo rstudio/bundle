@@ -85,7 +85,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the released version of vetiver from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
+<p>You can install the released version of bundle from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"bundle"</span><span class="op">)</span></span></code></pre></div>
 <p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
@@ -142,11 +142,11 @@
 <span><span class="co">#&gt; nfeatures : 10 </span></span>
 <span><span class="co">#&gt; evaluation_log:</span></span>
 <span><span class="co">#&gt;  iter training_rmse</span></span>
-<span><span class="co">#&gt;     1     14.631798</span></span>
-<span><span class="co">#&gt;     2     10.865171</span></span>
-<span><span class="co">#&gt;     3      8.130434</span></span>
-<span><span class="co">#&gt;     4      6.150935</span></span>
-<span><span class="co">#&gt;     5      4.681918</span></span></code></pre></div>
+<span><span class="co">#&gt;     1     14.640496</span></span>
+<span><span class="co">#&gt;     2     10.927976</span></span>
+<span><span class="co">#&gt;     3      8.217181</span></span>
+<span><span class="co">#&gt;     4      6.262192</span></span>
+<span><span class="co">#&gt;     5      4.796391</span></span></code></pre></div>
 <p>Note that simply saving and loading the model results in changes to the fitted model:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -154,7 +154,7 @@
 <span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">temp_file</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">compare</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">mod2</span>, ignore_formula_env <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `old$fit$handle` is &lt;pointer: 0x102ff7800&gt;</span></span>
+<span><span class="co">#&gt; `old$fit$handle` is &lt;pointer: 0x12fa5adc0&gt;</span></span>
 <span><span class="co">#&gt; `new$fit$handle` is &lt;pointer: 0x0&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; `old$fit$handle` is attr(,"class")</span></span>
@@ -191,13 +191,13 @@
 <span><span class="co">#&gt; # A tibble: 7 × 1</span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  22.4</span></span>
-<span><span class="co">#&gt; 2  22.4</span></span>
-<span><span class="co">#&gt; 3  19.0</span></span>
-<span><span class="co">#&gt; 4  19.4</span></span>
+<span><span class="co">#&gt; 1  22.2</span></span>
+<span><span class="co">#&gt; 2  20.9</span></span>
+<span><span class="co">#&gt; 3  19.1</span></span>
+<span><span class="co">#&gt; 4  13.3</span></span>
 <span><span class="co">#&gt; 5  16.6</span></span>
-<span><span class="co">#&gt; 6  11.2</span></span>
-<span><span class="co">#&gt; 7  22.4</span></span></code></pre></div>
+<span><span class="co">#&gt; 6  13.3</span></span>
+<span><span class="co">#&gt; 7  17.2</span></span></code></pre></div>
 <p>For a more in-depth demonstration of the package, see the <a href="https://rstudio.github.io/bundle/articles/bundle.html">main vignette</a> with <code><a href="articles/bundle.html">vignette("bundle")</a></code>.</p>
 </div>
 <div class="section level2">
