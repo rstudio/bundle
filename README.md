@@ -22,7 +22,7 @@ portable object, and restore it for use in new settings.
 
 ## Installation
 
-You can install the released version of vetiver from
+You can install the released version of bundle from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -113,11 +113,11 @@ mod
 #> nfeatures : 10 
 #> evaluation_log:
 #>  iter training_rmse
-#>     1     14.631798
-#>     2     10.865171
-#>     3      8.130434
-#>     4      6.150935
-#>     5      4.681918
+#>     1     14.640496
+#>     2     10.927976
+#>     3      8.217181
+#>     4      6.262192
+#>     5      4.796391
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -129,7 +129,7 @@ saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
 compare(mod, mod2, ignore_formula_env = TRUE)
-#> `old$fit$handle` is <pointer: 0x102ff7800>
+#> `old$fit$handle` is <pointer: 0x12fa5adc0>
 #> `new$fit$handle` is <pointer: 0x0>
 #> 
 #> `old$fit$handle` is attr(,"class")
@@ -176,13 +176,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.4
-#> 2  22.4
-#> 3  19.0
-#> 4  19.4
+#> 1  22.2
+#> 2  20.9
+#> 3  19.1
+#> 4  13.3
 #> 5  16.6
-#> 6  11.2
-#> 7  22.4
+#> 6  13.3
+#> 7  17.2
 ```
 
 For a more in-depth demonstration of the package, see the [main
@@ -195,14 +195,14 @@ This project is released with a [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
 
-- For questions and discussions about our packages, modeling, and
-  machine learning, please [post on RStudio
-  Community](https://community.rstudio.com/new-topic?category_id=15&tags=question).
+-   For questions and discussions about our packages, modeling, and
+    machine learning, please [post on RStudio
+    Community](https://community.rstudio.com/new-topic?category_id=15&tags=question).
 
-- If you think you have encountered a bug, please [submit an
-  issue](https://github.com/rstudio/bundle/issues).
+-   If you think you have encountered a bug, please [submit an
+    issue](https://github.com/rstudio/bundle/issues).
 
-- Either way, learn how to create and share a
-  [reprex](https://reprex.tidyverse.org/articles/articles/learn-reprex.html)
-  (a minimal, reproducible example), to clearly communicate about your
-  code.
+-   Either way, learn how to create and share a
+    [reprex](https://reprex.tidyverse.org/articles/articles/learn-reprex.html)
+    (a minimal, reproducible example), to clearly communicate about your
+    code.
