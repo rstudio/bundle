@@ -1,13 +1,13 @@
 Package: bundle
 Title: Serialize Model Objects with a Consistent Interface
-Version: 0.1.0.9000
+Version: 0.1.1
 Authors@R: c(
     person("Julia", "Silge", , "julia.silge@posit.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3671-836X")),
     person("Simon", "Couch", , "simonpatrickcouch@gmail.com", role = "aut"),
     person("Qiushi", "Yan", , "qiushi.yann@gmail.com", role = "aut"),
     person("Max", "Kuhn", , "max@posit.co", role = "aut"),
-    person(given = "Posit Software, PBC", role = c("cph", "fnd"))
+    person("Posit Software, PBC", role = c("cph", "fnd"))
   )
 Description: Typically, models in 'R' exist in memory and can be saved via
     regular 'R' serialization. However, some models store information in
@@ -18,6 +18,8 @@ Description: Typically, models in 'R' exist in memory and can be saved via
 License: MIT + file LICENSE
 URL: https://github.com/rstudio/bundle, https://rstudio.github.io/bundle/
 BugReports: https://github.com/rstudio/bundle/issues
+Depends: 
+    R (>= 3.6)
 Imports:
     glue,
     purrr,
