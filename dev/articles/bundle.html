@@ -139,13 +139,13 @@ that out:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">keras_fit</span>, <span class="va">x_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5070586</span></span>
-<span><span class="co">#&gt; [2,]  1.5033908</span></span>
-<span><span class="co">#&gt; [3,]  1.1382947</span></span>
-<span><span class="co">#&gt; [4,]  0.6732742</span></span>
-<span><span class="co">#&gt; [5,] -0.5244699</span></span>
-<span><span class="co">#&gt; [6,] -1.3642290</span></span>
-<span><span class="co">#&gt; [7,]  0.9379453</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4919828</span></span>
+<span><span class="co">#&gt; [2,]  1.8123114</span></span>
+<span><span class="co">#&gt; [3,]  1.2323103</span></span>
+<span><span class="co">#&gt; [4,]  0.7370100</span></span>
+<span><span class="co">#&gt; [5,] -0.4869082</span></span>
+<span><span class="co">#&gt; [6,] -1.4711475</span></span>
+<span><span class="co">#&gt; [7,]  0.9915574</span></span></code></pre></div>
 <p>Perfect.</p>
 <p>If we’re satisfied with this model and think it provides some
 valuable insights, we might want to deploy it somewhere—maybe as a REST
@@ -254,13 +254,13 @@ than <code>saveRDS</code>, we’ll be good to go.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5070586</span></span>
-<span><span class="co">#&gt; [2,]  1.5033908</span></span>
-<span><span class="co">#&gt; [3,]  1.1382947</span></span>
-<span><span class="co">#&gt; [4,]  0.6732742</span></span>
-<span><span class="co">#&gt; [5,] -0.5244699</span></span>
-<span><span class="co">#&gt; [6,] -1.3642290</span></span>
-<span><span class="co">#&gt; [7,]  0.9379453</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4919828</span></span>
+<span><span class="co">#&gt; [2,]  1.8123114</span></span>
+<span><span class="co">#&gt; [3,]  1.2323103</span></span>
+<span><span class="co">#&gt; [4,]  0.7370100</span></span>
+<span><span class="co">#&gt; [5,] -0.4869082</span></span>
+<span><span class="co">#&gt; [6,] -1.4711475</span></span>
+<span><span class="co">#&gt; [7,]  0.9915574</span></span></code></pre></div>
 <p>Awesome! Making use of their methods, we were able to effectively
 save our model, load it in a new R session, and predict on new data.</p>
 <p>Now let’s consider a new scenario—I’ve heard that xgboost models are
@@ -328,13 +328,13 @@ the model fit:</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5070586</span></span>
-<span><span class="co">#&gt; [2,]  1.5033908</span></span>
-<span><span class="co">#&gt; [3,]  1.1382947</span></span>
-<span><span class="co">#&gt; [4,]  0.6732742</span></span>
-<span><span class="co">#&gt; [5,] -0.5244699</span></span>
-<span><span class="co">#&gt; [6,] -1.3642290</span></span>
-<span><span class="co">#&gt; [7,]  0.9379453</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4919828</span></span>
+<span><span class="co">#&gt; [2,]  1.8123114</span></span>
+<span><span class="co">#&gt; [3,]  1.2323103</span></span>
+<span><span class="co">#&gt; [4,]  0.7370100</span></span>
+<span><span class="co">#&gt; [5,] -0.4869082</span></span>
+<span><span class="co">#&gt; [6,] -1.4711475</span></span>
+<span><span class="co">#&gt; [7,]  0.9915574</span></span></code></pre></div>
 <p>Huzzah!</p>
 <p>The best part is, if you wanted to do the same thing for an xgboost
 object, you could use the same code!</p>
