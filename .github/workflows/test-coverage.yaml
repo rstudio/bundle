@@ -31,20 +31,36 @@ jobs:
         shell: Rscript {0}
 
       - name: Install Miniconda
-        run: |
-          reticulate::install_miniconda()
+        # conda can fail at downgrading python, so we specify python version in advance
+        env:
+          RETICULATE_MINICONDA_PYTHON_VERSION: "3.7"
+        run: reticulate::install_miniconda() # creates r-reticulate conda env by default
         shell: Rscript {0}
-
-      - name: Find Miniconda on macOS
-        if: runner.os == 'macOS'
-        run: echo "options(reticulate.conda_binary = reticulate:::miniconda_conda())" >> .Rprofile
 
       - name: Install TensorFlow
         run: |
-          reticulate::conda_create('r-reticulate', packages = c('python==3.6.9'))
-          tensorflow::install_tensorflow(version='2.4.0')
+          tensorflow::install_tensorflow(version='2.7', conda_python_version = NULL)
         shell: Rscript {0}
 
       - name: Test coverage
-        run: covr::codecov(quiet = FALSE)
+        run: |
+          covr::codecov(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
+          )
         shell: Rscript {0}
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-test-failures
+          path: ${{ runner.temp }}/package
