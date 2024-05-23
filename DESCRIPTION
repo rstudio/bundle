@@ -52,7 +52,7 @@ Suggests:
     uwot,
     vetiver,
     workflows,
-    xgboost
+    xgboost (>= 1.6.0.1)
 VignetteBuilder: 
     knitr
 Config/Needs/website: tidyverse/tidytemplate
