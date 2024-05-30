@@ -4,6 +4,7 @@ test_that("bundling + unbundling tidymodels workflows (xgboost + step_log)", {
   skip_if_not_installed("recipes")
   skip_if_not_installed("xgboost")
   skip_if_not_installed("butcher")
+  skip_if_not_installed("irlba", "2.3.5.2")
 
   library(workflows)
   library(parsnip)
