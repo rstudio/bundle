@@ -3,7 +3,6 @@
 \docType{package}
 \name{bundle_description}
 \alias{bundle_description}
-\alias{_PACKAGE}
 \alias{bundle-package}
 \title{bundle: Serialize Model Objects With A Consistent Interface}
 \description{
@@ -19,18 +18,18 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Julia Silge \email{julia.silge@rstudio.com} (\href{https://orcid.org/0000-0002-3671-836X}{ORCID})
+\strong{Maintainer}: Julia Silge \email{julia.silge@posit.co} (\href{https://orcid.org/0000-0002-3671-836X}{ORCID})
 
 Authors:
 \itemize{
   \item Simon Couch \email{simonpatrickcouch@gmail.com}
   \item Qiushi Yan \email{qiushi.yann@gmail.com}
-  \item Max Kuhn \email{max@rstudio.com}
+  \item Max Kuhn \email{max@posit.co}
 }
 
 Other contributors:
 \itemize{
-  \item RStudio [copyright holder, funder]
+  \item Posit Software, PBC [copyright holder, funder]
 }
 
 }

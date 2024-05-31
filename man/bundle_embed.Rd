@@ -77,7 +77,7 @@ and predict with the output of \code{unbundle(res)} in a new R session.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("recipes") && rlang::is_installed("embed")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("recipes", "embed", "irlba (>= 2.3.5.2)"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(recipes)
 library(embed)
@@ -101,6 +101,7 @@ bake(rec_unbundled, new_data = iris)
 This method wraps \code{\link[uwot:save_uwot]{uwot::save_uwot()}} and \code{\link[uwot:load_uwot]{uwot::load_uwot()}}.
 
 Other bundlers: 
+\code{\link{bundle}()},
 \code{\link{bundle.H2OAutoML}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.luz_module_fitted}()},
@@ -109,7 +110,6 @@ Other bundlers:
 \code{\link{bundle.recipe}()},
 \code{\link{bundle.train}()},
 \code{\link{bundle.workflow}()},
-\code{\link{bundle.xgb.Booster}()},
-\code{\link{bundle}()}
+\code{\link{bundle.xgb.Booster}()}
 }
 \concept{bundlers}

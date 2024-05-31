@@ -108,6 +108,7 @@ These methods wrap \code{\link[h2o:h2o.save_mojo]{h2o::h2o.save_mojo()}} and
 \code{\link[h2o:h2o.saveModel]{h2o::h2o.saveModel()}}.
 
 Other bundlers: 
+\code{\link{bundle}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
@@ -116,7 +117,6 @@ Other bundlers:
 \code{\link{bundle.step_umap}()},
 \code{\link{bundle.train}()},
 \code{\link{bundle.workflow}()},
-\code{\link{bundle.xgb.Booster}()},
-\code{\link{bundle}()}
+\code{\link{bundle.xgb.Booster}()}
 }
 \concept{bundlers}
