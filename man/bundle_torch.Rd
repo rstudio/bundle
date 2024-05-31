@@ -148,6 +148,7 @@ mod_unbundled_preds <- predict(mod_unbundled, test_dl)
 This method wraps \code{\link[luz:luz_save]{luz::luz_save()}} and \code{\link[luz:luz_load]{luz::luz_load()}}.
 
 Other bundlers: 
+\code{\link{bundle}()},
 \code{\link{bundle.H2OAutoML}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.model_fit}()},
@@ -156,7 +157,6 @@ Other bundlers:
 \code{\link{bundle.step_umap}()},
 \code{\link{bundle.train}()},
 \code{\link{bundle.workflow}()},
-\code{\link{bundle.xgb.Booster}()},
-\code{\link{bundle}()}
+\code{\link{bundle.xgb.Booster}()}
 }
 \concept{bundlers}

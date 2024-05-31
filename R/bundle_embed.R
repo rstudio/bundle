@@ -11,7 +11,7 @@
 #' @template param_unused_dots
 #' @seealso This method wraps [uwot::save_uwot()] and [uwot::load_uwot()].
 #' @template butcher_details
-#' @examplesIf rlang::is_installed("recipes") && rlang::is_installed("embed")
+#' @examplesIf rlang::is_installed(c("recipes", "embed", "irlba (>= 2.3.5.2)"))
 #' # fit model and bundle ------------------------------------------------
 #' library(recipes)
 #' library(embed)

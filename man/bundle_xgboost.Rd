@@ -102,6 +102,7 @@ This method adapts the xgboost functions \code{\link[xgboost:xgb.save.raw]{xgboo
 and \code{\link[xgboost:xgb.load.raw]{xgboost::xgb.load.raw()}}.
 
 Other bundlers: 
+\code{\link{bundle}()},
 \code{\link{bundle.H2OAutoML}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.luz_module_fitted}()},
@@ -110,7 +111,6 @@ Other bundlers:
 \code{\link{bundle.recipe}()},
 \code{\link{bundle.step_umap}()},
 \code{\link{bundle.train}()},
-\code{\link{bundle.workflow}()},
-\code{\link{bundle}()}
+\code{\link{bundle.workflow}()}
 }
 \concept{bundlers}
