@@ -150,6 +150,7 @@ This method wraps \code{\link[luz:luz_save]{luz::luz_save()}} and \code{\link[lu
 Other bundlers: 
 \code{\link{bundle}()},
 \code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.bart}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.model_fit}()},
 \code{\link{bundle.model_stack}()},

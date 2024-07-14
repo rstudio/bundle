@@ -109,6 +109,7 @@ These methods wrap \code{\link[h2o:h2o.save_mojo]{h2o::h2o.save_mojo()}} and
 
 Other bundlers: 
 \code{\link{bundle}()},
+\code{\link{bundle.bart}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
