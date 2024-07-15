@@ -107,6 +107,7 @@ mod_unbundled_preds <- predict(mod_unbundled, new_data = mtcars)
 Other bundlers: 
 \code{\link{bundle}()},
 \code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.bart}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_stack}()},

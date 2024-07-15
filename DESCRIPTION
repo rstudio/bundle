@@ -32,6 +32,7 @@ Suggests:
     callr,
     caret,
     covr,
+    dbarts,
     embed,
     h2o,
     keras,
