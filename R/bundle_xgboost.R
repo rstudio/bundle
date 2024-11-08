@@ -51,6 +51,9 @@ bundle.xgb.Booster <- function(x, ...) {
         num_class = !!x$params$num_class
       )
 
+      res$nfeatures <- !!x$nfeatures
+      res$feature_names <- !!x$feature_names
+
       res
     }),
     desc_class = class(x)[1]

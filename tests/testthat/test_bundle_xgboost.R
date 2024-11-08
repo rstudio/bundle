@@ -96,4 +96,8 @@ test_that("bundling + unbundling xgboost fits", {
   # compare predictions
   expect_equal(mod_preds, mod_unbundled_preds)
   expect_equal(mod_preds, mod_butchered_unbundled_preds)
+
+  # verify nfeatures and feature_names are kept
+  expect_identical(unbundle(mod_bundle)$nfeatures, mod_fit$nfeatures)
+  expect_identical(unbundle(mod_bundle)$feature_names, mod_fit$feature_names)
 })
