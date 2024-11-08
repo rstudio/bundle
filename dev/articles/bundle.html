@@ -115,7 +115,7 @@ variables in the built-in <code>mtcars</code> dataset.</p>
 <p>Easy peasy! Now, given that this model is trained, we assume that
 it’s ready to go to predict on new data. Our mental map might look
 something like this:</p>
-<p><img src="figures/diagram_01.png" alt="A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label predict." width="100%"></p>
+<p><img src="figures%2Fdiagram_01.png" alt="A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label predict." width="100%"></p>
 <p>We pass a model object to the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function, along
 with some new data to predict on, and get predictions back. Let’s try
 that out:</p>
@@ -123,13 +123,13 @@ that out:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">keras_fit</span>, <span class="va">x_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 1/1 - 0s - 46ms/epoch - 46ms/step</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5618864</span></span>
-<span><span class="co">#&gt; [2,]  1.3338993</span></span>
-<span><span class="co">#&gt; [3,]  1.0008103</span></span>
-<span><span class="co">#&gt; [4,]  0.4323444</span></span>
-<span><span class="co">#&gt; [5,] -0.7103105</span></span>
-<span><span class="co">#&gt; [6,] -1.6431241</span></span>
-<span><span class="co">#&gt; [7,]  0.9517364</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.5059029</span></span>
+<span><span class="co">#&gt; [2,]  1.4819021</span></span>
+<span><span class="co">#&gt; [3,]  1.1072053</span></span>
+<span><span class="co">#&gt; [4,]  0.6733229</span></span>
+<span><span class="co">#&gt; [5,] -0.5685867</span></span>
+<span><span class="co">#&gt; [6,] -1.4208862</span></span>
+<span><span class="co">#&gt; [7,]  0.9324427</span></span></code></pre></div>
 <p>Perfect.</p>
 <p>If we’re satisfied with this model and think it provides some
 valuable insights, we might want to deploy it somewhere—maybe as a REST
@@ -200,7 +200,7 @@ Some objects require extra information when they’re loaded into new
 environments in order to do their thing. In this case, this keras model
 object needs access to additional references in order to predict on new
 data.</p>
-<p><img src="figures/diagram_02.png" alt="A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow." width="100%"></p>
+<p><img src="figures%2Fdiagram_02.png" alt="A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow." width="100%"></p>
 <p>In computer science, these bits of “extra information” are called
 <em>references</em>. Those references need to persist—or be restored—in
 new environments in order for the objects that reference them to work
@@ -238,13 +238,13 @@ than <code>saveRDS</code>, we’ll be good to go.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5618864</span></span>
-<span><span class="co">#&gt; [2,]  1.3338993</span></span>
-<span><span class="co">#&gt; [3,]  1.0008103</span></span>
-<span><span class="co">#&gt; [4,]  0.4323444</span></span>
-<span><span class="co">#&gt; [5,] -0.7103105</span></span>
-<span><span class="co">#&gt; [6,] -1.6431241</span></span>
-<span><span class="co">#&gt; [7,]  0.9517364</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.5059029</span></span>
+<span><span class="co">#&gt; [2,]  1.4819021</span></span>
+<span><span class="co">#&gt; [3,]  1.1072053</span></span>
+<span><span class="co">#&gt; [4,]  0.6733229</span></span>
+<span><span class="co">#&gt; [5,] -0.5685867</span></span>
+<span><span class="co">#&gt; [6,] -1.4208862</span></span>
+<span><span class="co">#&gt; [7,]  0.9324427</span></span></code></pre></div>
 <p>Awesome! Making use of their methods, we were able to effectively
 save our model, load it in a new R session, and predict on new data.</p>
 <p>Now let’s consider a new scenario—I’ve heard that xgboost models are
@@ -262,7 +262,7 @@ interface is a little bit different. You’ll need to make sure the
 there.</p>
 <p>What if we could just use the same function for any R object, and it
 would <em>just work</em>?</p>
-<p><img src="figures/diagram_03.png" alt="A diagram showing the same set of rectangles, representing a prediction problem, as before. This version of the diagram adds two boxes, labeled R Session number one, and R session number two. In R session number two, we have a new rectangle labeled standalone model object. In focus is the arrow from the model object, in R Session number one, to the standalone model object in R session number two." width="100%"></p>
+<p><img src="figures%2Fdiagram_03.png" alt="A diagram showing the same set of rectangles, representing a prediction problem, as before. This version of the diagram adds two boxes, labeled R Session number one, and R session number two. In R session number two, we have a new rectangle labeled standalone model object. In focus is the arrow from the model object, in R Session number one, to the standalone model object in R session number two." width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="using-bundle">Using bundle<a class="anchor" aria-label="anchor" href="#using-bundle"></a>
@@ -271,7 +271,7 @@ would <em>just work</em>?</p>
 be saved and re-loaded. The package provides two functions,
 <code><a href="../reference/bundle.html">bundle()</a></code> and <code><a href="../reference/bundle.html">unbundle()</a></code>, that take care of all
 of the minutae of preparing to save and load R objects effectively.</p>
-<p><img src="figures/diagram_04.png" alt="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." width="100%"></p>
+<p><img src="figures%2Fdiagram_04.png" alt="A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle." width="100%"></p>
 <p>Bundles are just lists with two elements:</p>
 <ul>
 <li>
@@ -312,13 +312,13 @@ the model fit:</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.5618864</span></span>
-<span><span class="co">#&gt; [2,]  1.3338993</span></span>
-<span><span class="co">#&gt; [3,]  1.0008103</span></span>
-<span><span class="co">#&gt; [4,]  0.4323444</span></span>
-<span><span class="co">#&gt; [5,] -0.7103105</span></span>
-<span><span class="co">#&gt; [6,] -1.6431241</span></span>
-<span><span class="co">#&gt; [7,]  0.9517364</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.5059029</span></span>
+<span><span class="co">#&gt; [2,]  1.4819021</span></span>
+<span><span class="co">#&gt; [3,]  1.1072053</span></span>
+<span><span class="co">#&gt; [4,]  0.6733229</span></span>
+<span><span class="co">#&gt; [5,] -0.5685867</span></span>
+<span><span class="co">#&gt; [6,] -1.4208862</span></span>
+<span><span class="co">#&gt; [7,]  0.9324427</span></span></code></pre></div>
 <p>Huzzah!</p>
 <p>The best part is, if you wanted to do the same thing for an xgboost
 object, you could use the same code!</p>
@@ -371,7 +371,7 @@ deployment workflows a good bit smoother in the future.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
   </div></footer>
