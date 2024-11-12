@@ -11,5 +11,5 @@
 ^docs$
 ^pkgdown$
 ^CRAN-SUBMISSION$
-^\.python_version$
+^\.python-version$
 ^revdep$
