@@ -1,3 +1,5 @@
+# bundle (development version)
+
 # bundle 0.1.2
 
 * Added bundle method for objects from `dbarts::bart()` and, by extension, `parsnip::bart(engine = "dbarts")` (#64).
