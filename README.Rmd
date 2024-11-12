@@ -5,8 +5,8 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
-should_eval <- 
-  rlang::is_installed("xgboost") && 
+should_eval <-
+  rlang::is_installed("xgboost") &&
   rlang::is_installed("parsnip") &&
   rlang::is_installed("callr")
 
@@ -55,7 +55,7 @@ We need some way to preserve access to those references. The bundle package prov
 knitr::include_graphics("man/figures/diagram_04.png")
 ```
 
-For more on this diagram, see the [main bundle vignette](https://rstudio.github.io/bundle/articles/bundle.html). 
+For more on this diagram, see the [main bundle vignette](https://rstudio.github.io/bundle/articles/bundle.html).
 
 When you're ready to save your model, `bundle()` it first. Once you've loaded it in a new setting, `unbundle()` it!
 
@@ -115,8 +115,8 @@ r(
   func = function(bundled_mod) {
     library(bundle)
     library(parsnip)
-    
-    unbundled_mod <- 
+
+    unbundled_mod <-
       unbundle(bundled_mod)
 
     predict(unbundled_mod, new_data = mtcars[26:32,])
@@ -133,7 +133,7 @@ For a more in-depth demonstration of the package, see the [main vignette](https:
 
 This project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
 
-- For questions and discussions about our packages, modeling, and machine learning, please [post on RStudio Community](https://community.rstudio.com/new-topic?category_id=15&tags=question).
+- For questions and discussions about our packages, modeling, and machine learning, please [post on RStudio Community](https://forum.posit.co/new-topic?category_id=15&tags=question).
 
 - If you think you have encountered a bug, please [submit an issue](https://github.com/rstudio/bundle/issues).
 
