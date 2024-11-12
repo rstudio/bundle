@@ -56,7 +56,7 @@
       <h1>Getting started with bundle</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/rstudio/bundle/blob/main/vignettes/bundle.Rmd" class="external-link"><code>vignettes/bundle.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rstudio/bundle/blob/v0.1.2/vignettes/bundle.Rmd" class="external-link"><code>vignettes/bundle.Rmd</code></a></small>
       <div class="d-none name"><code>bundle.Rmd</code></div>
     </div>
 
@@ -120,15 +120,15 @@ with some new data to predict on, and get predictions back. Let’s try
 that out:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">keras_fit</span>, <span class="va">x_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1/1 - 0s - 48ms/epoch - 48ms/step</span></span>
+<span><span class="co">#&gt; 1/1 - 0s - 43ms/epoch - 43ms/step</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.4698964</span></span>
-<span><span class="co">#&gt; [2,]  1.4597121</span></span>
-<span><span class="co">#&gt; [3,]  0.9214318</span></span>
-<span><span class="co">#&gt; [4,]  0.7208369</span></span>
-<span><span class="co">#&gt; [5,] -0.6909671</span></span>
-<span><span class="co">#&gt; [6,] -1.5234431</span></span>
-<span><span class="co">#&gt; [7,]  0.9599166</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4414970</span></span>
+<span><span class="co">#&gt; [2,]  1.4750962</span></span>
+<span><span class="co">#&gt; [3,]  0.8539344</span></span>
+<span><span class="co">#&gt; [4,]  0.5617058</span></span>
+<span><span class="co">#&gt; [5,] -0.7709445</span></span>
+<span><span class="co">#&gt; [6,] -1.7506402</span></span>
+<span><span class="co">#&gt; [7,]  0.9272930</span></span></code></pre></div>
 <p>Perfect.</p>
 <p>If we’re satisfied with this model and think it provides some
 valuable insights, we might want to deploy it somewhere—maybe as a REST
@@ -237,13 +237,13 @@ than <code>saveRDS</code>, we’ll be good to go.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.4698964</span></span>
-<span><span class="co">#&gt; [2,]  1.4597121</span></span>
-<span><span class="co">#&gt; [3,]  0.9214318</span></span>
-<span><span class="co">#&gt; [4,]  0.7208369</span></span>
-<span><span class="co">#&gt; [5,] -0.6909671</span></span>
-<span><span class="co">#&gt; [6,] -1.5234431</span></span>
-<span><span class="co">#&gt; [7,]  0.9599166</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4414970</span></span>
+<span><span class="co">#&gt; [2,]  1.4750962</span></span>
+<span><span class="co">#&gt; [3,]  0.8539344</span></span>
+<span><span class="co">#&gt; [4,]  0.5617058</span></span>
+<span><span class="co">#&gt; [5,] -0.7709445</span></span>
+<span><span class="co">#&gt; [6,] -1.7506402</span></span>
+<span><span class="co">#&gt; [7,]  0.9272930</span></span></code></pre></div>
 <p>Awesome! Making use of their methods, we were able to effectively
 save our model, load it in a new R session, and predict on new data.</p>
 <p>Now let’s consider a new scenario—I’ve heard that xgboost models are
@@ -311,13 +311,13 @@ the model fit:</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;            [,1]</span></span>
-<span><span class="co">#&gt; [1,]  1.4698964</span></span>
-<span><span class="co">#&gt; [2,]  1.4597121</span></span>
-<span><span class="co">#&gt; [3,]  0.9214318</span></span>
-<span><span class="co">#&gt; [4,]  0.7208369</span></span>
-<span><span class="co">#&gt; [5,] -0.6909671</span></span>
-<span><span class="co">#&gt; [6,] -1.5234431</span></span>
-<span><span class="co">#&gt; [7,]  0.9599166</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,]  1.4414970</span></span>
+<span><span class="co">#&gt; [2,]  1.4750962</span></span>
+<span><span class="co">#&gt; [3,]  0.8539344</span></span>
+<span><span class="co">#&gt; [4,]  0.5617058</span></span>
+<span><span class="co">#&gt; [5,] -0.7709445</span></span>
+<span><span class="co">#&gt; [6,] -1.7506402</span></span>
+<span><span class="co">#&gt; [7,]  0.9272930</span></span></code></pre></div>
 <p>Huzzah!</p>
 <p>The best part is, if you wanted to do the same thing for an xgboost
 object, you could use the same code!</p>
