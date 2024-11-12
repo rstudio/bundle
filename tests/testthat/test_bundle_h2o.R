@@ -1,4 +1,5 @@
 test_that("bundling + unbundling h2o fits (regression)", {
+  skip_on_cran()
   skip_if(!interactive())
   skip_if_not_installed("h2o")
   skip_if_not_installed("butcher")
