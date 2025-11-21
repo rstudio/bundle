@@ -1,5 +1,7 @@
 # bundle (development version)
 
+* Make to work with new versions of xgboost models (#75).
+
 # bundle 0.1.2
 
 * Added bundle method for objects from `dbarts::bart()` and, by extension, `parsnip::bart(engine = "dbarts")` (#64).
