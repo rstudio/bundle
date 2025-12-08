@@ -8,11 +8,12 @@
 # dependency.
 on:
   push:
-    branches: [main]
+    branches: main
   pull_request:
-    branches: [main]
 
 name: R-CMD-check-hard
+
+permissions: read-all
 
 jobs:
   R-CMD-check:
