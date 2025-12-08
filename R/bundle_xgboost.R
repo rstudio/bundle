@@ -22,9 +22,15 @@
 #' data(agaricus.train)
 #' data(agaricus.test)
 #'
-#' xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
-#'                max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
-#'                objective = "binary:logistic")
+#' if (utils::packageVersion("xgboost") >= "2.0.0.0") {
+#'   xgb <- xgboost(x = agaricus.train$data, y = agaricus.train$label,
+#'                  max_depth = 2, learning_rate = 1, nthread = 2, nrounds = 2,
+#'                  objective = "reg:squarederror")
+#' } else {
+#'   xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
+#'                  max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
+#'                  objective = "binary:logistic")
+#' }
 #'
 #' xgb_bundle <- bundle(xgb)
 #'
@@ -56,7 +62,7 @@ bundle.xgb.Booster <- function(x, ...) {
         attr(res, "feature_names") <- !!attr(x, "feature_names")
       } else {
         res <- xgboost::xgb.load.raw(object, as_booster = TRUE)
-        
+
         res$params <- list(
           objective = !!x$params$objective,
           num_class = !!x$params$num_class
