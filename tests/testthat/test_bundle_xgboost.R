@@ -11,10 +11,27 @@ test_that("bundling + unbundling xgboost fits", {
     set.seed(1)
 
     data(agaricus.train)
-
-    xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
-                   max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
-                   objective = "binary:logistic")
+    if (utils::packageVersion("xgboost") > "2.0.0.0") {
+      xgb <- xgboost(
+        x = agaricus.train$data, 
+        y = agaricus.train$label, 
+        max_depth = 2, 
+        learning_rate = 1, 
+        nthread = 2, 
+        nrounds = 2, 
+        objective = "reg:squarederror"
+      )
+    } else {
+      xgb <- xgboost(
+        data = agaricus.train$data,
+        label = agaricus.train$label,
+        max_depth = 2, 
+        eta = 1, 
+        nthread = 2, 
+        nrounds = 2,
+        objective = "binary:logistic"
+      )
+    }
 
     xgb
   }
@@ -84,7 +101,7 @@ test_that("bundling + unbundling xgboost fits", {
   mod_preds <- predict(mod_fit, agaricus.test$data)
 
   # check classes
-  expect_s3_class(mod_bundle, "bundled_xgb.Booster")
+  expect_true(any(class(mod_bundle) %in% c("bundled_xgb.Booster", "bundled_xgboost")))
   expect_s3_class(unbundle(mod_bundle), "xgb.Booster")
 
   # ensure that the situater function didn't bring along the whole model

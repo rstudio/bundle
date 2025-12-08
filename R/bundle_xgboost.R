@@ -44,15 +44,27 @@ bundle.xgb.Booster <- function(x, ...) {
   bundle_constr(
     object = object,
     situate = situate_constr(function(object) {
-      res <- xgboost::xgb.load.raw(object, as_booster = TRUE)
+      if (utils::packageVersion("xgboost") > "2.0.0.0") {
+        res <- xgboost::xgb.load.raw(object)
 
-      res$params <- list(
-        objective = !!x$params$objective,
-        num_class = !!x$params$num_class
-      )
+        attr(res, "params") <- list(
+          objective = !!attr(x, "params")$objective,
+          num_class = !!attr(x, "params")$num_class
+        )
 
-      res$nfeatures <- !!x$nfeatures
-      res$feature_names <- !!x$feature_names
+        attr(res, "nfeatures") <- !!attr(x, "nfeatures")
+        attr(res, "feature_names") <- !!attr(x, "feature_names")
+      } else {
+        res <- xgboost::xgb.load.raw(object, as_booster = TRUE)
+        
+        res$params <- list(
+          objective = !!x$params$objective,
+          num_class = !!x$params$num_class
+        )
+
+        res$nfeatures <- !!x$nfeatures
+        res$feature_names <- !!x$feature_names
+      }
 
       res
     }),
