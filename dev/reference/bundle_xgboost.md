@@ -132,21 +132,20 @@ set.seed(1)
 data(agaricus.train)
 data(agaricus.test)
 
-xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
-               max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
-               objective = "binary:logistic")
-#> Warning: Parameter 'data' has been renamed to 'x'. This warning will become an error in a future version.
-#> Warning: Parameter 'label' has been renamed to 'y'. This warning will become an error in a future version.
-#> Warning: Parameter 'eta' has been renamed to 'learning_rate'. This warning will become an error in a future version.
-#> Error in process.y.margin.and.objective(y, base_margin, objective, params): Got numeric 'y' - supported objectives for this data are: reg:squarederror, reg:squaredlogerror, reg:logistic, reg:pseudohubererror, reg:absoluteerror, reg:quantileerror, count:poisson, reg:gamma, reg:tweedie. Was passed: binary:logistic
+if (utils::packageVersion("xgboost") >= "2.0.0.0") {
+  xgb <- xgboost(x = agaricus.train$data, y = agaricus.train$label,
+                 max_depth = 2, learning_rate = 1, nthread = 2, nrounds = 2,
+                 objective = "reg:squarederror")
+} else {
+  xgb <- xgboost(data = agaricus.train$data, label = agaricus.train$label,
+                 max_depth = 2, eta = 1, nthread = 2, nrounds = 2,
+                 objective = "binary:logistic")
+}
 
 xgb_bundle <- bundle(xgb)
-#> Error: object 'xgb' not found
 
 # then, after saveRDS + readRDS or passing to a new session ----------
 xgb_unbundled <- unbundle(xgb_bundle)
-#> Error: object 'xgb_bundle' not found
 
 xgb_unbundled_preds <- predict(xgb_unbundled, agaricus.test$data)
-#> Error: object 'xgb_unbundled' not found
 ```
