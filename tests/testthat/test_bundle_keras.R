@@ -21,8 +21,12 @@ test_that("bundling + unbundling keras fits", {
     y_train <- cars[, 1]
 
     keras_fit <-
-      keras_model_sequential()  |>
-      layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') |>
+      keras_model_sequential() |>
+      layer_dense(
+        units = 1,
+        input_shape = ncol(x_train),
+        activation = 'linear'
+      ) |>
       compile(
         loss = 'mean_squared_error',
         optimizer = optimizer_adam(learning_rate = .01)
@@ -30,8 +34,10 @@ test_that("bundling + unbundling keras fits", {
 
     keras_fit |>
       fit(
-        x = x_train, y = y_train,
-        epochs = 100, batch_size = 1,
+        x = x_train,
+        y = y_train,
+        epochs = 100,
+        batch_size = 1,
         verbose = 0
       )
 

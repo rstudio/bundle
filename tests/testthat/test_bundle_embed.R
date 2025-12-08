@@ -93,5 +93,8 @@ test_that("bundling + unbundling step_umap", {
 
   # compare baked data
   expect_equal(as.data.frame(rec_data), as.data.frame(rec_unbundled_data))
-  expect_equal(as.data.frame(rec_data), as.data.frame(rec_butchered_unbundled_data))
+  expect_equal(
+    as.data.frame(rec_data),
+    as.data.frame(rec_butchered_unbundled_data)
+  )
 })

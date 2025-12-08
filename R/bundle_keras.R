@@ -90,7 +90,10 @@ bundle.keras.engine.training.Model <- function(x, ...) {
   bundle_constr(
     object = serialized,
     situate = situate_constr(function(object) {
-      new_file <- withr::local_tempfile(pattern = "unbundle", fileext = ".tar.gz")
+      new_file <- withr::local_tempfile(
+        pattern = "unbundle",
+        fileext = ".tar.gz"
+      )
       unbundle_dir <- withr::local_tempdir("unbundle")
       writeBin(object, new_file, endian = "little")
       utils::untar(new_file, exdir = unbundle_dir)

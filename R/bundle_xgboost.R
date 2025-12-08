@@ -56,7 +56,7 @@ bundle.xgb.Booster <- function(x, ...) {
         attr(res, "feature_names") <- !!attr(x, "feature_names")
       } else {
         res <- xgboost::xgb.load.raw(object, as_booster = TRUE)
-        
+
         res$params <- list(
           objective = !!x$params$objective,
           num_class = !!x$params$num_class

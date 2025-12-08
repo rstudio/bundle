@@ -116,9 +116,12 @@ bundle.luz_module_fitted <- function(x, ...) {
     object = res,
     situate = situate_constr(function(object) {
       con <- rawConnection(object)
-      on.exit({
-        close(con)
-      }, add = TRUE)
+      on.exit(
+        {
+          close(con)
+        },
+        add = TRUE
+      )
       res <- luz::luz_load(con)
     }),
     desc_class = class(x)[1]

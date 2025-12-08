@@ -25,7 +25,7 @@ bundle_constr <- function(object, situate, desc_class) {
 #' @rdname internal_functions
 #' @keywords internal
 #' @export
-situate_constr <- function (fn) {
+situate_constr <- function(fn) {
   env <- rlang::child_env(rlang::caller_env())
   fn <- rlang::eval_bare(rlang::enexpr(fn), env)
   rlang::env_poke_parent(env, rlang::base_env())
@@ -73,5 +73,7 @@ swap_element <- function(x, ...) {
 
 # global variables -------------------------------------------------------------
 utils::globalVariables(c(
-  "extract_fit_engine", "getS3method", "map"
+  "extract_fit_engine",
+  "getS3method",
+  "map"
 ))
