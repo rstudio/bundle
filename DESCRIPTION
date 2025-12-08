@@ -7,7 +7,8 @@ Authors@R: c(
     person("Simon", "Couch", , "simonpatrickcouch@gmail.com", role = "aut"),
     person("Qiushi", "Yan", , "qiushi.yann@gmail.com", role = "aut"),
     person("Max", "Kuhn", , "max@posit.co", role = "aut"),
-    person("Posit Software, PBC", role = c("cph", "fnd"), comment = c(ROR = "03wc8by49"))
+    person("Posit Software, PBC", role = c("cph", "fnd"),
+           comment = c(ROR = "03wc8by49"))
   )
 Description: Typically, models in 'R' exist in memory and can be saved via
     regular 'R' serialization. However, some models store information in
@@ -57,11 +58,11 @@ Suggests:
     xgboost (>= 1.6.0.1)
 VignetteBuilder: 
     knitr
+Remotes: 
+    tidymodels/butcher
 Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
+Config/usethis/last-upkeep: 2025-12-08
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-Remotes: 
-    tidymodels/butcher
-Config/usethis/last-upkeep: 2025-12-08
