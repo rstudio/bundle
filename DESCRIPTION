@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 URL: https://github.com/rstudio/bundle, https://rstudio.github.io/bundle/
 BugReports: https://github.com/rstudio/bundle/issues
 Depends: 
-    R (>= 3.6)
+    R (>= 4.1)
 Imports:
     glue,
     lifecycle,

@@ -78,9 +78,9 @@ Fit the boosted tree model:
 ```{r}
 # fit an boosted tree with xgboost via parsnip
 mod <-
-    boost_tree(trees = 5, mtry = 3) %>%
-    set_mode("regression") %>%
-    set_engine("xgboost") %>%
+    boost_tree(trees = 5, mtry = 3) |>
+    set_mode("regression") |>
+    set_engine("xgboost") |>
     fit(mpg ~ ., data = mtcars[1:25,])
 
 mod

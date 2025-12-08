@@ -73,8 +73,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model \code{x}, you can safely call:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{res <-
-  x \%>\%
-  butcher() \%>\%
+  x |>
+  butcher() |>
   bundle()
 }\if{html}{\out{</div>}}
 
@@ -90,9 +90,9 @@ library(xgboost)
 set.seed(1)
 
 mod <-
-  boost_tree(trees = 5, mtry = 3) \%>\%
-  set_mode("regression") \%>\%
-  set_engine("xgboost") \%>\%
+  boost_tree(trees = 5, mtry = 3) |>
+  set_mode("regression") |>
+  set_engine("xgboost") |>
   fit(mpg ~ ., data = mtcars)
 
 mod_bundle <- bundle(mod)

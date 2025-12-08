@@ -7,28 +7,28 @@ test_that("bundling + unbundling keras fits", {
   library(keras)
 
   test_data <-
-    mtcars[26:32, 2:ncol(mtcars)] %>%
-    as.matrix() %>%
+    mtcars[26:32, 2:ncol(mtcars)] |>
+    as.matrix() |>
     scale()
 
   # define a function to fit a model -------------------------------------------
   fit_model <- function() {
-    cars <- mtcars[1:25, ] %>%
-      as.matrix() %>%
+    cars <- mtcars[1:25, ] |>
+      as.matrix() |>
       scale()
 
     x_train <- cars[, 2:ncol(cars)]
     y_train <- cars[, 1]
 
     keras_fit <-
-      keras_model_sequential()  %>%
-      layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') %>%
+      keras_model_sequential()  |>
+      layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') |>
       compile(
         loss = 'mean_squared_error',
         optimizer = optimizer_adam(learning_rate = .01)
       )
 
-    keras_fit %>%
+    keras_fit |>
       fit(
         x = x_train, y = y_train,
         epochs = 100, batch_size = 1,

@@ -67,8 +67,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model \code{x}, you can safely call:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{res <-
-  x \%>\%
-  butcher() \%>\%
+  x |>
+  butcher() |>
   bundle()
 }\if{html}{\out{</div>}}
 

@@ -11,8 +11,8 @@ test_that("bundling + unbundling step_umap", {
   prep_rec <- function() {
     set.seed(1)
 
-    rec <- recipe(mpg ~ ., data = mtcars) %>%
-      step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2) %>%
+    rec <- recipe(mpg ~ ., data = mtcars) |>
+      step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2) |>
       prep()
 
     rec

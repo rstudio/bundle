@@ -89,9 +89,9 @@ Fit the boosted tree model:
 ``` r
 # fit an boosted tree with xgboost via parsnip
 mod <-
-    boost_tree(trees = 5, mtry = 3) %>%
-    set_mode("regression") %>%
-    set_engine("xgboost") %>%
+    boost_tree(trees = 5, mtry = 3) |>
+    set_mode("regression") |>
+    set_engine("xgboost") |>
     fit(mpg ~ ., data = mtcars[1:25,])
 
 mod
@@ -110,11 +110,11 @@ mod
 #> evaluation_log:
 #>   iter training_rmse
 #>  <int>         <num>
-#>      1      4.603805
-#>      2      3.612432
-#>      3      2.854883
-#>      4      2.324194
-#>      5      1.871323
+#>      1      4.618358
+#>      2      3.627921
+#>      3      2.891176
+#>      4      2.300624
+#>      5      1.852596
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -126,8 +126,8 @@ saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
 compare(mod, mod2, ignore_formula_env = TRUE)
-#> `old$fit$ptr` is <pointer: 0x127e38a10>
-#> `new$fit$ptr` is <pointer: 0x107a4d2a0>
+#> `old$fit$ptr` is <pointer: 0x10b535700>
+#> `new$fit$ptr` is <pointer: 0x10b56be40>
 ```
 
 Saving and reloading `mod2` didn’t preserve XGBoost’s reference to its
@@ -167,13 +167,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  28.4
-#> 2  25.8
+#> 1  28.7
+#> 2  25.0
 #> 3  23.7
-#> 4  18.1
-#> 5  20.6
-#> 6  15.8
-#> 7  23.1
+#> 4  18.0
+#> 5  20.3
+#> 6  14.9
+#> 7  22.2
 ```
 
 For a more in-depth demonstration of the package, see the [main

@@ -75,9 +75,3 @@ swap_element <- function(x, ...) {
 utils::globalVariables(c(
   "extract_fit_engine", "getS3method", "map"
 ))
-
-# imports ----------------------------------------------------------------------
-#' @keywords internal
-#' @importFrom purrr %>%
-#' @export
-NULL

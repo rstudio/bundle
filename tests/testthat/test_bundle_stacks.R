@@ -13,10 +13,10 @@ test_that("bundling + unbundling tidymodels stacks", {
     set.seed(1)
 
     mod <-
-      stacks() %>%
-      add_candidates(reg_res_lr) %>%
-      add_candidates(reg_res_svm) %>%
-      blend_predictions(times = 10) %>%
+      stacks() |>
+      add_candidates(reg_res_lr) |>
+      add_candidates(reg_res_svm) |>
+      blend_predictions(times = 10) |>
       fit_members()
   }
 

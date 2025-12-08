@@ -50,8 +50,8 @@ library(callr)
 As an example, let's fit a model with the keras package, building a neural network that models miles per gallon using the rest of the variables in the built-in `mtcars` dataset.
 
 ```{r mtcars-fit}
-cars <- mtcars %>%
-  as.matrix() %>%
+cars <- mtcars |>
+  as.matrix() |>
   scale()
 
 x_train <- cars[1:25, 2:ncol(cars)]
@@ -61,14 +61,14 @@ x_test <- cars[26:32, 2:ncol(cars)]
 y_test <- cars[26:32, 1]
 
 keras_fit <- 
-  keras_model_sequential()  %>%
-  layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') %>%
+  keras_model_sequential()  |>
+  layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') |>
   compile(
     loss = 'mean_squared_error',
     optimizer = optimizer_adam(learning_rate = .01)
   ) 
 
-keras_fit %>%
+keras_fit |>
   fit(
     x = x_train, y = y_train,
     epochs = 100, batch_size = 1,

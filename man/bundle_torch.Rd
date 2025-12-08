@@ -117,21 +117,21 @@ net <- nn_module(
     )
   },
   forward = function(x) {
-    x \%>\%
-      self$encoder() \%>\%
+    x |>
+      self$encoder() |>
       self$decoder()
   },
   predict = function(x) {
-    self$encoder(x) \%>\%
+    self$encoder(x) |>
       torch_flatten(start_dim = 2)
   }
 )
 
-mod <- net \%>\%
+mod <- net |>
   setup(
     loss = nn_mse_loss(),
     optimizer = optim_adam
-  ) \%>\%
+  ) |>
   fit(train_dl, epochs = 1, valid_data = test_dl)
 
 mod_bundle <- bundle(mod)

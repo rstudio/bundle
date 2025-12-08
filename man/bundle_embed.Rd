@@ -68,8 +68,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model \code{x}, you can safely call:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{res <-
-  x \%>\%
-  butcher() \%>\%
+  x |>
+  butcher() |>
   bundle()
 }\if{html}{\out{</div>}}
 
@@ -84,9 +84,9 @@ library(embed)
 
 set.seed(1)
 
-rec <- recipe(Species ~ ., data = iris) \%>\%
-  step_normalize(all_predictors()) \%>\%
-  step_umap(all_predictors(), outcome = vars(Species), num_comp = 2) \%>\%
+rec <- recipe(Species ~ ., data = iris) |>
+  step_normalize(all_predictors()) |>
+  step_umap(all_predictors(), outcome = vars(Species), num_comp = 2) |>
   prep()
 
 rec_bundle <- bundle(rec)

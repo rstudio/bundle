@@ -38,20 +38,20 @@
 #'
 #' mod <- keras_model_sequential()
 #'
-#' mod %>%
-#'   layer_dense(units = 128, activation = 'relu', input_shape = c(784)) %>%
-#'   layer_dropout(rate = 0.4) %>%
-#'   layer_dense(units = 64, activation = 'relu') %>%
-#'   layer_dropout(rate = 0.3) %>%
+#' mod |>
+#'   layer_dense(units = 128, activation = 'relu', input_shape = c(784)) |>
+#'   layer_dropout(rate = 0.4) |>
+#'   layer_dense(units = 64, activation = 'relu') |>
+#'   layer_dropout(rate = 0.3) |>
 #'   layer_dense(units = 10, activation = 'softmax')
 #'
-#' mod %>% compile(
+#' mod |> compile(
 #'   loss = 'categorical_crossentropy',
 #'   optimizer = optimizer_rmsprop(),
 #'   metrics = c('accuracy')
 #' )
 #'
-#' mod %>% fit(
+#' mod |> fit(
 #'   x_train, y_train,
 #'   epochs = 5, batch_size = 128,
 #'   validation_split = 0.2,

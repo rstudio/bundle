@@ -16,18 +16,18 @@ test_that("bundling + unbundling tidymodels workflows (xgboost + step_log)", {
     set.seed(1)
 
     spec <-
-      boost_tree(trees = 5, mtry = 3) %>%
-      set_mode("regression") %>%
+      boost_tree(trees = 5, mtry = 3) |>
+      set_mode("regression") |>
       set_engine("xgboost")
 
     rec <-
-      recipe(mpg ~ ., data = mtcars) %>%
+      recipe(mpg ~ ., data = mtcars) |>
       step_log(hp)
 
     mod <-
-      workflow() %>%
-      add_model(spec) %>%
-      add_recipe(rec) %>%
+      workflow() |>
+      add_model(spec) |>
+      add_recipe(rec) |>
       fit(data = mtcars)
 
     mod
@@ -143,18 +143,18 @@ test_that("bundling + unbundling tidymodels workflows (lm + step_umap)", {
     set.seed(1)
 
     spec <-
-      linear_reg() %>%
-      set_mode("regression") %>%
+      linear_reg() |>
+      set_mode("regression") |>
       set_engine("lm")
 
     rec <-
-      recipe(mpg ~ ., data = mtcars) %>%
+      recipe(mpg ~ ., data = mtcars) |>
       step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2)
 
     mod <-
-      workflow() %>%
-      add_model(spec) %>%
-      add_recipe(rec) %>%
+      workflow() |>
+      add_model(spec) |>
+      add_recipe(rec) |>
       fit(data = mtcars)
 
     mod
