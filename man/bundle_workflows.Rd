@@ -80,7 +80,7 @@ and predict with the output of \code{unbundle(res)} in a new R session.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))) withAutoprint(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(workflows)
 library(recipes)

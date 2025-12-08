@@ -77,7 +77,7 @@ and predict with the output of \code{unbundle(res)} in a new R session.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed(c("recipes", "embed", "irlba (>= 2.3.5.2)"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("recipes", "embed", "irlba (>= 2.3.5.2)"))) withAutoprint(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(recipes)
 library(embed)
