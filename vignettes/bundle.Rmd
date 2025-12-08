@@ -12,7 +12,8 @@ resource_files:
   - figures/diagram_04.png
 ---
 
-```{r, include = FALSE}
+```{r}
+#| include: false
 should_eval <- 
   rlang::is_installed("keras") && 
   rlang::is_installed("callr") &&
@@ -32,13 +33,15 @@ Typically, models in R exist in memory and can be saved as `.rds` files. However
 
 This vignette walks through how to prepare a statistical model for saving to demonstrate the benefits of using bundle.
 
-```{r setup}
+```{r}
+#| label: setup
 library(bundle)
 ```
 
 In addition to the package itself, we'll load the keras and xgboost packages to fit some example models, and the callr package to generate fresh R sessions to test our models inside of.
 
-```{r setup-exts}
+```{r}
+#| label: setup-exts
 library(keras)
 library(xgboost)
 
@@ -49,7 +52,8 @@ library(callr)
 
 As an example, let's fit a model with the keras package, building a neural network that models miles per gallon using the rest of the variables in the built-in `mtcars` dataset.
 
-```{r mtcars-fit}
+```{r}
+#| label: mtcars-fit
 cars <- mtcars |>
   as.matrix() |>
   scale()
@@ -78,13 +82,20 @@ keras_fit |>
 
 Easy peasy! Now, given that this model is trained, we assume that it's ready to go to predict on new data. Our mental map might look something like this:
 
-```{r diagram-01, echo = FALSE, fig.alt = "A diagram showing a rectangle, labeled model object, and another rectangle, labeled predictions. The two are connected by an arrow from model object to predictions, with the label predict.", out.width = '100%'}
+```{r}
+#| label: diagram-01
+#| echo: false
+#| fig-alt: A diagram showing a rectangle, labeled model object, and another rectangle,
+#|   labeled predictions. The two are connected by an arrow from model object to predictions,
+#|   with the label predict.
+#| out-width: 100%
 knitr::include_graphics("figures/diagram_01.png")
 ```
 
 We pass a model object to the `predict()` function, along with some new data to predict on, and get predictions back. Let's try that out:
 
-```{r predict-example}
+```{r}
+#| label: predict-example
 predict(keras_fit, x_test)
 ```
 
@@ -101,7 +112,8 @@ We'll just make use of two of the arguments to the function `r()`:
 
 As an example:
 
-```{r callr-example}
+```{r}
+#| label: callr-example
 r(
   function(x) {
     x * 2
@@ -121,7 +133,8 @@ So, our approach might be:
 
 First, saving our model object to a file:
 
-```{r keras-save}
+```{r}
+#| label: keras-save
 temp_file <- tempfile()
 
 saveRDS(keras_fit, file = temp_file)
@@ -129,7 +142,10 @@ saveRDS(keras_fit, file = temp_file)
 
 Now, starting up a fresh R session and predicting on new data:
 
-```{r keras-fresh-rds, linewidth = 60, error = TRUE}
+```{r}
+#| label: keras-fresh-rds
+#| linewidth: 60
+#| error: true
 r(
   function(temp_file, new_data) {
     library(keras)
@@ -151,7 +167,15 @@ After a bit of poking around in keras' documentation, you might come across the 
 
 Given this new understanding, we can update our mental map a bit. Some objects require extra information when they're loaded into new environments in order to do their thing. In this case, this keras model object needs access to additional references in order to predict on new data.
 
-```{r diagram-02, echo = FALSE, fig.alt = "A diagram showing the same pair of rectangles as before, connected by the arrow labeled predict. This time, though, we introduce two boxes labeled reference. These two boxes are connected to the arrow labeled predict with dotted arrows, to show that, most of the time, we don't need to think about including them in our workflow.", out.width = '100%'}
+```{r}
+#| label: diagram-02
+#| echo: false
+#| fig-alt: A diagram showing the same pair of rectangles as before, connected by the
+#|   arrow labeled predict. This time, though, we introduce two boxes labeled reference.
+#|   These two boxes are connected to the arrow labeled predict with dotted arrows, to
+#|   show that, most of the time, we don't need to think about including them in our
+#|   workflow.
+#| out-width: 100%
 knitr::include_graphics("figures/diagram_02.png")
 ```
 
@@ -167,14 +191,16 @@ keras' vignette is really informative in telling us what we ought to do from her
 
 Saving our model object with their methods:
 
-```{r save-model-tf}
+```{r}
+#| label: save-model-tf
 temp_dir <- tempdir()
 save_model_tf(keras_fit, filepath = temp_dir)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
 
-```{r fresh-keras-fit}
+```{r}
+#| label: fresh-keras-fit
 r(
   function(temp_dir, new_data) {
     library(keras)
@@ -200,7 +226,15 @@ We've done the work of figuring that out, and it turns out the interface is a li
 
 What if we could just use the same function for any R object, and it would _just work_?
 
-```{r diagram-03, echo = FALSE, fig.alt = "A diagram showing the same set of rectangles, representing a prediction problem, as before. This version of the diagram adds two boxes, labeled R Session number one, and R session number two. In R session number two, we have a new rectangle labeled standalone model object. In focus is the arrow from the model object, in R Session number one, to the standalone model object in R session number two.", out.width = '100%'}
+```{r}
+#| label: diagram-03
+#| echo: false
+#| fig-alt: A diagram showing the same set of rectangles, representing a prediction problem,
+#|   as before. This version of the diagram adds two boxes, labeled R Session number
+#|   one, and R session number two. In R session number two, we have a new rectangle
+#|   labeled standalone model object. In focus is the arrow from the model object, in
+#|   R Session number one, to the standalone model object in R session number two.
+#| out-width: 100%
 knitr::include_graphics("figures/diagram_03.png")
 ```
 
@@ -208,7 +242,14 @@ knitr::include_graphics("figures/diagram_03.png")
 
 bundle provides a consistent interface to prepare R model objects to be saved and re-loaded. The package provides two functions, `bundle()` and `unbundle()`, that take care of all of the minutae of preparing to save and load R objects effectively.
 
-```{r diagram-04, echo = FALSE, fig.alt = "A replica of the previous diagram, where the arrow previously connecting the model object in R session one and the standalone model object in R session two is connected by a verb called bundle. The bundle function outputs an object called a bundle.", out.width = '100%'}
+```{r}
+#| label: diagram-04
+#| echo: false
+#| fig-alt: A replica of the previous diagram, where the arrow previously connecting
+#|   the model object in R session one and the standalone model object in R session two
+#|   is connected by a verb called bundle. The bundle function outputs an object called
+#|   a bundle.
+#| out-width: 100%
 knitr::include_graphics("figures/diagram_04.png")
 ```
 
@@ -222,13 +263,15 @@ When `unbundle()` is called on a bundle object, the `situate()` element of the b
 
 To be a bit more concrete, lets return to the keras example. Bundling the model fit:
 
-```{r keras-bundle}
+```{r}
+#| label: keras-bundle
 keras_bundle <- bundle(keras_fit)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
 
-```{r keras-fresh-bundle}
+```{r}
+#| label: keras-fresh-bundle
 r(
   function(model_bundle, new_data) {
     library(bundle)
@@ -250,7 +293,8 @@ The best part is, if you wanted to do the same thing for an xgboost object, you 
 
 First, fitting a quick xgboost model:
 
-```{r xgboost-fit}
+```{r}
+#| label: xgboost-fit
 xgb_fit <- 
   xgboost(
     data = x_train, 
@@ -261,13 +305,15 @@ xgb_fit <-
 
 Now, bundling it: 
 
-```{r xgboost-bundle}
+```{r}
+#| label: xgboost-bundle
 xgb_bundle <- bundle(xgb_fit)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
 
-```{r xgboost-fresh-bundle}
+```{r}
+#| label: xgboost-fresh-bundle
 r(
   function(model_bundle, new_data) {
     library(bundle)
