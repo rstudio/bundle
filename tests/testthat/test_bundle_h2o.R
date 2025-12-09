@@ -100,7 +100,6 @@ test_that("bundling + unbundling h2o fits (regression)", {
         h2o.shutdown(prompt = FALSE)
 
         res
-
       },
       args = list(
         mod_butchered_bundle = mod_butchered_bundle,
@@ -130,7 +129,6 @@ test_that("bundling + unbundling h2o fits (regression)", {
   # compare predictions
   expect_equal(mod_preds, mod_unbundled_preds)
   expect_equal(mod_preds, mod_butchered_unbundled_preds)
-
 })
 
 test_that("bundling + unbundling h2o fits (binary)", {
@@ -154,7 +152,12 @@ test_that("bundling + unbundling h2o fits (binary)", {
 
     bin_data <-
       as.h2o(
-        modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 2)
+        modeldata::sim_noise(
+          100,
+          5,
+          outcome = "classification",
+          num_classes = 2
+        )
       )
 
     bin_fit <-
@@ -276,8 +279,6 @@ test_that("bundling + unbundling h2o fits (binary)", {
   # compare predictions
   expect_equal(mod_preds, mod_unbundled_preds)
   expect_equal(mod_preds, mod_butchered_unbundled_preds)
-
-
 })
 
 test_that("bundling + unbundling h2o fits (multinomial)", {
@@ -301,7 +302,12 @@ test_that("bundling + unbundling h2o fits (multinomial)", {
 
     multi_data <-
       as.h2o(
-        modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 3)
+        modeldata::sim_noise(
+          100,
+          5,
+          outcome = "classification",
+          num_classes = 3
+        )
       )
 
     multi_fit <-
@@ -581,7 +587,12 @@ test_that("bundling + unbundling h2o fits (automl classification)", {
 
     bin_data <-
       as.h2o(
-        modeldata::sim_noise(100, 5, outcome = "classification", num_classes = 2)
+        modeldata::sim_noise(
+          100,
+          5,
+          outcome = "classification",
+          num_classes = 2
+        )
       )
 
     bin_fit <-

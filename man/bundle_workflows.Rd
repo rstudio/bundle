@@ -71,8 +71,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model \code{x}, you can safely call:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{res <-
-  x \%>\%
-  butcher() \%>\%
+  x |>
+  butcher() |>
   bundle()
 }\if{html}{\out{</div>}}
 
@@ -80,7 +80,7 @@ and predict with the output of \code{unbundle(res)} in a new R session.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("workflows", "parsnip", "recipes", "xgboost"))) withAutoprint(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(workflows)
 library(recipes)
@@ -90,18 +90,18 @@ library(xgboost)
 set.seed(1)
 
 spec <-
-  boost_tree(trees = 5, mtry = 3) \%>\%
-  set_mode("regression") \%>\%
+  boost_tree(trees = 5, mtry = 3) |>
+  set_mode("regression") |>
   set_engine("xgboost")
 
 rec <-
-  recipe(mpg ~ ., data = mtcars) \%>\%
+  recipe(mpg ~ ., data = mtcars) |>
   step_log(hp)
 
 mod <-
-  workflow() \%>\%
-  add_model(spec) \%>\%
-  add_recipe(rec) \%>\%
+  workflow() |>
+  add_model(spec) |>
+  add_recipe(rec) |>
   fit(data = mtcars)
 
 mod_bundle <- bundle(mod)

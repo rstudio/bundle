@@ -12,6 +12,8 @@ status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Codecov test
 coverage](https://codecov.io/gh/rstudio/bundle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle?branch=main)
+[![Codecov test
+coverage](https://codecov.io/gh/rstudio/bundle/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle)
 <!-- badges: end -->
 
 Typically, models in R exist in memory and can be saved as `.rds` files.
@@ -87,38 +89,32 @@ Fit the boosted tree model:
 ``` r
 # fit an boosted tree with xgboost via parsnip
 mod <-
-    boost_tree(trees = 5, mtry = 3) %>%
-    set_mode("regression") %>%
-    set_engine("xgboost") %>%
+    boost_tree(trees = 5, mtry = 3) |>
+    set_mode("regression") |>
+    set_engine("xgboost") |>
     fit(mpg ~ ., data = mtcars[1:25,])
 
 mod
 #> parsnip model object
 #> 
 #> ##### xgb.Booster
-#> raw: 8.1 Kb 
 #> call:
 #>   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, 
 #>     colsample_bytree = 1, colsample_bynode = 0.3, min_child_weight = 1, 
-#>     subsample = 1), data = x$data, nrounds = 5, watchlist = x$watchlist, 
-#>     verbose = 0, nthread = 1, objective = "reg:squarederror")
-#> params (as set within xgb.train):
-#>   eta = "0.3", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "0.3", min_child_weight = "1", subsample = "1", nthread = "1", objective = "reg:squarederror", validate_parameters = "TRUE"
-#> xgb.attributes:
-#>   niter
-#> callbacks:
-#>   cb.evaluation.log()
+#>     subsample = 1, nthread = 1, objective = "reg:squarederror"), 
+#>     data = x$data, nrounds = 5, evals = x$watchlist, verbose = 0)
 #> # of features: 10 
-#> niter: 5
-#> nfeatures : 10 
+#> # of rounds:  5 
+#> callbacks:
+#>    evaluation_log 
 #> evaluation_log:
 #>   iter training_rmse
-#>  <num>         <num>
-#>      1     14.631798
-#>      2     10.896629
-#>      3      8.188981
-#>      4      6.173644
-#>      5      4.707690
+#>  <int>         <num>
+#>      1      4.618358
+#>      2      3.627921
+#>      3      2.891176
+#>      4      2.300624
+#>      5      1.852596
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -130,14 +126,8 @@ saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
 compare(mod, mod2, ignore_formula_env = TRUE)
-#> `old$fit$handle` is <pointer: 0x11c1707c0>
-#> `new$fit$handle` is <pointer: 0x0>
-#> 
-#> `old$fit$handle` is attr(,"class")
-#> `new$fit$handle` is attr(,"class")
-#> 
-#> `old$fit$handle` is [1] "xgb.Booster.handle"
-#> `new$fit$handle` is [1] "xgb.Booster.handle"
+#> `old$fit$ptr` is <pointer: 0x10b535700>
+#> `new$fit$ptr` is <pointer: 0x10b56be40>
 ```
 
 Saving and reloading `mod2` didn’t preserve XGBoost’s reference to its
@@ -177,13 +167,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  22.3
-#> 2  22.3
-#> 3  20.4
-#> 4  14.5
-#> 5  14.5
-#> 6  12.1
-#> 7  17.0
+#> 1  28.7
+#> 2  25.0
+#> 3  23.7
+#> 4  18.0
+#> 5  20.3
+#> 6  14.9
+#> 7  22.2
 ```
 
 For a more in-depth demonstration of the package, see the [main

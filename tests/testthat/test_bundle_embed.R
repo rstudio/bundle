@@ -11,8 +11,8 @@ test_that("bundling + unbundling step_umap", {
   prep_rec <- function() {
     set.seed(1)
 
-    rec <- recipe(mpg ~ ., data = mtcars) %>%
-      step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2) %>%
+    rec <- recipe(mpg ~ ., data = mtcars) |>
+      step_umap(all_predictors(), outcome = vars(mpg), num_comp = 2) |>
       prep()
 
     rec
@@ -93,5 +93,8 @@ test_that("bundling + unbundling step_umap", {
 
   # compare baked data
   expect_equal(as.data.frame(rec_data), as.data.frame(rec_unbundled_data))
-  expect_equal(as.data.frame(rec_data), as.data.frame(rec_butchered_unbundled_data))
+  expect_equal(
+    as.data.frame(rec_data),
+    as.data.frame(rec_butchered_unbundled_data)
+  )
 })

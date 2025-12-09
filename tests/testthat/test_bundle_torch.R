@@ -47,9 +47,9 @@ test_that("bundling + unbundling torch fits", {
     "Net",
     initialize = function() {
       self$encoder <- nn_sequential(
-        nn_conv2d(1, 6, kernel_size=5),
+        nn_conv2d(1, 6, kernel_size = 5),
         nn_relu(),
-        nn_conv2d(6, 16, kernel_size=5),
+        nn_conv2d(6, 16, kernel_size = 5),
         nn_relu()
       )
       self$decoder <- nn_sequential(
@@ -60,21 +60,21 @@ test_that("bundling + unbundling torch fits", {
       )
     },
     forward = function(x) {
-      x %>%
-        self$encoder() %>%
+      x |>
+        self$encoder() |>
         self$decoder()
     },
     predict = function(x) {
-      self$encoder(x) %>%
+      self$encoder(x) |>
         torch_flatten(start_dim = 2)
     }
   )
 
-  mod <- net %>%
+  mod <- net |>
     setup(
       loss = nn_mse_loss(),
       optimizer = optim_adam
-    ) %>%
+    ) |>
     fit(train_dl, epochs = 1, valid_data = test_dl)
 
   mod_bundle <- bundle(mod)
@@ -91,7 +91,7 @@ test_that("bundling + unbundling torch fits", {
   mod_preds <- as_array(predict(mod, test_dl))
   mod_unbundled_preds <- as_array(predict(mod_unbundled, test_dl))
 
-  expect_equal(mod_preds[1:100,1:100], mod_unbundled_preds[1:100,1:100])
+  expect_equal(mod_preds[1:100, 1:100], mod_unbundled_preds[1:100, 1:100])
 
   # only want bundled model and original preds to persist.
   # test again in new R session:
@@ -100,7 +100,6 @@ test_that("bundling + unbundling torch fits", {
       library(bundle)
       library(torch)
       library(luz)
-
 
       mod_unbundled <- unbundle(mod_bundle)
       as_array(predict(mod_unbundled, test_dl))
@@ -114,7 +113,7 @@ test_that("bundling + unbundling torch fits", {
     )
   )
 
-  expect_equal(mod_preds[1:100,1:100], mod_unbundled_preds_new[1:100,1:100])
+  expect_equal(mod_preds[1:100, 1:100], mod_unbundled_preds_new[1:100, 1:100])
 
   # interaction with butcher
   expect_silent({
@@ -129,5 +128,8 @@ test_that("bundling + unbundling torch fits", {
     )
   )
 
-  expect_equal(mod_preds[1:100,1:100], mod_unbundled_preds_butchered[1:100,1:100])
+  expect_equal(
+    mod_preds[1:100, 1:100],
+    mod_unbundled_preds_butchered[1:100, 1:100]
+  )
 })

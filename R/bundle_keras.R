@@ -38,20 +38,20 @@
 #'
 #' mod <- keras_model_sequential()
 #'
-#' mod %>%
-#'   layer_dense(units = 128, activation = 'relu', input_shape = c(784)) %>%
-#'   layer_dropout(rate = 0.4) %>%
-#'   layer_dense(units = 64, activation = 'relu') %>%
-#'   layer_dropout(rate = 0.3) %>%
+#' mod |>
+#'   layer_dense(units = 128, activation = 'relu', input_shape = c(784)) |>
+#'   layer_dropout(rate = 0.4) |>
+#'   layer_dense(units = 64, activation = 'relu') |>
+#'   layer_dropout(rate = 0.3) |>
 #'   layer_dense(units = 10, activation = 'softmax')
 #'
-#' mod %>% compile(
+#' mod |> compile(
 #'   loss = 'categorical_crossentropy',
 #'   optimizer = optimizer_rmsprop(),
 #'   metrics = c('accuracy')
 #' )
 #'
-#' mod %>% fit(
+#' mod |> fit(
 #'   x_train, y_train,
 #'   epochs = 5, batch_size = 128,
 #'   validation_split = 0.2,
@@ -90,7 +90,10 @@ bundle.keras.engine.training.Model <- function(x, ...) {
   bundle_constr(
     object = serialized,
     situate = situate_constr(function(object) {
-      new_file <- withr::local_tempfile(pattern = "unbundle", fileext = ".tar.gz")
+      new_file <- withr::local_tempfile(
+        pattern = "unbundle",
+        fileext = ".tar.gz"
+      )
       unbundle_dir <- withr::local_tempdir("unbundle")
       writeBin(object, new_file, endian = "little")
       utils::untar(new_file, exdir = unbundle_dir)

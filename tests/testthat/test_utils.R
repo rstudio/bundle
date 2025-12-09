@@ -20,7 +20,7 @@ test_that("situate constructor works", {
   a_1_env <- environment(a_1())
   a_2_env <- environment(a_2())
 
-  expect_true( "a_" %in% names(a_1_env))
+  expect_true("a_" %in% names(a_1_env))
   expect_false("a_" %in% names(a_2_env))
 })
 
@@ -34,9 +34,9 @@ test_that("swap_element works", {
   set.seed(1)
 
   mod <-
-    boost_tree(trees = 5, mtry = 3) %>%
-    set_mode("regression") %>%
-    set_engine("xgboost") %>%
+    boost_tree(trees = 5, mtry = 3) |>
+    set_mode("regression") |>
+    set_engine("xgboost") |>
     fit(mpg ~ ., data = mtcars)
 
   res <- swap_element(mod, "fit")
@@ -48,6 +48,3 @@ test_that("swap_element works", {
   expect_silent(silly <- swap_element(mod, "silly", "nonexistent", "element"))
   expect_equal(mod, silly)
 })
-
-
-

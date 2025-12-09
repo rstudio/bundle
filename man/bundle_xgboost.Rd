@@ -7,7 +7,7 @@
 \method{bundle}{xgb.Booster}(x, ...)
 }
 \arguments{
-\item{x}{An \code{xgb.Booster} object returned from \code{\link[xgboost:xgb.train]{xgboost::xgboost()}} or
+\item{x}{An \code{xgb.Booster} object returned from \code{\link[xgboost:xgboost]{xgboost::xgboost()}} or
 \code{\link[xgboost:xgb.train]{xgboost::xgb.train()}}.}
 
 \item{...}{Not used in this bundler and included for compatibility with
@@ -67,8 +67,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model \code{x}, you can safely call:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{res <-
-  x \%>\%
-  butcher() \%>\%
+  x |>
+  butcher() |>
   bundle()
 }\if{html}{\out{</div>}}
 
@@ -76,7 +76,7 @@ and predict with the output of \code{unbundle(res)} in a new R session.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("xgboost")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("xgboost")) withAutoprint(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(xgboost)
 

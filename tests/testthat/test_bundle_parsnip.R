@@ -11,9 +11,9 @@ test_that("bundling + unbundling parsnip model_fits (xgboost)", {
     set.seed(1)
 
     mod <-
-      boost_tree(trees = 5, mtry = 3) %>%
-      set_mode("regression") %>%
-      set_engine("xgboost") %>%
+      boost_tree(trees = 5, mtry = 3) |>
+      set_mode("regression") |>
+      set_engine("xgboost") |>
       fit(mpg ~ ., data = mtcars)
   }
 

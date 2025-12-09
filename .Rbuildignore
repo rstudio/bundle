@@ -13,3 +13,5 @@
 ^CRAN-SUBMISSION$
 ^\.python-version$
 ^revdep$
+^[.]?air[.]toml$
+^\.vscode$

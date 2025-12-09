@@ -64,7 +64,7 @@ such as use of a \code{\link[keras:new-classes]{keras::new_layer_class()}} or cu
 In such situations, consider using \code{\link[keras:with_custom_object_scope]{keras::with_custom_object_scope()}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("keras")) && identical(Sys.getenv("NOT_CRAN"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("keras")) && identical(Sys.getenv("NOT_CRAN"), "true")) withAutoprint(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(keras)
 
@@ -87,20 +87,20 @@ y_test <- to_categorical(y_test, 10)
 
 mod <- keras_model_sequential()
 
-mod \%>\%
-  layer_dense(units = 128, activation = 'relu', input_shape = c(784)) \%>\%
-  layer_dropout(rate = 0.4) \%>\%
-  layer_dense(units = 64, activation = 'relu') \%>\%
-  layer_dropout(rate = 0.3) \%>\%
+mod |>
+  layer_dense(units = 128, activation = 'relu', input_shape = c(784)) |>
+  layer_dropout(rate = 0.4) |>
+  layer_dense(units = 64, activation = 'relu') |>
+  layer_dropout(rate = 0.3) |>
   layer_dense(units = 10, activation = 'softmax')
 
-mod \%>\% compile(
+mod |> compile(
   loss = 'categorical_crossentropy',
   optimizer = optimizer_rmsprop(),
   metrics = c('accuracy')
 )
 
-mod \%>\% fit(
+mod |> fit(
   x_train, y_train,
   epochs = 5, batch_size = 128,
   validation_split = 0.2,

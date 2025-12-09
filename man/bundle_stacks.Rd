@@ -64,17 +64,17 @@ This bundler wraps \code{\link[=bundle.model_fit]{bundle.model_fit()}} and \code
 Both the fitted members and the meta-learner (in \code{x$coefs}) are bundled.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("stacks")) && identical(Sys.getenv("NOT_CRAN"), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("stacks")) && identical(Sys.getenv("NOT_CRAN"), "true")) withAutoprint(\{ # examplesIf}
 # fit model and bundle ------------------------------------------------
 library(stacks)
 
 set.seed(1)
 
 mod <-
-  stacks() \%>\%
-  add_candidates(reg_res_lr) \%>\%
-  add_candidates(reg_res_svm) \%>\%
-  blend_predictions(times = 10) \%>\%
+  stacks() |>
+  add_candidates(reg_res_lr) |>
+  add_candidates(reg_res_svm) |>
+  blend_predictions(times = 10) |>
   fit_members()
 
 mod_bundle <- bundle(mod)

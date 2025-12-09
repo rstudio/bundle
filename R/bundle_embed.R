@@ -18,9 +18,9 @@
 #'
 #' set.seed(1)
 #'
-#' rec <- recipe(Species ~ ., data = iris) %>%
-#'   step_normalize(all_predictors()) %>%
-#'   step_umap(all_predictors(), outcome = vars(Species), num_comp = 2) %>%
+#' rec <- recipe(Species ~ ., data = iris) |>
+#'   step_normalize(all_predictors()) |>
+#'   step_umap(all_predictors(), outcome = vars(Species), num_comp = 2) |>
 #'   prep()
 #'
 #' rec_bundle <- bundle(rec)

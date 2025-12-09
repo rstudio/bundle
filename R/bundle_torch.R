@@ -71,21 +71,21 @@
 #'     )
 #'   },
 #'   forward = function(x) {
-#'     x %>%
-#'       self$encoder() %>%
+#'     x |>
+#'       self$encoder() |>
 #'       self$decoder()
 #'   },
 #'   predict = function(x) {
-#'     self$encoder(x) %>%
+#'     self$encoder(x) |>
 #'       torch_flatten(start_dim = 2)
 #'   }
 #' )
 #'
-#' mod <- net %>%
+#' mod <- net |>
 #'   setup(
 #'     loss = nn_mse_loss(),
 #'     optimizer = optim_adam
-#'   ) %>%
+#'   ) |>
 #'   fit(train_dl, epochs = 1, valid_data = test_dl)
 #'
 #' mod_bundle <- bundle(mod)
@@ -116,9 +116,12 @@ bundle.luz_module_fitted <- function(x, ...) {
     object = res,
     situate = situate_constr(function(object) {
       con <- rawConnection(object)
-      on.exit({
-        close(con)
-      }, add = TRUE)
+      on.exit(
+        {
+          close(con)
+        },
+        add = TRUE
+      )
       res <- luz::luz_load(con)
     }),
     desc_class = class(x)[1]

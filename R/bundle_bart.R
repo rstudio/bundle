@@ -36,8 +36,10 @@ bundle.bart <- function(x, ...) {
   # `parsnip::bart()` and `dbarts::bart()` unfortunately both inherit from `bart`
   if (inherits(x, "model_spec")) {
     rlang::abort(c(
-      paste0("`x` should be the output of `dbarts::bart()`, not a model ",
-             "specification from `parsnip::bart()`."),
+      paste0(
+        "`x` should be the output of `dbarts::bart()`, not a model ",
+        "specification from `parsnip::bart()`."
+      ),
       "To bundle `parsnip::bart()` output, train it with `parsnip::fit()` first."
     ))
   }
