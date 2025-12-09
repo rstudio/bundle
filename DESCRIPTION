@@ -30,7 +30,7 @@ Imports:
     withr
 Suggests:
     bonsai,
-    butcher (>= 0.3.6.9000),
+    butcher (>= 0.4.0),
     callr,
     caret,
     covr,
@@ -58,8 +58,6 @@ Suggests:
     xgboost (>= 1.6.0.1)
 VignetteBuilder: 
     knitr
-Remotes: 
-    tidymodels/butcher
 Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
 Config/usethis/last-upkeep: 2025-12-08
