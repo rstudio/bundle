@@ -9,11 +9,9 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org/package=bundle)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Codecov test
 coverage](https://codecov.io/gh/rstudio/bundle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle?branch=main)
-[![Codecov test
-coverage](https://codecov.io/gh/rstudio/bundle/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle)
 <!-- badges: end -->
 
 Typically, models in R exist in memory and can be saved as `.rds` files.
@@ -89,10 +87,10 @@ Fit the boosted tree model:
 ``` r
 # fit an boosted tree with xgboost via parsnip
 mod <-
-    boost_tree(trees = 5, mtry = 3) |>
-    set_mode("regression") |>
-    set_engine("xgboost") |>
-    fit(mpg ~ ., data = mtcars[1:25,])
+  boost_tree(trees = 5, mtry = 3) |>
+  set_mode("regression") |>
+  set_engine("xgboost") |>
+  fit(mpg ~ ., data = mtcars[1:25, ])
 
 mod
 #> parsnip model object
@@ -110,11 +108,11 @@ mod
 #> evaluation_log:
 #>   iter training_rmse
 #>  <int>         <num>
-#>      1      4.618358
-#>      2      3.627921
-#>      3      2.891176
-#>      4      2.300624
-#>      5      1.852596
+#>      1      4.655552
+#>      2      3.648086
+#>      3      2.877980
+#>      4      2.302021
+#>      5      1.850090
 ```
 
 Note that simply saving and loading the model results in changes to the
@@ -126,8 +124,8 @@ saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
 
 compare(mod, mod2, ignore_formula_env = TRUE)
-#> `old$fit$ptr` is <pointer: 0x10b535700>
-#> `new$fit$ptr` is <pointer: 0x10b56be40>
+#> `old$fit$ptr` is <pointer: 0x11a0cf990>
+#> `new$fit$ptr` is <pointer: 0x10bed38a0>
 ```
 
 Saving and reloading `mod2` didn’t preserve XGBoost’s reference to its
@@ -158,7 +156,7 @@ r(
     unbundled_mod <-
       unbundle(bundled_mod)
 
-    predict(unbundled_mod, new_data = mtcars[26:32,])
+    predict(unbundled_mod, new_data = mtcars[26:32, ])
   },
   args = list(
     bundled_mod = bundled_mod
@@ -167,13 +165,13 @@ r(
 #> # A tibble: 7 × 1
 #>   .pred
 #>   <dbl>
-#> 1  28.7
-#> 2  25.0
-#> 3  23.7
-#> 4  18.0
-#> 5  20.3
-#> 6  14.9
-#> 7  22.2
+#> 1  28.6
+#> 2  25.8
+#> 3  25.8
+#> 4  16.7
+#> 5  20.2
+#> 6  15.3
+#> 7  21.2
 ```
 
 For a more in-depth demonstration of the package, see the [main
