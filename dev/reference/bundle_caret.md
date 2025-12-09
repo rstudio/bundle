@@ -101,8 +101,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model `x`, you can safely call:
 
     res <-
-      x %>%
-      butcher() %>%
+      x |>
+      butcher() |>
       bundle()
 
 and predict with the output of `unbundle(res)` in a new R session.

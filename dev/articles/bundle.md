@@ -34,8 +34,8 @@ neural network that models miles per gallon using the rest of the
 variables in the built-in `mtcars` dataset.
 
 ``` r
-cars <- mtcars %>%
-  as.matrix() %>%
+cars <- mtcars |>
+  as.matrix() |>
   scale()
 
 x_train <- cars[1:25, 2:ncol(cars)]
@@ -45,14 +45,14 @@ x_test <- cars[26:32, 2:ncol(cars)]
 y_test <- cars[26:32, 1]
 
 keras_fit <- 
-  keras_model_sequential()  %>%
-  layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') %>%
+  keras_model_sequential()  |>
+  layer_dense(units = 1, input_shape = ncol(x_train), activation = 'linear') |>
   compile(
     loss = 'mean_squared_error',
     optimizer = optimizer_adam(learning_rate = .01)
   ) 
 
-keras_fit %>%
+keras_fit |>
   fit(
     x = x_train, y = y_train,
     epochs = 100, batch_size = 1,
@@ -76,15 +76,15 @@ out:
 
 ``` r
 predict(keras_fit, x_test)
-#> 1/1 - 0s - 44ms/epoch - 44ms/step
+#> 1/1 - 0s - 46ms/epoch - 46ms/step
 #>            [,1]
-#> [1,]  1.4559419
-#> [2,]  1.6003252
-#> [3,]  1.0199472
-#> [4,]  0.8673004
-#> [5,] -0.6650217
-#> [6,] -1.5095179
-#> [7,]  0.9393482
+#> [1,]  1.5063747
+#> [2,]  1.5403938
+#> [3,]  1.0035880
+#> [4,]  0.6294076
+#> [5,] -0.7319995
+#> [6,] -1.7123456
+#> [7,]  0.9450295
 ```
 
 Perfect.
@@ -217,13 +217,13 @@ r(
   )
 )
 #>            [,1]
-#> [1,]  1.4559419
-#> [2,]  1.6003252
-#> [3,]  1.0199472
-#> [4,]  0.8673004
-#> [5,] -0.6650217
-#> [6,] -1.5095179
-#> [7,]  0.9393482
+#> [1,]  1.5063747
+#> [2,]  1.5403938
+#> [3,]  1.0035880
+#> [4,]  0.6294076
+#> [5,] -0.7319995
+#> [6,] -1.7123456
+#> [7,]  0.9450295
 ```
 
 Awesome! Making use of their methods, we were able to effectively save
@@ -314,13 +314,13 @@ r(
   )
 )
 #>            [,1]
-#> [1,]  1.4559419
-#> [2,]  1.6003252
-#> [3,]  1.0199472
-#> [4,]  0.8673004
-#> [5,] -0.6650217
-#> [6,] -1.5095179
-#> [7,]  0.9393482
+#> [1,]  1.5063747
+#> [2,]  1.5403938
+#> [3,]  1.0035880
+#> [4,]  0.6294076
+#> [5,] -0.7319995
+#> [6,] -1.7123456
+#> [7,]  0.9450295
 ```
 
 Huzzah!

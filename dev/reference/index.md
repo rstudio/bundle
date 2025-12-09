@@ -16,10 +16,6 @@
 
   Bundle a caret `train` object
 
-- [`bundle_description`](https://rstudio.github.io/bundle/dev/reference/bundle_description.md)
-  [`bundle-package`](https://rstudio.github.io/bundle/dev/reference/bundle_description.md)
-  : bundle: Serialize Model Objects With A Consistent Interface
-
 - [`bundle(`*`<step_umap>`*`)`](https://rstudio.github.io/bundle/dev/reference/bundle_embed.md)
   :
 

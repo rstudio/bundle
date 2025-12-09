@@ -94,8 +94,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model `x`, you can safely call:
 
     res <-
-      x %>%
-      butcher() %>%
+      x |>
+      butcher() |>
       bundle()
 
 and predict with the output of `unbundle(res)` in a new R session.
@@ -130,9 +130,9 @@ library(embed)
 
 set.seed(1)
 
-rec <- recipe(Species ~ ., data = iris) %>%
-  step_normalize(all_predictors()) %>%
-  step_umap(all_predictors(), outcome = vars(Species), num_comp = 2) %>%
+rec <- recipe(Species ~ ., data = iris) |>
+  step_normalize(all_predictors()) |>
+  step_umap(all_predictors(), outcome = vars(Species), num_comp = 2) |>
   prep()
 
 rec_bundle <- bundle(rec)

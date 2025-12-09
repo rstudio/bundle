@@ -90,38 +90,32 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># fit an boosted tree with xgboost via parsnip</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span></span>
-<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html" class="external-link">boost_tree</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">5</span>, mtry <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html" class="external-link">set_mode</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html" class="external-link">boost_tree</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">5</span>, mtry <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html" class="external-link">set_mode</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>,<span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mod</span></span>
 <span><span class="co">#&gt; parsnip model object</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ##### xgb.Booster</span></span>
-<span><span class="co">#&gt; raw: 8.1 Kb </span></span>
 <span><span class="co">#&gt; call:</span></span>
 <span><span class="co">#&gt;   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, </span></span>
 <span><span class="co">#&gt;     colsample_bytree = 1, colsample_bynode = 0.3, min_child_weight = 1, </span></span>
-<span><span class="co">#&gt;     subsample = 1), data = x$data, nrounds = 5, watchlist = x$watchlist, </span></span>
-<span><span class="co">#&gt;     verbose = 0, nthread = 1, objective = "reg:squarederror")</span></span>
-<span><span class="co">#&gt; params (as set within xgb.train):</span></span>
-<span><span class="co">#&gt;   eta = "0.3", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "0.3", min_child_weight = "1", subsample = "1", nthread = "1", objective = "reg:squarederror", validate_parameters = "TRUE"</span></span>
-<span><span class="co">#&gt; xgb.attributes:</span></span>
-<span><span class="co">#&gt;   niter</span></span>
-<span><span class="co">#&gt; callbacks:</span></span>
-<span><span class="co">#&gt;   cb.evaluation.log()</span></span>
+<span><span class="co">#&gt;     subsample = 1, nthread = 1, objective = "reg:squarederror"), </span></span>
+<span><span class="co">#&gt;     data = x$data, nrounds = 5, evals = x$watchlist, verbose = 0)</span></span>
 <span><span class="co">#&gt; # of features: 10 </span></span>
-<span><span class="co">#&gt; niter: 5</span></span>
-<span><span class="co">#&gt; nfeatures : 10 </span></span>
+<span><span class="co">#&gt; # of rounds:  5 </span></span>
+<span><span class="co">#&gt; callbacks:</span></span>
+<span><span class="co">#&gt;    evaluation_log </span></span>
 <span><span class="co">#&gt; evaluation_log:</span></span>
 <span><span class="co">#&gt;   iter training_rmse</span></span>
-<span><span class="co">#&gt;  &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt;      1     14.631798</span></span>
-<span><span class="co">#&gt;      2     10.896629</span></span>
-<span><span class="co">#&gt;      3      8.188981</span></span>
-<span><span class="co">#&gt;      4      6.173644</span></span>
-<span><span class="co">#&gt;      5      4.707690</span></span></code></pre></div>
+<span><span class="co">#&gt;  &lt;int&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt;      1      4.618358</span></span>
+<span><span class="co">#&gt;      2      3.627921</span></span>
+<span><span class="co">#&gt;      3      2.891176</span></span>
+<span><span class="co">#&gt;      4      2.300624</span></span>
+<span><span class="co">#&gt;      5      1.852596</span></span></code></pre></div>
 <p>Note that simply saving and loading the model results in changes to the fitted model:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -129,14 +123,8 @@
 <span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">temp_file</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">compare</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">mod2</span>, ignore_formula_env <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `old$fit$handle` is &lt;pointer: 0x11c1707c0&gt;</span></span>
-<span><span class="co">#&gt; `new$fit$handle` is &lt;pointer: 0x0&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `old$fit$handle` is attr(,"class")</span></span>
-<span><span class="co">#&gt; `new$fit$handle` is attr(,"class")</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `old$fit$handle` is [1] "xgb.Booster.handle"</span></span>
-<span><span class="co">#&gt; `new$fit$handle` is [1] "xgb.Booster.handle"</span></span></code></pre></div>
+<span><span class="co">#&gt; `old$fit$ptr` is &lt;pointer: 0x10b535700&gt;</span></span>
+<span><span class="co">#&gt; `new$fit$ptr` is &lt;pointer: 0x10b56be40&gt;</span></span></code></pre></div>
 <p>Saving and reloading <code>mod2</code> didn’t preserve XGBoost’s reference to its <code>pointer</code>, which may result in failures later in the modeling process.</p>
 <p>We thus need to prepare the fitted model to be saved before passing it to another R session. We can do so by bundling it:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -166,13 +154,13 @@
 <span><span class="co">#&gt; # A tibble: 7 × 1</span></span>
 <span><span class="co">#&gt;   .pred</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  22.3</span></span>
-<span><span class="co">#&gt; 2  22.3</span></span>
-<span><span class="co">#&gt; 3  20.4</span></span>
-<span><span class="co">#&gt; 4  14.5</span></span>
-<span><span class="co">#&gt; 5  14.5</span></span>
-<span><span class="co">#&gt; 6  12.1</span></span>
-<span><span class="co">#&gt; 7  17.0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  28.7</span></span>
+<span><span class="co">#&gt; 2  25.0</span></span>
+<span><span class="co">#&gt; 3  23.7</span></span>
+<span><span class="co">#&gt; 4  18.0</span></span>
+<span><span class="co">#&gt; 5  20.3</span></span>
+<span><span class="co">#&gt; 6  14.9</span></span>
+<span><span class="co">#&gt; 7  22.2</span></span></code></pre></div>
 <p>For a more in-depth demonstration of the package, see the <a href="https://rstudio.github.io/bundle/articles/bundle.html">main vignette</a> with <code><a href="articles/bundle.html">vignette("bundle")</a></code>.</p>
 </div>
 <div class="section level2">
@@ -229,7 +217,7 @@
 <li>
 <a href="https://github.com/topepo" class="external-link">Max Kuhn</a> <br><small class="roles"> Author </small>   </li>
 <li>
-<a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" width="62" style="margin-bottom: 3px;"></a> <br><small class="roles"> Copyright holder, funder </small>   </li>
+<a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" width="62" style="margin-bottom: 3px;"></a> <br><small class="roles"> Copyright holder, funder </small>  <a href="https://ror.org/03wc8by49" class="external-link"><img src="https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg" class="ror" alt="ROR"></a> </li>
 </ul>
 </div>
 
@@ -240,6 +228,7 @@
 <li><a href="https://CRAN.R-project.org/package=bundle" class="external-link"><img src="https://www.r-pkg.org/badges/version/bundle" alt="CRAN status"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 <li><a href="https://app.codecov.io/gh/rstudio/bundle?branch=main" class="external-link"><img src="https://codecov.io/gh/rstudio/bundle/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://app.codecov.io/gh/rstudio/bundle" class="external-link"><img src="https://codecov.io/gh/rstudio/bundle/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 

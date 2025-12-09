@@ -104,8 +104,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model `x`, you can safely call:
 
     res <-
-      x %>%
-      butcher() %>%
+      x |>
+      butcher() |>
       bundle()
 
 and predict with the output of `unbundle(res)` in a new R session.
@@ -140,9 +140,9 @@ library(xgboost)
 set.seed(1)
 
 mod <-
-  boost_tree(trees = 5, mtry = 3) %>%
-  set_mode("regression") %>%
-  set_engine("xgboost") %>%
+  boost_tree(trees = 5, mtry = 3) |>
+  set_mode("regression") |>
+  set_engine("xgboost") |>
   fit(mpg ~ ., data = mtcars)
 
 mod_bundle <- bundle(mod)

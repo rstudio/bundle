@@ -16,7 +16,7 @@ bundle(x, ...)
 - x:
 
   An `xgb.Booster` object returned from
-  [`xgboost::xgboost()`](https://rdrr.io/pkg/xgboost/man/xgb.train.html)
+  [`xgboost::xgboost()`](https://rdrr.io/pkg/xgboost/man/xgboost.html)
   or
   [`xgboost::xgb.train()`](https://rdrr.io/pkg/xgboost/man/xgb.train.html).
 
@@ -95,8 +95,8 @@ This bundle method is compatible with pre-butchering. That is, for a
 fitted model `x`, you can safely call:
 
     res <-
-      x %>%
-      butcher() %>%
+      x |>
+      butcher() |>
       bundle()
 
 and predict with the output of `unbundle(res)` in a new R session.

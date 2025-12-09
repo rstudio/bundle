@@ -181,21 +181,21 @@ abstractions to allow for much less verbose training loops."</p>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span>,</span></span>
 <span class="r-in"><span>  forward <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>      <span class="va">self</span><span class="op">$</span><span class="fu">encoder</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    <span class="va">x</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>      <span class="va">self</span><span class="op">$</span><span class="fu">encoder</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>      <span class="va">self</span><span class="op">$</span><span class="fu">decoder</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span>,</span></span>
 <span class="r-in"><span>  predict <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">self</span><span class="op">$</span><span class="fu">encoder</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    <span class="va">self</span><span class="op">$</span><span class="fu">encoder</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://torch.mlverse.org/docs/reference/torch_flatten.html" class="external-link">torch_flatten</a></span><span class="op">(</span>start_dim <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="va">net</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="va">net</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://mlverse.github.io/luz/reference/setup.html" class="external-link">setup</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    loss <span class="op">=</span> <span class="fu"><a href="https://torch.mlverse.org/docs/reference/nn_mse_loss.html" class="external-link">nn_mse_loss</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    optimizer <span class="op">=</span> <span class="va">optim_adam</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">train_dl</span>, epochs <span class="op">=</span> <span class="fl">1</span>, valid_data <span class="op">=</span> <span class="va">test_dl</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod_bundle</span> <span class="op">&lt;-</span> <span class="fu"><a href="bundle.html">bundle</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>

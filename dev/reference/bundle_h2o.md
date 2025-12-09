@@ -159,18 +159,18 @@ h2o.init()
 #> H2O is not running yet, starting it now...
 #> 
 #> Note:  In case of errors look at the following log files:
-#>     /tmp/Rtmppsni9e/file201a5d7c5958/h2o_runner_started_from_r.out
-#>     /tmp/Rtmppsni9e/file201a64536697/h2o_runner_started_from_r.err
+#>     /tmp/RtmpXFv0J3/file20fa5b162eac/h2o_runner_started_from_r.out
+#>     /tmp/RtmpXFv0J3/file20fa44c0bf62/h2o_runner_started_from_r.err
 #> 
 #> 
-#> Starting H2O JVM and connecting: ... Connection successful!
+#> Starting H2O JVM and connecting: .... Connection successful!
 #> 
 #> R is connected to the H2O cluster: 
-#>     H2O cluster uptime:         1 seconds 689 milliseconds 
+#>     H2O cluster uptime:         1 seconds 780 milliseconds 
 #>     H2O cluster timezone:       UTC 
 #>     H2O data parsing timezone:  UTC 
 #>     H2O cluster version:        3.44.0.3 
-#>     H2O cluster version age:    1 year, 11 months and 18 days 
+#>     H2O cluster version age:    1 year, 11 months and 19 days 
 #>     H2O cluster name:           H2O_started_from_R_runner_ydg016 
 #>     H2O cluster total nodes:    1 
 #>     H2O cluster total memory:   3.91 GB 
@@ -183,7 +183,7 @@ h2o.init()
 #>     H2O Internal Security:      FALSE 
 #>     R Version:                  R version 4.5.2 (2025-10-31) 
 #> Warning: 
-#> Your H2O cluster version is (1 year, 11 months and 18 days) old. There may be a newer version available.
+#> Your H2O cluster version is (1 year, 11 months and 19 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 #> 
 
