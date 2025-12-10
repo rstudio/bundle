@@ -24,8 +24,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/bundle/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/bundle)](https://CRAN.R-project.org/package=bundle)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![Codecov test coverage](https://codecov.io/gh/rstudio/bundle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle?branch=main)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Codecov test coverage](https://codecov.io/gh/rstudio/bundle/graph/badge.svg)](https://app.codecov.io/gh/rstudio/bundle)
 <!-- badges: end -->
 
@@ -78,10 +77,10 @@ Fit the boosted tree model:
 ```{r}
 # fit an boosted tree with xgboost via parsnip
 mod <-
-    boost_tree(trees = 5, mtry = 3) |>
-    set_mode("regression") |>
-    set_engine("xgboost") |>
-    fit(mpg ~ ., data = mtcars[1:25,])
+  boost_tree(trees = 5, mtry = 3) |>
+  set_mode("regression") |>
+  set_engine("xgboost") |>
+  fit(mpg ~ ., data = mtcars[1:25, ])
 
 mod
 ```
@@ -120,7 +119,7 @@ r(
     unbundled_mod <-
       unbundle(bundled_mod)
 
-    predict(unbundled_mod, new_data = mtcars[26:32,])
+    predict(unbundled_mod, new_data = mtcars[26:32, ])
   },
   args = list(
     bundled_mod = bundled_mod

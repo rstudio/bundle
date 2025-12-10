@@ -1,6 +1,6 @@
-# bundle (development version)
+# bundle 0.1.3
 
-* Make to work with new versions of xgboost models (#75).
+* Updated to support new versions of xgboost models (#75).
 
 # bundle 0.1.2
 

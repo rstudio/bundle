@@ -1,6 +1,6 @@
 Package: bundle
 Title: Serialize Model Objects with a Consistent Interface
-Version: 0.1.2.9000
+Version: 0.1.3
 Authors@R: c(
     person("Julia", "Silge", , "julia.silge@posit.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3671-836X")),
@@ -30,7 +30,7 @@ Imports:
     withr
 Suggests:
     bonsai,
-    butcher (>= 0.3.6.9000),
+    butcher (>= 0.4.0),
     callr,
     caret,
     covr,
@@ -58,8 +58,6 @@ Suggests:
     xgboost (>= 1.6.0.1)
 VignetteBuilder: 
     knitr
-Remotes: 
-    tidymodels/butcher
 Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
 Config/usethis/last-upkeep: 2025-12-08
