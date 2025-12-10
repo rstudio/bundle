@@ -1,6 +1,6 @@
 Package: bundle
 Title: Serialize Model Objects with a Consistent Interface
-Version: 0.1.2.9000
+Version: 0.1.3
 Authors@R: c(
     person("Julia", "Silge", , "julia.silge@posit.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3671-836X")),
