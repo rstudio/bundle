@@ -18,7 +18,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/rstudio/bundle/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/rstudio/bundle/blob/v0.1.3/DESCRIPTION)
 
 Silge J, Couch S, Yan Q, Kuhn M (2025). *bundle: Serialize Model Objects
 with a Consistent Interface*. R package version 0.1.3,

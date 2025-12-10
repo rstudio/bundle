@@ -157,7 +157,7 @@ fit <- dbarts::bart(mtcars[c("disp", "hp")], mtcars$vs, keeptrees = TRUE)
 #> iteration: 800 (of 1000)
 #> iteration: 900 (of 1000)
 #> iteration: 1000 (of 1000)
-#> total seconds in loop: 0.274974
+#> total seconds in loop: 0.275979
 #> 
 #> Tree sizes, last iteration:
 #> [1] 2 2 2 2 2 2 3 3 2 2 3 2 2 2 3 2 3 2 
