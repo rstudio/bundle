@@ -2,7 +2,9 @@
 
 ## bundle (development version)
 
-- Make to work with new versions of xgboost models
+## bundle 0.1.3
+
+- Updated to support new versions of xgboost models
   ([\#75](https://github.com/rstudio/bundle/issues/75)).
 
 ## bundle 0.1.2
