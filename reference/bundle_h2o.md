@@ -158,14 +158,14 @@ h2o.init()
 #> H2O is not running yet, starting it now...
 #> 
 #> Note:  In case of errors look at the following log files:
-#>     /tmp/RtmpcIGZZF/file29bf74bcc10a/h2o_runner_started_from_r.out
-#>     /tmp/RtmpcIGZZF/file29bf45580d77/h2o_runner_started_from_r.err
+#>     /tmp/Rtmp7BKvT0/file20107b172ff3/h2o_runner_started_from_r.out
+#>     /tmp/Rtmp7BKvT0/file20102dc59578/h2o_runner_started_from_r.err
 #> 
 #> 
 #> Starting H2O JVM and connecting: ... Connection successful!
 #> 
 #> R is connected to the H2O cluster: 
-#>     H2O cluster uptime:         1 seconds 654 milliseconds 
+#>     H2O cluster uptime:         1 seconds 617 milliseconds 
 #>     H2O cluster timezone:       UTC 
 #>     H2O data parsing timezone:  UTC 
 #>     H2O cluster version:        3.44.0.3 
