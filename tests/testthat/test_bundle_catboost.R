@@ -71,7 +71,11 @@ test_that("bundling + unbundling catboost fits", {
 
         test_pool <- catboost.load_pool(data = test_data)
 
-        catboost.predict(mod_butchered_unbundled, test_pool, prediction_type = "Class")
+        catboost.predict(
+          mod_butchered_unbundled,
+          test_pool,
+          prediction_type = "Class"
+        )
       },
       args = list(
         mod_butchered_bundle = mod_butchered_bundle,
@@ -82,7 +86,11 @@ test_that("bundling + unbundling catboost fits", {
   # run expectations -----------------------------------------------------------
   mod_fit <- fit_model()
   test_pool <- catboost::catboost.load_pool(data = iris[, 1:4])
-  mod_preds <- catboost::catboost.predict(mod_fit, test_pool, prediction_type = "Class")
+  mod_preds <- catboost::catboost.predict(
+    mod_fit,
+    test_pool,
+    prediction_type = "Class"
+  )
 
   # check classes
   expect_s3_class(mod_bundle, "bundled_catboost.Model")
