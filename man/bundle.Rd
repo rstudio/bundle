@@ -62,6 +62,7 @@ then re-loaded and \code{unbundle()}d in a new R session for use in prediction.
 Other bundlers: 
 \code{\link{bundle.H2OAutoML}()},
 \code{\link{bundle.bart}()},
+\code{\link{bundle.catboost.Model}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
