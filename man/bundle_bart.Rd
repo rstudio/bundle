@@ -97,6 +97,7 @@ fit_unbundled_preds <- predict(fit_unbundled, mtcars)
 Other bundlers: 
 \code{\link{bundle}()},
 \code{\link{bundle.H2OAutoML}()},
+\code{\link{bundle.catboost.Model}()},
 \code{\link{bundle.keras.engine.training.Model}()},
 \code{\link{bundle.luz_module_fitted}()},
 \code{\link{bundle.model_fit}()},
