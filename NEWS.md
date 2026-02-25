@@ -1,5 +1,7 @@
 # bundle (development version)
 
+* Added bundle method for catboost models and, by extension, `parsnip::boost_tree(engine = "catboost")` via bonsai (#82).
+
 # bundle 0.1.3
 
 * Updated to support new versions of xgboost models (#75).
