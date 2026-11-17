@@ -27,21 +27,22 @@ jobs:
           extra-packages: any::covr, any::xml2
           needs: coverage
 
-      - name: Install reticulate
-        run: pak::pak('reticulate')
-        shell: Rscript {0}
+      - uses: astral-sh/setup-uv@v6
 
-      - name: Install Miniconda
-        # conda can fail at downgrading python, so we specify python version in advance
-        env:
-          RETICULATE_MINICONDA_PYTHON_VERSION: "3.8"
-        run: reticulate::install_miniconda() # creates r-reticulate conda env by default
-        shell: Rscript {0}
-
-      - name: Install TensorFlow
+      - name: Create Python environment for legacy keras
+        # Legacy keras needs numpy<2, and TensorFlow wheels for Python 3.13+
+        # need numpy>=2, so pin Python 3.12 instead of reticulate's default
+        shell: bash
         run: |
-          tensorflow::install_tensorflow(version='2.13', conda_python_version = NULL)
-        shell: Rscript {0}
+          venv="$RUNNER_TEMP/r-keras"
+          uv venv --python 3.12 "$venv"
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            python="$venv/Scripts/python.exe"
+          else
+            python="$venv/bin/python"
+          fi
+          uv pip install --python "$python" tensorflow tf-keras "numpy<2"
+          echo "RETICULATE_PYTHON=$python" >> "$GITHUB_ENV"
 
       - name: Test coverage
         run: |

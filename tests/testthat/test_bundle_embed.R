@@ -2,7 +2,7 @@ test_that("bundling + unbundling step_umap", {
   skip_on_cran()
   skip_if_not_installed("embed")
   skip_if_not_installed("butcher")
-  skip_if(is.null(tensorflow::tf_version()))
+  skip_if_no_tensorflow()
   skip_if_not_installed("irlba", "2.3.5.2")
 
   library(embed)

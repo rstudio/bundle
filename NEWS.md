@@ -1,5 +1,7 @@
 # bundle (development version)
 
+* The vignette and tests now skip TensorFlow-dependent code when no Python is available, instead of erroring. Newer versions of reticulate error in this case rather than returning `NULL` from `tensorflow::tf_version()` (#83).
+
 # bundle 0.1.3
 
 * Updated to support new versions of xgboost models (#75).
