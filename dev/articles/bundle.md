@@ -12,6 +12,7 @@ This vignette walks through how to prepare a statistical model for
 saving to demonstrate the benefits of using bundle.
 
 ``` r
+
 library(bundle)
 ```
 
@@ -20,8 +21,10 @@ packages to fit some example models, and the callr package to generate
 fresh R sessions to test our models inside of.
 
 ``` r
+
 library(keras)
-#> The keras package is deprecated. Use the keras3 package instead.
+#> The keras package is deprecated. Please use the keras3 package instead.
+#> Alternatively, to continue using legacy keras, call `py_require_legacy_keras()`.
 library(xgboost)
 
 library(callr)
@@ -34,6 +37,7 @@ neural network that models miles per gallon using the rest of the
 variables in the built-in `mtcars` dataset.
 
 ``` r
+
 cars <- mtcars |>
   as.matrix() |>
   scale()
@@ -75,16 +79,17 @@ some new data to predict on, and get predictions back. Let’s try that
 out:
 
 ``` r
+
 predict(keras_fit, x_test)
-#> 1/1 - 0s - 51ms/epoch - 51ms/step
+#> 1/1 - 0s - 39ms/epoch - 39ms/step
 #>            [,1]
-#> [1,]  1.4813466
-#> [2,]  1.3102319
-#> [3,]  1.0477211
-#> [4,]  0.5305097
-#> [5,] -0.5866212
-#> [6,] -1.4056612
-#> [7,]  0.8700439
+#> [1,]  1.5301538
+#> [2,]  1.5244160
+#> [3,]  1.1866223
+#> [4,]  0.6955091
+#> [5,] -0.5154941
+#> [6,] -1.3477762
+#> [7,]  0.9527223
 ```
 
 Perfect.
@@ -107,6 +112,7 @@ We’ll just make use of two of the arguments to the function
 As an example:
 
 ``` r
+
 r(
   function(x) {
     x * 2
@@ -128,6 +134,7 @@ So, our approach might be:
 First, saving our model object to a file:
 
 ``` r
+
 temp_file <- tempfile()
 
 saveRDS(keras_fit, file = temp_file)
@@ -136,6 +143,7 @@ saveRDS(keras_fit, file = temp_file)
 Now, starting up a fresh R session and predicting on new data:
 
 ``` r
+
 r(
   function(temp_file, new_data) {
     library(keras)
@@ -149,7 +157,8 @@ r(
     new_data = x_test
   )
 )
-#> Error: ! in callr subprocess.
+#> Error:
+#> ! ! in callr subprocess.
 #> Caused by error in `do.call(object$predict, args)`:
 #> ! 'what' must be a function or character string
 ```
@@ -196,6 +205,7 @@ than `saveRDS`, we’ll be good to go.
 Saving our model object with their methods:
 
 ``` r
+
 temp_dir <- tempdir()
 save_model_tf(keras_fit, filepath = temp_dir)
 ```
@@ -203,6 +213,7 @@ save_model_tf(keras_fit, filepath = temp_dir)
 Now, starting up a fresh R session and predicting on new data:
 
 ``` r
+
 r(
   function(temp_dir, new_data) {
     library(keras)
@@ -217,13 +228,13 @@ r(
   )
 )
 #>            [,1]
-#> [1,]  1.4813466
-#> [2,]  1.3102319
-#> [3,]  1.0477211
-#> [4,]  0.5305097
-#> [5,] -0.5866212
-#> [6,] -1.4056612
-#> [7,]  0.8700439
+#> [1,]  1.5301538
+#> [2,]  1.5244160
+#> [3,]  1.1866223
+#> [4,]  0.6955091
+#> [5,] -0.5154941
+#> [6,] -1.3477762
+#> [7,]  0.9527223
 ```
 
 Awesome! Making use of their methods, we were able to effectively save
@@ -294,12 +305,14 @@ To be a bit more concrete, lets return to the keras example. Bundling
 the model fit:
 
 ``` r
+
 keras_bundle <- bundle(keras_fit)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
 
 ``` r
+
 r(
   function(model_bundle, new_data) {
     library(bundle)
@@ -314,13 +327,13 @@ r(
   )
 )
 #>            [,1]
-#> [1,]  1.4813466
-#> [2,]  1.3102319
-#> [3,]  1.0477211
-#> [4,]  0.5305097
-#> [5,] -0.5866212
-#> [6,] -1.4056612
-#> [7,]  0.8700439
+#> [1,]  1.5301538
+#> [2,]  1.5244160
+#> [3,]  1.1866223
+#> [4,]  0.6955091
+#> [5,] -0.5154941
+#> [6,] -1.3477762
+#> [7,]  0.9527223
 ```
 
 Huzzah!
@@ -331,6 +344,7 @@ object, you could use the same code!
 First, fitting a quick xgboost model:
 
 ``` r
+
 xgb_fit <- 
   xgboost(
     data = x_train, 
@@ -348,12 +362,14 @@ xgb_fit <-
 Now, bundling it:
 
 ``` r
+
 xgb_bundle <- bundle(xgb_fit)
 ```
 
 Now, starting up a fresh R session and predicting on new data:
 
 ``` r
+
 r(
   function(model_bundle, new_data) {
     library(bundle)

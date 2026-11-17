@@ -123,9 +123,22 @@ Other bundlers:
 ## Examples
 
 ``` r
-if (FALSE) { # rlang::is_installed(c("recipes", "embed", "irlba (>= 2.3.5.2)"))
 # fit model and bundle ------------------------------------------------
 library(recipes)
+#> Loading required package: dplyr
+#> 
+#> Attaching package: ‘dplyr’
+#> The following objects are masked from ‘package:stats’:
+#> 
+#>     filter, lag
+#> The following objects are masked from ‘package:base’:
+#> 
+#>     intersect, setdiff, setequal, union
+#> 
+#> Attaching package: ‘recipes’
+#> The following object is masked from ‘package:stats’:
+#> 
+#>     step
 library(embed)
 
 set.seed(1)
@@ -141,5 +154,18 @@ rec_bundle <- bundle(rec)
 rec_unbundled <- unbundle(rec_bundle)
 
 bake(rec_unbundled, new_data = iris)
-}
+#> # A tibble: 150 × 3
+#>    Species UMAP1  UMAP2
+#>    <fct>   <dbl>  <dbl>
+#>  1 setosa   17.8 -1.19 
+#>  2 setosa   19.5 -3.07 
+#>  3 setosa   18.7 -2.68 
+#>  4 setosa   19.5 -2.78 
+#>  5 setosa   17.7 -0.961
+#>  6 setosa   17.1 -0.232
+#>  7 setosa   18.5 -2.04 
+#>  8 setosa   18.8 -1.16 
+#>  9 setosa   18.9 -3.60 
+#> 10 setosa   19.4 -2.72 
+#> # ℹ 140 more rows
 ```

@@ -159,21 +159,21 @@ h2o.init()
 #> H2O is not running yet, starting it now...
 #> 
 #> Note:  In case of errors look at the following log files:
-#>     /tmp/RtmpxWQC9c/file20c61420cc47/h2o_runner_started_from_r.out
-#>     /tmp/RtmpxWQC9c/file20c6271ba40a/h2o_runner_started_from_r.err
+#>     /tmp/RtmpBjQjKc/file1ebb3df81976/h2o_runner_started_from_r.out
+#>     /tmp/RtmpBjQjKc/file1ebb2069d9a/h2o_runner_started_from_r.err
 #> 
 #> 
-#> Starting H2O JVM and connecting: ... Connection successful!
+#> Starting H2O JVM and connecting: .... Connection successful!
 #> 
 #> R is connected to the H2O cluster: 
-#>     H2O cluster uptime:         1 seconds 733 milliseconds 
+#>     H2O cluster uptime:         1 seconds 741 milliseconds 
 #>     H2O cluster timezone:       UTC 
 #>     H2O data parsing timezone:  UTC 
 #>     H2O cluster version:        3.44.0.3 
-#>     H2O cluster version age:    1 year, 11 months and 20 days 
+#>     H2O cluster version age:    2 years, 10 months and 28 days 
 #>     H2O cluster name:           H2O_started_from_R_runner_ydg016 
 #>     H2O cluster total nodes:    1 
-#>     H2O cluster total memory:   3.91 GB 
+#>     H2O cluster total memory:   3.90 GB 
 #>     H2O cluster total cores:    4 
 #>     H2O cluster allowed cores:  4 
 #>     H2O cluster healthy:        TRUE 
@@ -181,14 +181,18 @@ h2o.init()
 #>     H2O Connection port:        54321 
 #>     H2O Connection proxy:       NA 
 #>     H2O Internal Security:      FALSE 
-#>     R Version:                  R version 4.5.2 (2025-10-31) 
+#>     R Version:                  R version 4.6.2 (2026-10-29) 
 #> Warning: 
-#> Your H2O cluster version is (1 year, 11 months and 20 days) old. There may be a newer version available.
+#> Your H2O cluster version is (2 years, 10 months and 28 days) old. There may be a newer version available.
 #> Please download and install the latest version from: https://h2o-release.s3.amazonaws.com/h2o/latest_stable.html
 #> 
 
 cars_h2o <- as.h2o(mtcars)
-#>   |                                                                     |                                                             |   0%  |                                                                     |=============================================================| 100%
+#> 
+  |                                                                   
+  |                                                             |   0%
+  |                                                                   
+  |=============================================================| 100%
 
 cars_fit <-
   h2o.glm(
@@ -196,7 +200,11 @@ cars_fit <-
     y = colnames(cars_h2o)[1],
     training_frame = cars_h2o
   )
-#>   |                                                                     |                                                             |   0%  |                                                                     |=============================================================| 100%
+#> 
+  |                                                                   
+  |                                                             |   0%
+  |                                                                   
+  |=============================================================| 100%
 
 cars_bundle <- bundle(cars_fit)
 
@@ -204,7 +212,11 @@ cars_bundle <- bundle(cars_fit)
 cars_unbundled <- unbundle(cars_fit)
 
 predict(cars_unbundled, cars_h2o[, 2:11])
-#>   |                                                                     |                                                             |   0%  |                                                                     |=============================================================| 100%
+#> 
+  |                                                                   
+  |                                                             |   0%
+  |                                                                   
+  |=============================================================| 100%
 #>    predict
 #> 1 21.94826
 #> 2 21.64605

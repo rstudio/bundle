@@ -2,7 +2,15 @@
 
 ## bundle (development version)
 
+- The vignette and tests now skip TensorFlow-dependent code when no
+  Python is available, instead of erroring. Newer versions of reticulate
+  error in this case rather than returning `NULL` from
+  [`tensorflow::tf_version()`](https://rdrr.io/pkg/tensorflow/man/tf_config.html)
+  ([\#83](https://github.com/rstudio/bundle/issues/83)).
+
 ## bundle 0.1.3
+
+CRAN release: 2025-12-10
 
 - Updated to support new versions of xgboost models
   ([\#75](https://github.com/rstudio/bundle/issues/75)).

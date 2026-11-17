@@ -14,12 +14,14 @@ You can install the released version of bundle from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
+
 install.packages("bundle")
 ```
 
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("rstudio/bundle")
 ```
@@ -78,6 +80,7 @@ bundle into another R session to generate predictions on new data.
 First, load needed packages:
 
 ``` r
+
 library(bundle)
 library(parsnip)
 library(callr)
@@ -87,6 +90,7 @@ library(waldo)
 Fit the boosted tree model:
 
 ``` r
+
 # fit an boosted tree with xgboost via parsnip
 mod <-
   boost_tree(trees = 5, mtry = 3) |>
@@ -121,6 +125,7 @@ Note that simply saving and loading the model results in changes to the
 fitted model:
 
 ``` r
+
 temp_file <- tempfile()
 saveRDS(mod, temp_file)
 mod2 <- readRDS(temp_file)
@@ -137,6 +142,7 @@ We thus need to prepare the fitted model to be saved before passing it
 to another R session. We can do so by bundling it:
 
 ``` r
+
 # bundle the model
 bundled_mod <-
   bundle(mod)
@@ -149,6 +155,7 @@ Passing the model to another R session and generating predictions on new
 data:
 
 ``` r
+
 # load the model in a fresh R session and predict on new data
 r(
   func = function(bundled_mod) {
