@@ -20,10 +20,6 @@ jobs:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      # keras calls reticulate::py_require() for legacy Keras on load, and
-      # reticulate then provisions Python and TensorFlow with uv
-      PY_REQUIRE_LEGACY_KERAS: true
-      RETICULATE_PYTHON: managed
     permissions:
       contents: write
     steps:
@@ -39,6 +35,23 @@ jobs:
         with:
           extra-packages: any::pkgdown, local::.
           needs: website
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Create Python environment for legacy keras
+        # Legacy keras needs numpy<2, and TensorFlow wheels for Python 3.13+
+        # need numpy>=2, so pin Python 3.12 instead of reticulate's default
+        shell: bash
+        run: |
+          venv="$RUNNER_TEMP/r-keras"
+          uv venv --python 3.12 "$venv"
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            python="$venv/Scripts/python.exe"
+          else
+            python="$venv/bin/python"
+          fi
+          uv pip install --python "$python" tensorflow tf-keras "numpy<2"
+          echo "RETICULATE_PYTHON=$python" >> "$GITHUB_ENV"
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)

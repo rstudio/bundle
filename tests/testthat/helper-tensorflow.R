@@ -8,7 +8,16 @@ skip_if_no_tensorflow <- function() {
   # newer reticulate errors (rather than returns `NULL`) when no Python is found
   has_tf <- tryCatch(
     !is.null(tensorflow::tf_version()),
-    error = function(e) FALSE
+    error = function(e) e
   )
-  skip_if_not(isTRUE(has_tf), "TensorFlow is not available")
+  if (isTRUE(has_tf)) {
+    return(invisible())
+  }
+  # CI sets up Python and TensorFlow, so a missing TensorFlow there is a
+  # broken environment that should not be hidden behind a skip
+  if (identical(Sys.getenv("CI"), "true")) {
+    msg <- if (inherits(has_tf, "error")) conditionMessage(has_tf) else ""
+    fail(paste("TensorFlow is not available on CI.", msg))
+  }
+  skip("TensorFlow is not available")
 }
