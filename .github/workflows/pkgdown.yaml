@@ -20,6 +20,10 @@ jobs:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # keras calls reticulate::py_require() for legacy Keras on load, and
+      # reticulate then provisions Python and TensorFlow with uv
+      PY_REQUIRE_LEGACY_KERAS: true
+      RETICULATE_PYTHON: managed
     permissions:
       contents: write
     steps:
@@ -35,22 +39,6 @@ jobs:
         with:
           extra-packages: any::pkgdown, local::.
           needs: website
-
-      - name: Install reticulate
-        run: pak::pak('reticulate')
-        shell: Rscript {0}
-
-      - name: Install Miniconda
-        # conda can fail at downgrading python, so we specify python version in advance
-        env:
-          RETICULATE_MINICONDA_PYTHON_VERSION: "3.8"
-        run: reticulate::install_miniconda() # creates r-reticulate conda env by default
-        shell: Rscript {0}
-
-      - name: Install TensorFlow
-        run: |
-          tensorflow::install_tensorflow(version='2.13', conda_python_version = NULL)
-        shell: Rscript {0}
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)

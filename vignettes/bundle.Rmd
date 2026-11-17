@@ -19,8 +19,13 @@ should_eval <-
   rlang::is_installed("callr") &&
   rlang::is_installed("xgboost") 
 
-should_eval <- 
-  ifelse(should_eval, !is.null(tensorflow::tf_version()), should_eval)
+should_eval <- should_eval && isTRUE(tryCatch(
+  {
+    loadNamespace("keras")
+    !is.null(tensorflow::tf_version())
+  },
+  error = function(e) FALSE
+))
 
 knitr::opts_chunk$set(
   collapse = TRUE,
